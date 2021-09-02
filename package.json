@@ -1,0 +1,24 @@
+{
+  "name": "green_repack",
+  "version": "1.0.0",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "@types/mongodb": "^4.0.7",
+    "cuid": "^2.1.8",
+    "express": "^4.16.4",
+    "mongodb": "^4.1.1"
+  },
+  "description": ""
+}
