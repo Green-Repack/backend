@@ -1,3 +1,5 @@
+import {IAddressDto} from "./IAddressDto";
+
 export interface IUserDTO {
     id: string
     firstName: string
@@ -7,4 +9,7 @@ export interface IUserDTO {
     greenCoins?: string
     marchand: boolean
     token?: boolean
+    address: IAddressDto
+    siret?: string
+    siren?: string
 }
