@@ -1,9 +1,9 @@
 import { IPanierProps } from "../interface/panier/IPanierProps";
 import { Entity } from "./BaseEntity";
-import { Produit } from "./Produit";
+import { Product } from "./Product";
 
 export class Panier extends Entity<IPanierProps> {
-    get items(): Produit[] {
+    get items(): Product[] {
         return this.props.items
     }
 
@@ -20,11 +20,11 @@ export class Panier extends Entity<IPanierProps> {
         return instance
     }
 
-    public addItem(produit: Produit, quantity: number): void {
+    public addItem(product: Product, quantity: number): void {
         // ajouter un produit à la liste des items et calculer le total du panier
     }
 
-    public removeItem(produitId: string): void {
+    public removeItem(productId: string): void {
         /* retirer un article du panier en fonction de son nom
             gérer aussi le cas de la quantité
         */

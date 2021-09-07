@@ -1,6 +1,6 @@
-import { Produit } from "../../../domain/entity/Produit";
+import { Product } from "../../../domain/entity/Product";
 
 export interface IPanierDTO {
-    items: Produit[]
+    items: Product[]
     totalPrice: number
 }

@@ -1,5 +1,5 @@
-import { IProduitDTO } from "../../dto/IProduitDTO";
+import { IProductDTO } from "../../dto/IProductDTO";
 
 export interface ISellUseCase {
-    execute(userId: string, product: IProduitDTO): void
+    execute(userId: string, product: IProductDTO): void
 }

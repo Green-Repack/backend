@@ -1,5 +1,5 @@
 import { IUserRepository } from "../../../../domain/interface/user/IUserRepository";
-import { IProduitDTO } from "../../dto/IProduitDTO";
+import { IProductDTO } from "../../dto/IProductDTO";
 import { ISellUseCase } from "./ISellUseCase";
 
 export class SellUseCase  implements ISellUseCase {
@@ -8,7 +8,7 @@ export class SellUseCase  implements ISellUseCase {
     constructor(userRepository: IUserRepository) {
         this._userRepository = userRepository
     }
-    execute(userId: string, product: IProduitDTO): void {
+    execute(userId: string, product: IProductDTO): void {
         throw new Error("Method not implemented.");
     }
     

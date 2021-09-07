@@ -1,6 +1,6 @@
-import { Produit } from "../../entity/Produit";
+import { Product } from "../../entity/Product";
 
 export interface IPanierProps {
-    items: Produit[]
+    items: Product[]
     totalPrice: number
 }
