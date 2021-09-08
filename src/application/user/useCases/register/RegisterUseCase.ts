@@ -20,7 +20,7 @@ export class RegisterUseCase  implements IRegisterUseCase {
             let newUser = await CreateUserService.create(userInfo)
             await this._userRepository.save(newUser)
         } catch(error) {
-            throw error
+            throw new Error(error.message)
         }
     }
 }

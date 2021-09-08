@@ -8,10 +8,11 @@ export class UserController extends BaseController{
         try {
             let userRepository = new UserRepository()
             let registerUseCase = new RegisterUseCase(userRepository)
-            registerUseCase.execute(UserMap.toDTO(UserMap.toDomain(req.body)))
+            await registerUseCase.execute(UserMap.toDTO(UserMap.toDomain(req.body)))
             res.sendStatus(201);
         } catch(error) {
             console.log(error)
+            res.status(400).json(error.message);
         }
     }
 }
