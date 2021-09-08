@@ -1,5 +1,5 @@
 import express from 'express';
-import routes from './domain/interface/association';
+import routes from './infrastructure/api';
 import { DbConnect } from './infrastructure/persistence/DbConnect';
 import { config } from 'dotenv';
 
