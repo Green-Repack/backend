@@ -10,4 +10,6 @@ export interface IUserProps {
     greenCoins: IGreenCoins
     marchand: boolean
     token?: string
+    siret?: string
+    siren?: string
 }

@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const mongoose = require('mongoose');
+import { Schema, model } from "mongoose";
+import { IUserProps } from "../../../domain/interface/user/IUserProps"
 
-const userSchema = new mongoose.Schema({
+export const userSchema = new Schema<IUserProps>({
     firstName: {
         type: String,
         required: true,
@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     },
     address: {
         _id:false,
+        streetNumber: {
+            type: Number,
+            required: true,
+        },
         streetName: {
             type: String,
             required: true,
@@ -56,9 +60,14 @@ const userSchema = new mongoose.Schema({
         }
     },
     greenCoins: {
-        type: Number,
-        required: true,
-        default: 0,
+        _id:false,
+        amount: {
+            type: Number,
+            required: true,
+        },
+        expirationDate: {
+            type: Number,
+        }
     },
     password: {
         type: String,
@@ -66,26 +75,13 @@ const userSchema = new mongoose.Schema({
         minlength: 6,
         maxlength: 255,
     },
-    role: {
-        type: String,
-        required: true,
-    },
-    verified: {
+    marchand: {
         type: Boolean,
         default: false,
     },
-    token: {
-        type: String,
-        required: true,
-    },
+    token: String,
+    siret: String,
+    siren: String,
 });
 
-userSchema.methods.generateAuthToken = async function(expirationTime: number) {
-    const user = this;
-    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY, {expiresIn: expirationTime })
-    user.tokens = token
-    await user.save()
-    return token
-}
-
-module.exports = mongoose.model("User", userSchema);
+export const UserModel = model<IUserProps>("User", userSchema)

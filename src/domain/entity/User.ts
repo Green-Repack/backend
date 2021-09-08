@@ -5,6 +5,10 @@ import { IGreenCoins } from "../interface/common/IGreenCoins";
 import { Entity } from "./BaseEntity";
 
 export class User extends Entity<IUserProps> {
+    get id(): string {
+        return this._id!
+    }
+
     get firstName(): string {
         return this.props.firstName
     }
@@ -33,6 +37,14 @@ export class User extends Entity<IUserProps> {
         return this.props.token!
     }
 
+    get siret(): string {
+        return this.props.siret!
+    }
+
+    get siren(): string {
+        return this.props.siren!
+    }
+    
     private constructor(props: IUserProps, id?: string) {
         super(props, id)
     }
