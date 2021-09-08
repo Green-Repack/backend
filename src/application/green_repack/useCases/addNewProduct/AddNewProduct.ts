@@ -32,7 +32,7 @@ export class AddNewProduct implements IAddNewProduct {
 
         try{
             return newProduct.save()
-        }catch (e: Error){
+        }catch(e){
             throw new Error("Couldn't save the product. Try later.")
         }
     }
