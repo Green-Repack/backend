@@ -13,14 +13,11 @@ export class RegisterUseCase  implements IRegisterUseCase {
 
     public async execute(userInfo: IUserDTO): Promise<void> {
         try {
-            console.log(userInfo);
             let userExists = await this._userRepository.exists(userInfo.email);
 
-            console.log("exist ")
             if (userExists) throw new UserAlreadyExistsError()
 
             let newUser = await CreateUserService.create(userInfo)
-            console.log(newUser)
             await this._userRepository.save(newUser)
         } catch(error) {
             throw error

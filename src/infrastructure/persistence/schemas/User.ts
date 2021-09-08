@@ -67,7 +67,6 @@ export const userSchema = new Schema<IUserProps>({
         },
         expirationDate: {
             type: Number,
-            required: true,
         }
     },
     password: {

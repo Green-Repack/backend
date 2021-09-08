@@ -6,17 +6,16 @@ import bcrypt from "bcryptjs"
 
 export class CreateUserService {
     public static async create(userInfo: IUserDTO): Promise<User> {
-        Guard.AgainstNullOrUndefined(userInfo.firstName, "first name")
-        Guard.AgainstNullOrUndefined(userInfo.lastName, "last name")
-        Guard.AgainstNullOrUndefined(userInfo.email, "email")
-        Guard.AgainstInvalidEmail(userInfo.email, "email")
-        Guard.AgainstNullOrUndefined(userInfo.address, "address")
-        Guard.AgainstNullOrUndefined(userInfo.password, "password")
+        Guard.AgainstNullOrUndefined(userInfo.firstName, "first name required")
+        Guard.AgainstNullOrUndefined(userInfo.lastName, "last name required")
+        Guard.AgainstNullOrUndefined(userInfo.email, "email required")
+        Guard.AgainstInvalidEmail(userInfo.email, "invalid email")
+        Guard.AgainstNullOrUndefined(userInfo.address, "address required")
+        Guard.AgainstNullOrUndefined(userInfo.password, "password required")
 
-        userInfo.greenCoins = {amount: 0, expireDate: Date.now()}
-        if( this.isMarchand(userInfo.siren, userInfo.siret)) {
-            userInfo.marchand = true
-        }
+        userInfo.greenCoins = {amount: 0, expireDate: 0}
+        
+        userInfo.marchand = this.isMarchand(userInfo.siren, userInfo.siret)
 
         const hash = await bcrypt.genSalt(10);
         let hashPassword = await bcrypt.hash(userInfo.password, hash);

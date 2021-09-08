@@ -1,4 +1,4 @@
 export interface IGreenCoins {
     amount: number
-    expireDate: number
+    expireDate?: number
 }

@@ -10,7 +10,7 @@ export class Guard {
     }
 
     public static AgainstInvalidEmail(email: string, argumentName: string) {
-        if (validator.isEmail(email)) {
+        if (!validator.isEmail(email)) {
             throw new InvalidEmailError(argumentName)
         }
     }
