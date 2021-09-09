@@ -1,5 +1,5 @@
 import {IAcceptProduct} from "./IAcceptProduct";
-import {PurchasePromiseState} from "../../../user/enum/PurchasePromiseState";
+import {PurchasePromiseStatus} from "../../../user/enum/PurchasePromiseStatus";
 import {IAddress} from "../../../../domain/interface/common/IAddress";
 
 export class AcceptProduct implements IAcceptProduct{
@@ -11,7 +11,7 @@ export class AcceptProduct implements IAcceptProduct{
         if (!product) throw new NotFoundError("Product not found error")
 
         product.accepte = true
-        produit.status = PurchasePromiseState.OrderBeingPrepared
+        produit.status = PurchasePromiseStatus.OrderBeingPrepared
 
         let pdfLink = this.productService.
     }

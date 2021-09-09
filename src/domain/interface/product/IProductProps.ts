@@ -1,11 +1,18 @@
 import { IProductSpecs } from "../common/IProductSpecs";
+import {PurchasePromiseStatus} from "../../../application/user/enum/PurchasePromiseStatus";
+import {ProductState} from "../../../application/user/enum/ProductState";
+import {ProductCategory} from "../../../application/user/enum/ProductCategory";
 
 export interface IProductProps {
     name: string
-    type: string
+    creatorId?: string
+    category: ProductCategory
     specificities: IProductSpecs
-    price?: number
+    initialPrice?: number
+    displayPrice?: number
     images: string[]
-    marchandId?: string
-    accepte: boolean
+    status: PurchasePromiseStatus
+    state: ProductState
+    weight: number
+    accepted: boolean
 }

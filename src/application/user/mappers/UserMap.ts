@@ -12,7 +12,7 @@ export class UserMap {
             password: user.password,
             token: user.token,
             greenCoins: user.greenCoins,
-            marchand: user.isMarchand(),
+            merchant: user.isMarchand(),
             siren: user.siren,
             siret: user.siret
         }
@@ -27,7 +27,7 @@ export class UserMap {
             password: user.password,
             token: user.token,
             greenCoins: user.greenCoins,
-            marchand: user.marchand,
+            merchant: user.merchant,
             siren: user.siren,
             siret: user.siret
         }, user.id)
@@ -43,7 +43,7 @@ export class UserMap {
             password: user.password,
             token: user.token,
             greenCoins: user.greenCoins,
-            marchand: user.isMarchand(),
+            merchant: user.isMarchand(),
             siren: user.siren,
             siret: user.siret
         }

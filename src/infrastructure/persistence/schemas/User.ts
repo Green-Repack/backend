@@ -75,7 +75,7 @@ export const userSchema = new Schema<IUserProps>({
         minlength: 6,
         maxlength: 255,
     },
-    marchand: {
+    merchant: {
         type: Boolean,
         default: false,
     },

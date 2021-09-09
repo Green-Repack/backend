@@ -15,7 +15,7 @@ export class CreateUserService {
 
         userInfo.greenCoins = {amount: 0, expireDate: 0}
         
-        userInfo.marchand = this.isMarchand(userInfo.siren, userInfo.siret)
+        userInfo.merchant = this.isMerchant(userInfo.siren, userInfo.siret)
 
         const hash = await bcrypt.genSalt(10);
         let hashPassword = await bcrypt.hash(userInfo.password, hash);
@@ -26,7 +26,7 @@ export class CreateUserService {
         return newUser
     }
 
-    private static isMarchand(siren?: string, siret?: string): boolean {
+    private static isMerchant(siren?: string, siret?: string): boolean {
         if ((siren! != null || siren! != undefined) || (siret! != null || siren! != undefined)) {
             return true
         }

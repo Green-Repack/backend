@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, model } from "mongoose";
+import {IProductProps} from "../../../domain/interface/product/IProductProps";
 
-const productSchema = new mongoose.Schema({
+export const productSchema = new Schema<IProductProps>({
     name: {
         type: String,
         required: true,
@@ -8,7 +9,7 @@ const productSchema = new mongoose.Schema({
         maxlength: 255,
         trim: true,
     },
-    marchandId: {
+    creatorId: {
         type: String,
         required: true,
         trim: true,
@@ -43,7 +44,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
-    photos: [{
+    images: [{
         type: String,
         minlength: 2,
         maxlength: 255,
@@ -62,7 +63,7 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    accepte: {
+    accepted: {
         type: Boolean,
         required: true,
         default: false
@@ -70,4 +71,4 @@ const productSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model("Product", productSchema);
+export const ProductModel = model<IProductProps>("Product", productSchema);

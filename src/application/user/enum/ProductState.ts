@@ -1,8 +1,8 @@
 
 export enum ProductState{
-    NewWithPackaging,
-    NewWithoutPackaging,
-    VeryGoodState,
-    GoodState,
-    Satisfactory
+    NewWithPackaging = "NewWithPackaging",
+    NewWithoutPackaging = "NewWithoutPackaging",
+    VeryGoodState = "VeryGoodState",
+    GoodState = "GoodState",
+    Satisfactory = "Satisfactory"
 }

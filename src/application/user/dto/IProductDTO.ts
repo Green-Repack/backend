@@ -1,18 +1,18 @@
 import { IProductSpecs } from "../../../domain/interface/common/IProductSpecs";
 import {ProductCategory} from "../enum/ProductCategory";
 import {ProductState} from "../enum/ProductState";
-import {PurchasePromiseState} from "../enum/PurchasePromiseState";
+import {PurchasePromiseStatus} from "../enum/PurchasePromiseStatus";
 
 export interface IProductDTO {
     name: string
-    specificities: IProductSpecs
+    creatorId: string
     category: ProductCategory
+    specificities: IProductSpecs
+    initialPrice?: number
+    displayPrice?: number
+    images: string[]
+    status: PurchasePromiseStatus
     state: ProductState
-    initialPrice: number
-    displayPrice: number
-    photos: string[]
-    marchandId: string
-    accepte: boolean
-    status: PurchasePromiseState
     weight: number
+    accepted: boolean
 }

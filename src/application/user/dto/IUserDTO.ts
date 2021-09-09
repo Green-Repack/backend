@@ -8,7 +8,7 @@ export interface IUserDTO {
     email: string
     password: string
     greenCoins: IGreenCoins
-    marchand: boolean
+    merchant: boolean
     token?: string
     address: IAddress
     siret?: string

@@ -8,7 +8,7 @@ export interface IUserProps {
     password: string
     address: IAddress
     greenCoins: IGreenCoins
-    marchand: boolean
+    merchant: boolean
     token?: string
     siret?: string
     siren?: string

@@ -1,8 +1,8 @@
 export enum ProductCategory {
-    Phone,
-    GameConsole,
-    ConnectedObject,
-    BigAppliances,
-    Handiwork,
-    Computer
+    Phone= "Phone",
+    GameConsole = "GameConsole",
+    ConnectedObject = "ConnectedObject",
+    BigAppliances = "BigAppliances",
+    Handiwork = "Handiwork",
+    Computer = "Computer"
 }
