@@ -13,4 +13,5 @@ export interface IUserDTO {
     address: IAddress
     siret?: string
     siren?: string
+    creationDate: Date
 }

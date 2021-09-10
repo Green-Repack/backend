@@ -4,22 +4,31 @@ import { IUserRepository } from "../../../domain/interface/user/IUserRepository"
 import { UserModel } from "../schemas/User";
 
 export class UserRepository implements IUserRepository {
-    async exists(email: string): Promise<boolean> {
-        let user = await UserModel.findOne({email: email.toLowerCase()})
-        if (user) return true
-        else return false
+    async exists(idOrEmail: string): Promise<boolean> {
+        let emailResult = await UserModel.findOne({email: idOrEmail.toLowerCase()})
+        if (emailResult == null) {
+            try {
+                let idResult = await UserModel.findById(idOrEmail)
+                if (idResult == null)  return false
+                else return true
+            } catch(error) {
+                return false
+            }
+        } else {
+            return true
+        }
     }
 
-    async getUserById(userId: string): Promise<User | null> {
+    async getUserById(userId: string): Promise<User | undefined> {
         let user = await UserModel.findById(userId)
         if (user) return UserMap.toDomain(user)
-        else return null
+        else return undefined
     }
 
-    async getUserByEmail(email: string): Promise<User | null> {
+    async getUserByEmail(email: string): Promise<User | undefined> {
         let user = await UserModel.findOne({email: email.toLowerCase()})
         if (user) return UserMap.toDomain(user)
-        else return null
+        else return undefined
     }
 
     async getAllUsers(): Promise<User[]> {

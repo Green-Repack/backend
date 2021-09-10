@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import { InvalidTokenError } from "./errors/InvalidTokenError";
 
 export class JWToken {
 
@@ -7,11 +8,9 @@ export class JWToken {
         return token
     }
 
-    public static async verifyToken(token: string): Promise<any | undefined> {
-        const jwtData = await jwt.verify(token, this.jwtKey());
-
-        if (!jwtData) return jwtData
-        else return undefined
+    public static async verifyToken(token: string): Promise<string> {
+        const jwtData: any = await jwt.verify(token, this.jwtKey());
+        return this.paylordVerification(jwtData)
     }
 
     private static jwtKey(): string {
@@ -21,6 +20,11 @@ export class JWToken {
         } else {
             return "simplejwtkey"
         }
+    }
+
+    private static paylordVerification(payload: any): string {
+        if (typeof payload === 'string') throw new InvalidTokenError("The payload is missing")
+        else return payload._id.toString()
     }
 }
 

@@ -82,6 +82,10 @@ export const userSchema = new Schema<IUserProps>({
     token: String,
     siret: String,
     siren: String,
+    creationDate: {
+        type: Date,
+        default: new Date()
+    }
 });
 
 export const UserModel = model<IUserProps>("User", userSchema)

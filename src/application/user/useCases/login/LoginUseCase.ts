@@ -16,7 +16,7 @@ export class LoginUseCase  implements ILoginUseCase {
     async execute(email: string, password: string): Promise<IUserDTO> {
         let token = ""
         let user = await this._userRepository.getUserByEmail(email)
-        if (user == null) throw new InvalidCredentialsError()
+        if (user == undefined) throw new InvalidCredentialsError()
 
         let passwordVerification = await bcrypt.compare(password, user.password);
         if(!passwordVerification) throw new InvalidCredentialsError()

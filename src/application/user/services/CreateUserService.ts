@@ -16,6 +16,7 @@ export class CreateUserService {
         userInfo.greenCoins = {amount: 0, expireDate: 0}
         
         userInfo.marchand = this.isMarchand(userInfo.siren, userInfo.siret)
+        userInfo.creationDate = new Date()
 
         const hash = await bcrypt.genSalt(10);
         let hashPassword = await bcrypt.hash(userInfo.password, hash);

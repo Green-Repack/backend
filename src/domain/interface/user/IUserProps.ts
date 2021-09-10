@@ -12,4 +12,5 @@ export interface IUserProps {
     token?: string
     siret?: string
     siren?: string
+    creationDate: Date
 }

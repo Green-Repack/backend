@@ -1,5 +1,9 @@
 export interface IGreenRepackProps {
-    username: string
+    firstName: string
+    lastName: string
+    username?: string
     password: string
     admin: boolean
+    creationDate: Date
+    token?: string
 }

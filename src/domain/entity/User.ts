@@ -44,6 +44,10 @@ export class User extends Entity<IUserProps> {
     get siren(): string {
         return this.props.siren!
     }
+
+    get creationDate(): Date {
+        return this.props.creationDate
+    }
     
     private constructor(props: IUserProps, id?: string) {
         super(props, id)
