@@ -1,47 +1,36 @@
-import {IAddNewProduct} from "./IAddNewProduct";
+import {IProductRepository} from "../../../../domain/interface/product/IProductRepository";
+import {IProductPriceRepository} from "../../../../domain/interface/product/productData/IProductPriceRepository";
+import {ProductPriceRepository} from "../../../../infrastructure/persistence/repositories/ProductPriceRepository";
 import {IProductDTO} from "../../../user/dto/IProductDTO";
 import {Role} from "../../../user/enum/Role";
-import {Product} from "../../../../domain/entity/Product";
-import {PurchasePromiseStatus} from "../../../user/enum/PurchasePromiseStatus";
-import {IProductPriceRepository} from "../../../../domain/interface/product/productData/IProductPriceRepository";
+import {CreateProductService} from "../../../user/services/CreateProductService";
+import {IAddNewProduct} from "./IAddNewProduct";
 
 export class AddNewProduct implements IAddNewProduct {
-    private _productPriceRepository: IProductPriceRepository
+    private _productPriceRepository: IProductPriceRepository;
+    private _productRepository: IProductRepository;
 
-
-    constructor(productPriceRepository: IProductPriceRepository) {
-        this._productPriceRepository = productPriceRepository;
+    constructor(productRepository: IProductRepository) {
+        this._productPriceRepository = new ProductPriceRepository();
+        this._productRepository = productRepository;
     }
 
-    async execute(productDTO: IProductDTO, userRole: string, userId: string): Promise<Product> {
-        if(userRole.toLowerCase()!== Role.Company.toString().toLowerCase()) throw new UnauthorizedError("You don't have the right to create a product.")
+    public async execute(productDTO: IProductDTO, userRole: string, userId: string): Promise<void> {
+        if (userRole.toLowerCase() !== Role.Company.toString().toLowerCase()) {
+            throw new UnauthorizedError("You don't have the right to create a product.");
+        }
 
-        let category = productDTO.category.toString()
-        let state = productDTO.state.toString()
+        try {
+            const category = productDTO.category.toString();
+            const state = productDTO.state.toString();
 
-        let productDataPrice = await this._productPriceRepository.getByCategoryAndState(category, state)
+            const productDataPrice = await this._productPriceRepository.getByCategoryAndState(category, state);
 
-        let newProduct = new Product({
-            name: productDTO.name,
-            creatorId: userId,
-            category: category,
-            initialPrice: productDataPrice.price,
-            photos: productDTO.photos,
-            status: PurchasePromiseStatus.WaitingForApproval,
-            state: state,
-            accepted: false,
-            specificities: {
-                brand: productDTO.specificities.brand,
-                description: productDTO.specificities.description,
-                technicalSpec: productDTO.specificities.technicalSpec,
-            },
-            weight: productDTO.weight
-        })
+            const newProduct = await CreateProductService.create(productDTO, userId, productDataPrice!.price);
 
-        try{
-            return newProduct.save()
-        }catch(e){
-            throw new Error("Couldn't save the product. Try later.")
+            await this._productRepository.save(newProduct);
+        } catch (e) {
+            throw new Error("Couldn't save the product. Try later.");
         }
     }
 }

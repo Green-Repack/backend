@@ -11,7 +11,7 @@ export class ProductPriceRepository implements IProductPriceRepository{
 
     async getByCategoryAndState(category: string, state: string): Promise<IProductPriceProps | null> {
         let productPrice = await ProductPriceModel.findOne({productCategory: category, productState: state})
-        if(productPrice) return productPrice
+        if(productPrice) return productPrice;
         return null
     }
 
