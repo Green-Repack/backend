@@ -34,7 +34,11 @@ export const productSchema = new Schema<IProductProps>({
             type: String,
             required: true,
             trim: true,
-        }]
+        }],
+        productionYear: {
+            type: Number,
+            required: true
+        }
     },
     initialPrice: {
         type: Number,

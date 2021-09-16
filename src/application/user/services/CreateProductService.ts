@@ -2,6 +2,7 @@ import {Product} from "../../../domain/entity/Product";
 import {Guard} from "../../commons/Guard";
 import {IProductDTO} from "../dto/IProductDTO";
 import {PurchasePromiseStatus} from "../enum/PurchasePromiseStatus";
+import {ProductMap} from "../mappers/ProductMap";
 
 export class CreateProductService {
     public static async create(productDTO: IProductDTO, creatorId: string, price: number): Promise<Product> {
@@ -17,8 +18,6 @@ export class CreateProductService {
         productDTO.status = PurchasePromiseStatus.WaitingForApproval;
         productDTO.accepted = false;
 
-        let newProduct = ProductMap.toDomain(productDTO);
-
-        return newProduct;
+        return ProductMap.toDomain(productDTO);
     }
 }

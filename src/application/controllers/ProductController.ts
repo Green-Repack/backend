@@ -14,4 +14,14 @@ export class ProductController extends BaseController{
             res.status(400).json(e.message);
         }
     }
+
+    public async acceptProduct(req: any, res: any){
+        try{
+
+        }catch (e) {
+            if(e instanceof UnauthorizedError){
+                res.status(403)
+            }
+        }
+    }
 }

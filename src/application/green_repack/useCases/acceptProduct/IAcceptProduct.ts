@@ -1,7 +1,5 @@
-import {ProductServices} from "../../services/ProductServices";
+import {IAddress} from "../../../../domain/interface/common/IAddress";
 
 export interface IAcceptProduct{
-    productService: ProductServices
-
-    execute(productId: string, userId: string): Promise<boolean>
+    execute(productId: string, userId: string, warehouseAddress: IAddress): Promise<string>
 }

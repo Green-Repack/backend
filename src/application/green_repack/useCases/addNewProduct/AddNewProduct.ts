@@ -24,13 +24,21 @@ export class AddNewProduct implements IAddNewProduct {
             const category = productDTO.category.toString();
             const state = productDTO.state.toString();
 
-            const productDataPrice = await this._productPriceRepository.getByCategoryAndState(category, state);
+            const diffDate = new Date().getFullYear()-productDTO.specificities.productionYear;
 
-            const newProduct = await CreateProductService.create(productDTO, userId, productDataPrice!.price);
+            const price = await this.generateProductPrice(category, state, diffDate);
+
+            const newProduct = await CreateProductService.create(productDTO, userId, price);
 
             await this._productRepository.save(newProduct);
         } catch (e) {
             throw new Error("Couldn't save the product. Try later.");
         }
+    }
+
+    private async generateProductPrice(category: string, state: string, diffDate: number): Promise<number>{
+        const productDataPrice = await this._productPriceRepository.getByCategoryAndState(category, state);
+        let price = productDataPrice!.price;
+        return Math.exp(-diffDate)*price;
     }
 }

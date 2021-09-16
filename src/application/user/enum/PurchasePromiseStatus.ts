@@ -4,6 +4,7 @@ export enum PurchasePromiseStatus{
     InTransit = "InTransit",
     Delivered = "Delivered",
     QualityControl = "QualityControl",
+    QualityControlFAiled = "QualityControlFailed",
     Accepted = "Accepted",
     Cancelled = "Cancelled"
 }

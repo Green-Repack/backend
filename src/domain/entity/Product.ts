@@ -1,55 +1,66 @@
+import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
 import { IProductProps } from "../interface/product/IProductProps";
 import { Entity } from "./BaseEntity";
 
 export class Product extends Entity<IProductProps> {
 
-    getId(){
-        return this._id
+    get id(){
+        return this._id!
     }
 
-    getName(){
+    get name(){
         return this.props.name
     }
 
-    getCreatorId(){
+    get creatorId(){
         return this.props.creatorId
     }
 
-    getCategory(){
+    get category(){
         return this.props.category
     }
 
-    getSpecificities(){
+    get specificities(){
         return this.props.specificities
     }
 
-    getInitialPrice(){
+    get initialPrice(){
         return this.props.initialPrice
     }
 
-    getDisplayPrice(){
+    get displayPrice(){
         return this.props.displayPrice
     }
 
-    getImages(){
+    get images(){
         return this.props.images
     }
 
-    getStatus(){
+    get status(){
         return this.props.status
     }
 
-    getState(){
+    get state(){
         return this.props.state
     }
 
-    getWeight(){
+    get weight(){
         return this.props.weight
     }
 
-    isAccepted(){
+    get accepted(){
         return this.props.accepted
     }
+
+    set accepted(accepted: boolean){
+        this.accepted=accepted;
+    }
+
+    set status(status: PurchasePromiseStatus){
+        this.status=status;
+    }
+
+
 
     private constructor(props: IProductProps, id?: string) {
         super(props, id)

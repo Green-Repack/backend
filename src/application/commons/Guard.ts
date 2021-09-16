@@ -1,5 +1,6 @@
 import { ArgumentNullError } from "../user/errors/ArgumentNullError";
 import { InvalidEmailError } from "../user/errors/InvalidEmailError";
+// @ts-ignore
 import validator from "validator";
 
 export class Guard {
