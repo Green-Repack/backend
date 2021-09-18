@@ -1,6 +1,6 @@
-import { UserMap } from "../../../application/user/mappers/UserMap";
+import { UserMap } from "../../../application/mappers/UserMap";
 import { User } from "../../../domain/entity/User";
-import { IUserRepository } from "../../../domain/interface/user/IUserRepository";
+import { IUserRepository } from "../../../application/interfaces/repository/IUserRepository";
 import { UserModel } from "../schemas/User";
 
 export class UserRepository implements IUserRepository {
@@ -40,8 +40,8 @@ export class UserRepository implements IUserRepository {
         return result
     }
 
-    async delete(userId: string): Promise<void> {
-        await UserModel.findByIdAndDelete(userId)
+    async delete(user: User): Promise<void> {
+        await UserModel.deleteOne({email: user.email.toLowerCase()})
     }
 
     async save(user: User): Promise<void> {

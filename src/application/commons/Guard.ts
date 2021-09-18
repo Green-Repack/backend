@@ -1,5 +1,5 @@
-import { ArgumentNullError } from "../user/errors/ArgumentNullError";
-import { InvalidEmailError } from "../user/errors/InvalidEmailError";
+import { ArgumentNullError } from "../errors/ArgumentNullError";
+import { InvalidEmailError } from "../errors/InvalidEmailError";
 import validator from "validator";
 
 export class Guard {

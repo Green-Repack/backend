@@ -1,6 +1,6 @@
-import { GreenRepackMap } from "../../../application/green_repack/mappers/GreenRepackMap";
+import { GreenRepackMap } from "../../../application/mappers/GreenRepackMap";
 import { GreenRepack } from "../../../domain/entity/GreenRepack";
-import { IGreenRepackRepository } from "../../../domain/interface/green_repack/IGreenRepackRepository";
+import { IGreenRepackRepository } from "../../../application/interfaces/repository/IGreenRepackRepository";
 import { GreenRepackModel } from "../schemas/GreenRepack";
 
 export class GreenRepackRepository implements IGreenRepackRepository {
@@ -53,19 +53,19 @@ export class GreenRepackRepository implements IGreenRepackRepository {
         }
     }
 
-    async delete(memberId: string): Promise<void> {
-        await GreenRepackModel.findByIdAndDelete(memberId)
+    async delete(member: GreenRepack): Promise<void> {
+        await GreenRepackModel.deleteOne({username: member.username})
     }
 
     async save(member: GreenRepack): Promise<void> {
         let exists = await this.exists(member.username)
-        const rawUserData = GreenRepackMap.toPersistence(member)
+        const rawMemberData = GreenRepackMap.toPersistence(member)
 
         if (exists) {
             const mongooseMember = await GreenRepackModel.findOne({username: member.username})
-            if (mongooseMember) await mongooseMember.updateOne(rawUserData)
+            if (mongooseMember) await mongooseMember.updateOne(rawMemberData)
         } else {
-            await GreenRepackModel.create(rawUserData)
+            await GreenRepackModel.create(rawMemberData)
         }
     }
 }

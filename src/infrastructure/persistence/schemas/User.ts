@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IUserProps } from "../../../domain/interface/user/IUserProps"
+import { IUserProps } from "../../../domain/entityProperties/IUserProps"
 
 export const userSchema = new Schema<IUserProps>({
     firstName: {

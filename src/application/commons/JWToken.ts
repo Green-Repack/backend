@@ -21,7 +21,7 @@ export class JWToken {
             return "simplejwtkey"
         }
     }
-
+    
     private static paylordVerification(payload: any): string {
         if (typeof payload === 'string') throw new InvalidTokenError("The payload is missing")
         else return payload._id.toString()
