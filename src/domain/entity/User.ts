@@ -1,7 +1,6 @@
-import { MongoExpiredSessionError } from "mongodb";
-import { IUserProps } from "../interface/user/IUserProps";
-import { IAddress } from "../interface/common/IAddress";
-import { IGreenCoins } from "../interface/common/IGreenCoins";
+import { IUserProps } from "../entityProperties/IUserProps";
+import { IAddress } from "../entityProperties/IAddress";
+import { IGreenCoins } from "../entityProperties/IGreenCoins";
 import { Entity } from "./BaseEntity";
 
 export class User extends Entity<IUserProps> {
@@ -43,6 +42,10 @@ export class User extends Entity<IUserProps> {
 
     get siren(): string {
         return this.props.siren!
+    }
+
+    get creationDate(): Date {
+        return this.props.creationDate
     }
     
     private constructor(props: IUserProps, id?: string) {

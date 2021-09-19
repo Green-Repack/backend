@@ -1,8 +1,0 @@
-import { GreenRepack } from "../../entity/GreenRepack";
-import { Repository } from "../Repositoty";
-
-export interface IAssociationRepository extends Repository<GreenRepack> {
-    getGreenRepackMemberById(memberId: string): Promise<GreenRepack>
-    getGreenRepackAdmins(): Promise<GreenRepack[]>
-    getAllGreenRepackMembers(): Promise<GreenRepack[]>
-}
