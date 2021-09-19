@@ -1,3 +1,4 @@
+import {ProductMap} from "../../../application/user/mappers/ProductMap";
 import {Product} from "../../../domain/entity/Product";
 import {IProductRepository} from "../../../domain/interface/product/IProductRepository";
 import {ProductModel} from "../schemas/Product";
@@ -38,7 +39,15 @@ export class ProductRepository implements IProductRepository{
     }
 
     async save(t: Product): Promise<void> {
-        return undefined;
+        let exists = await this.exists(t.id)
+        const rawProductData = ProductMap.toPersistence(t)
+
+        if (exists) {
+            const mongooseUser = await WarehouseModel.findOne({name: t.name.toLowerCase()})
+            if (mongooseUser) await mongooseUser.updateOne(rawProductData)
+        } else {
+            await ProductModel.create(rawProductData)
+        }
     }
 
     async getProductByFilter(filter: any): Promise<Product[]> {

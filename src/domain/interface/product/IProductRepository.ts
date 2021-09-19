@@ -1,4 +1,4 @@
-import { Repository } from "../Repositoty";
+import { Repository } from "../Repository";
 import { Product } from "../../entity/Product";
 
 export interface IProductRepository extends Repository<Product> {

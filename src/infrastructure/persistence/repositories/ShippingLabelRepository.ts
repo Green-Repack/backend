@@ -1,3 +1,4 @@
+import {IShippingLabelProps} from "../../../domain/interface/shippingLabel/IShippingLabelProps";
 import {IShippingLabelRepository} from "../../../domain/interface/shippingLabel/IShippingLabelRepository";
 
 export class ShippingLabelRepository implements IShippingLabelRepository{

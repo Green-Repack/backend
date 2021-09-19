@@ -1,4 +1,4 @@
-import {Repository} from "../Repositoty";
+import {Repository} from "../Repository";
 import {IShippingLabelProps} from "./IShippingLabelProps";
 
 export interface IShippingLabelRepository extends Repository<IShippingLabelProps>{

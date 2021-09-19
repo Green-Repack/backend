@@ -1,4 +1,4 @@
-import {Repository} from "../../Repositoty";
+import {Repository} from "../../Repository";
 import {IProductPriceProps} from "./IProductPriceProps";
 
 export interface IProductPriceRepository extends Repository<IProductPriceProps>{
