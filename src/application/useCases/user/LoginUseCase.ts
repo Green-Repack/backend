@@ -15,7 +15,7 @@ export class LoginUseCase  implements ILoginUseCase {
         greenRepRepository: IGreenRepackRepository, assoRepository: IAssociationRepository): Promise<string> {
         let user = await userRepository.getUserByEmail(credentials.login)
         let greenRepMember = await greenRepRepository.getMemberByUsername(credentials.login)
-        let association = await assoRepository.getAssociationByLoginId(credentials.login)
+        let association = await assoRepository.getAssociationByEmail(credentials.login)
         if (user != undefined) {
             let passwordVerification = await passwordHandler.checkPassword(user.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()

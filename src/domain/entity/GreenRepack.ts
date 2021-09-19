@@ -1,4 +1,4 @@
-import { IGreenRepackProps } from "../interface/green_repack/IGreenRepackProps";
+import { IGreenRepackProps } from "../entityProperties/IGreenRepackProps";
 import { Entity } from "./BaseEntity";
 
 export class GreenRepack extends Entity<IGreenRepackProps> {

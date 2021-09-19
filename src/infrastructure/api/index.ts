@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import usersRouter from './userRouter';
+import usersRouter from './authRouter';
 import greenRepackRouter from './greenRepackRouter'
 
 const routes = Router();

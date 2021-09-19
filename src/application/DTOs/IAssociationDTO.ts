@@ -1,4 +1,6 @@
-import { IAddress } from "../../../domain/interface/IAddress";
+import { IActionProjecAssociation } from "../../domain/entityProperties/IActionProjetAssociation";
+import { IAddress } from "../../domain/entityProperties/IAddress";
+import { IProjectAssociation } from "../../domain/entityProperties/IProjectAssociation";
 
 export interface IAssociationDTO {
     id?: string
@@ -9,7 +11,9 @@ export interface IAssociationDTO {
     siret: string
     verified: boolean
     greenCoins: number
-    loginId: string
+    email: string
     password: string
+    projects: IProjectAssociation[]
     token?: string
+    creationDate: Date
 }

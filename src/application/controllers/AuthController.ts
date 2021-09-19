@@ -1,4 +1,3 @@
-import { UserRepository } from "../../infrastructure/persistence/repositories/UserRepository";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
 import { IUserRepository } from "../interfaces/repository/IUserRepository";

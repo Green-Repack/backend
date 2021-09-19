@@ -23,9 +23,9 @@ export class RegisterUseCase  implements IRegisterUseCase {
             userInfo.password = passwordHandler.generatePasswordHash(userInfo.passwrd)
         
             let userExists = await repository.exists(userInfo.email);
-
+            
             if (userExists) throw new UserAlreadyExistsError()
-
+            
             let newUser = UserMap.toDomain(userInfo)
             await repository.save(newUser)
         } catch(error) {
