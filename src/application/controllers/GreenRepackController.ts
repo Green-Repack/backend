@@ -2,14 +2,15 @@ import { IAssociationRepository } from "../interfaces/repository/IAssociationRep
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
 import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
-import { GreenRepackMap } from "../mappers/GreenRepackMap";
 import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
+import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProject";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
 import { BaseController } from "./BaseController";
 
 export class GreenRepackController extends BaseController{
     private readonly _verifyAssociationUseCase = new VerifyAssociationUseCase;
     private readonly _createNewMemberUseCase = new CreateNewMemberUseCase;
+    private readonly _verifyAssociationProjectUseCase = new VerifyAssociationProjectUseCase;
 
     private _associationRepository: IAssociationRepository;
     private _greenRepackRepository: IGreenRepackRepository;
@@ -29,6 +30,17 @@ export class GreenRepackController extends BaseController{
     public async verifyAssociation(req: any, res: any) {
         try {
             await this._verifyAssociationUseCase.execute(req.body.name, this._associationRepository, this._associationHandler)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async verifyAssociationProject(req: any, res: any) {
+        try {
+            const {associationName, projectName} = req.body
+            await this._verifyAssociationProjectUseCase.execute(associationName, projectName, this._associationRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)
