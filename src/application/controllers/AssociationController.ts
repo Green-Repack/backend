@@ -56,8 +56,8 @@ export class AssociationController extends BaseController{
 
     public async getInfo(req: any, res: any) {
         try {
-            await this._getInfoUseCase.execute(req.body.name, this._associationRepository)
-            res.sendStatus(200);
+            let associationDTO = await this._getInfoUseCase.execute(req.body.name, this._associationRepository)
+            res.status(200).json(associationDTO);
         } catch(error) {
             console.log(error)
             res.status(400).json(error);

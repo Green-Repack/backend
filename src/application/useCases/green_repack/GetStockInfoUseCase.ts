@@ -1,6 +1,5 @@
 import { IGetStockInfoUseCase } from "./IGetSockInfoUseCase";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
-import { ArgumentNullError } from "../../errors/ArgumentNullError";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { Guard } from "../../commons/Guard";
 

@@ -3,8 +3,18 @@ import { Warehouse } from "../../../domain/entity/Warehouse";
 import { IWarehouseRepository } from "../../../application/interfaces/repository/IWarehouseRepository";
 import { WarehouseModel } from "../schemas/Warehouse";
 import { Produit } from "../../../domain/entity/Produit";
+import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 
 export class WarehouseRepository implements IWarehouseRepository {
+    getWarehouses(): Promise<Warehouse[]> {
+        throw new Error("Method not implemented.");
+    }
+    getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo> {
+        throw new Error("Method not implemented.");
+    }
+    updateStockProduct(product: Produit, wharehouseId: string, quantity: number): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
     saveProduct(product: Produit, warehouseName: string): Promise<void> {
         throw new Error("Method not implemented.");
     }

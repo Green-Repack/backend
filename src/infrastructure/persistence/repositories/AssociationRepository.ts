@@ -4,7 +4,13 @@ import { IActionProjecAssociation } from "../../../domain/entityProperties/IActi
 import { IProjectAssociation } from "../../../domain/entityProperties/IProjectAssociation";
 
 export class AssociationRepository implements IAssociationRepository {
-    updateProjectInfo(associationName: string, projectInfo: IProjectAssociation): Promise<void> {
+    saveAction(associationName: string, projectName: string, action: IActionProjecAssociation): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    saveProject(associationName: string, projectInfo: IProjectAssociation): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    updateProjectInfo(projectInfo: IProjectAssociation): Promise<void> {
         throw new Error("Method not implemented.");
     }
     addActionToProject(associationName: string, projectName: string, action: IActionProjecAssociation): Promise<void> {

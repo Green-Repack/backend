@@ -1,15 +1,17 @@
-import { JWToken } from "./JWToken";
-import { IUserRepository } from "../../domain/entityProperties/user/IUserRepository";
-import { UserRepository } from "../../../infrastructure/persistence/repositories/UserRepository";
-import { IGreenRepackRepository } from "../../domain/entityProperties/green_repack/IGreenRepackRepository";
-import { GreenRepackRepository } from "../../../infrastructure/persistence/repositories/GreenRepackRepository";
-import { AssociationRepository } from "../../infrastructure/persistence/repositories/AssociationRepository";
-import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
+import { IUserRepository } from "../../application/interfaces/repository/IUserRepository";
+import { UserRepository } from "../persistence/repositories//UserRepository";
+import { IGreenRepackRepository } from "../../application/interfaces/repository/IGreenRepackRepository"
+import { GreenRepackRepository } from "../../infrastructure/persistence/repositories/GreenRepackRepository";
+import { AssociationRepository } from "../persistence/repositories/AssociationRepository";
+import { IAssociationRepository } from "../../application/interfaces/repository/IAssociationRepository";
+import { JwtHandler } from "./JwtHandler";
+import { IJwtHandler } from "../../application/interfaces/services/IJwtHandler";
 
 export class AuthVerifications {
     static userRepository: IUserRepository = new UserRepository;
     static greenRepackRepository: IGreenRepackRepository = new GreenRepackRepository;
-    static associationRepository: IAssociationRepository = new AssociationRepository;_
+    static associationRepository: IAssociationRepository = new AssociationRepository;
+    static jwtHandler: IJwtHandler = new JwtHandler;
 
     public static async userAuth(req: any, res: any, next: any) {
         try {
@@ -23,7 +25,7 @@ export class AuthVerifications {
             if (bearer.toString() !== "Bearer") return res.status(401).json("The token is not a bearer")
             if (!token) return res.status(401).json("The token is missing")
 
-            const iD = await JWToken.verifyToken(token)
+            const iD = await this.jwtHandler.verifyToken(token)
             req.userId = iD
             
             next();
@@ -35,8 +37,8 @@ export class AuthVerifications {
 
     public static async associatonAuthorization(req: any, res: any, next: any) {
         try {
-            let user = await AuthVerifications.associationRepository.getAssociationByLoginId(req.userId)
-            if (user == undefined ) return res.status(401).json("Unauthorized")
+            let association = await AuthVerifications.associationRepository.getAssociationById(req.userId)
+            if (association == undefined ) return res.status(401).json("Unauthorized")
 
             next();
         } catch(error) {

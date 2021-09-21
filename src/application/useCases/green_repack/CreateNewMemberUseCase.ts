@@ -1,9 +1,7 @@
 import { ICreateNewMemberUseCase } from "./ICreateMemberUseCase";
-import { IGreenRepackRepository } from "../../../application/interfaces/repository/IGreenRepackRepository";
+import { IGreenRepackRepository } from "../../interfaces/repository/IGreenRepackRepository";
 import { Guard } from "../../commons/Guard";
-import { GreenRepack } from "../../../domain/entity/GreenRepack";
 import { IPasswordHandler } from "../../interfaces/services/IPasswordHandler";
-import { IUserDTO } from "../../DTOs/IUserDTO";
 import { IGreenRepackDTO } from "../../DTOs/IGreenRepackDTO";
 import { GreenRepackMap } from "../../mappers/GreenRepackMap";
 
