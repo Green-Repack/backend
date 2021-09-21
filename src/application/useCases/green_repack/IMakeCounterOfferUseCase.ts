@@ -4,7 +4,8 @@ import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepo
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 
-export interface IAcceptProductUseCase {
-    execute(productId: string, warehouseName: string, deliveryTicketHandler: IDeliveryTicketHandler, paymentHanlder: IPaymentHandler, 
-        userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository, counterOffer?: number): Promise<void>
+export interface IMakeCounterOfferUseCase {
+    execute(productId: string, counterOffer: number, deliveryHandler: IDeliveryTicketHandler, paymentHanlder: IPaymentHandler, 
+        warehouseName: string, warehouseRepository: IWarehouseRepository, productRepository: IProductRepository, 
+        userRepository: IUserRepository): Promise<void>
 }

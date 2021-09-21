@@ -1,3 +1,4 @@
+import { UserRepository } from "../../../infrastructure/persistence/repositories/UserRepository";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
@@ -5,11 +6,11 @@ import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepo
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
-import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
+import { IMakeCounterOfferUseCase } from "./IMakeCounterOfferUseCase";
 
-export class AcceptProductUseCase implements IAcceptProductUseCase {
-    async execute(productId: string, warehouseName: string, deliveryTicketHandler: IDeliveryTicketHandler, paymentHanlder: IPaymentHandler, 
-        userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository, counterOffer?: number): Promise<void> {
+export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
+    async execute(productId: string, counterOffer: number, deliveryHandler: IDeliveryTicketHandler, paymentHanlder: IPaymentHandler,
+        warehouseName: string, warehouseRepository: IWarehouseRepository, productRepository: IProductRepository, userRepository: IUserRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
 
@@ -23,21 +24,18 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
-
-            if (counterOffer != undefined) productDTO.priceSeller = counterOffer
-            
+            productDTO.priceSeller = counterOffer
+            productDTO.warehouseId = warehouse.id
             productDTO.accepted = true
             productDTO.acceptationDate = new Date()
-            productDTO.warehouseId = warehouse.id
-
+            
             await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), warehouse.id)
-            await productRepository.save(ProductMap.toDomain(productDTO))
+            await productRepository.save(ProductMap.toDomain(product))
 
-            deliveryTicketHandler.generate(marchand)
-            paymentHanlder.emitPayment(product.priceSeller, marchand.id)
-        } catch(error) {
+            paymentHanlder.emitPayment(counterOffer, product.marchandId)
+            deliveryHandler.generate(marchand)
+        } catch (error) {
             throw error
         }
     }
-    
 }
