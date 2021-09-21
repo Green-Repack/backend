@@ -1,13 +1,13 @@
 import { Produit } from "../../../domain/entity/Produit";
 import { Warehouse } from "../../../domain/entity/Warehouse";
+import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { IBaseRepository } from "./IBaseRepositoty";
 
 export interface IWarehouseRepository extends IBaseRepository<Warehouse> {
+    getWarehouses(): Promise<Warehouse[]>
     getWarehouseByName(name: string): Promise<Warehouse | undefined>
     getWarehouseByLocation(location: string): Promise<Warehouse | undefined>
-    getStockByProductCategory(category: string, warehouseName?: string): Promise<Warehouse[]>
-    getStockByProductModel(model: string, brand: string, warehouseName?: string): Promise<Warehouse[]>
-    getStockByProductBrand(brand: string, warehouseName?: string): Promise<Warehouse[]>
-    saveProduct(product: Produit, warehouseName: string): Promise<void>
-    deleteProduct(product: Produit, warehouseName: string): Promise<void>
+    getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo>
+    saveProduct(product: Produit, wharehouseId?: string, warehouseName?: string): Promise<void>
+    updateStockProduct(product: Produit, wharehouseId: string, quantity: number): Promise<void>
 }

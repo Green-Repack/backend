@@ -12,6 +12,6 @@ export interface IAssociationRepository extends IBaseRepository<Association> {
     getProjects(associationName: string): Promise<IProjectAssociation[]>
     getProjectActionByName(associationName: string, projectName: string, actionName: string): Promise<IActionProjecAssociation | undefined>
     getProjectActions(associationName: string, projectName: string): Promise<IActionProjecAssociation[]>
-    addActionToProject(associationName: string, projectName: string, action: IActionProjecAssociation): Promise<void>
-    updateProjectInfo(associationName: string, projectInfo: IProjectAssociation): Promise<void>
+    saveAction(associationName: string, projectName: string, action: IActionProjecAssociation): Promise<void>
+    saveProject(associationName: string, projectInfo: IProjectAssociation): Promise<void>
 }

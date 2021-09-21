@@ -1,18 +1,23 @@
-import { IStockInfoDTO } from "../../DTOs/IStockInfoDTO";
 import { IGetStockInfoUseCase } from "./IGetSockInfoUseCase";
-import { IWarehouseRepository } from "../../../application/interfaces/repository/IWarehouseRepository";
-import { Warehouse } from "../../../domain/entity/Warehouse";
+import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
+import { ArgumentNullError } from "../../errors/ArgumentNullError";
+import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
+import { Guard } from "../../commons/Guard";
 
 export class GetStockInfoUseCase  implements IGetStockInfoUseCase {
-    private _entrepotRepository: IWarehouseRepository
-
-    constructor(entrepotRepository: IWarehouseRepository) {
-        this._entrepotRepository = entrepotRepository
-    }
-
-    public async execute(productInfo: unknown): Promise<IStockInfoDTO> {
+    public async execute(warehouseName: string, productInfo: any, warehouseRepository: IWarehouseRepository): Promise<IStockInfo> {
         try {
-            throw new Error("Not implemented methods.")
+            Guard.AgainstNullOrUndefined(productInfo.category, "categry required")
+            Guard.AgainstNullOrUndefined(productInfo.brand, "brand required")
+            Guard.AgainstNullOrUndefined(productInfo.model, "model required")
+            
+            let stockInfo = null
+            if (warehouseName != undefined) {
+                stockInfo = await warehouseRepository.getStockProduct(productInfo.category, productInfo.brand, productInfo.model, warehouseName)
+            } else {
+                stockInfo = await warehouseRepository.getStockProduct(productInfo.category, productInfo.brand, productInfo.model)
+            }
+            return stockInfo
         } catch(error) {
             throw error
         }

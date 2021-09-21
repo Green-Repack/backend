@@ -28,7 +28,7 @@ export class CreateActionUseCase implements ICreateActionUseCase{
                 dateLimite: actionInfo.daleLimite
             }
             
-            await associationRepository.addActionToProject(associationName, projectName, action)
+            await associationRepository.saveAction(associationName, projectName, action)
         } catch (error) {
             throw error
         }

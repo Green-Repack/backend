@@ -1,3 +1,3 @@
 export interface IPaymentHandler {
-    acceptPayment(): Promise<void>
+    acceptPayment(amount: number): Promise<string>
 }

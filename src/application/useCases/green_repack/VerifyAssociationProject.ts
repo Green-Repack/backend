@@ -15,7 +15,7 @@ export class VerifyAssociationProjectUseCase implements IVerifyAssociationProjec
             if (project == undefined) throw new NotFoundError("The project was not found")
             
             project.verified = true
-            await associationRepository.updateProjectInfo(associationName, project)
+            await associationRepository.saveProject(associationName, project)
         } catch (error) {
             throw error
         }
