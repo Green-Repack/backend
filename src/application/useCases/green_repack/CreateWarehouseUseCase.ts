@@ -1,4 +1,5 @@
 import { IProduitProps } from "../../../domain/entityProperties/IProduitProps";
+import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { Guard } from "../../commons/Guard";
 import { IWarehouseDTO } from "../../DTOs/IWarehouseDTO";
 import { AlreadyExistsError } from "../../errors/AlreadyExistsError";
@@ -18,7 +19,7 @@ export class CreateWarehouseUseCase implements ICreateWarehouseUseCase {
             let warehouseDTO: IWarehouseDTO = {
                 name: warehouseInfo.name,
                 location: warehouseInfo.location,
-                stock: new Array<IProduitProps>()
+                stock: new Array<IStockInfo>()
             }
 
             await warehouseRepository.save(WarehouseMap.toDomain(warehouseDTO))
