@@ -6,21 +6,87 @@ import { Produit } from "../../../domain/entity/Produit";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 
 export class WarehouseRepository implements IWarehouseRepository {
-    getWarehouses(): Promise<Warehouse[]> {
+    async getWarehouses(): Promise<Warehouse[]> {
+        let result = new Array<Warehouse>()
+        let warehouses = await WarehouseModel.find({})
+        for (var warehouse of warehouses) {
+            result.push(WarehouseMap.toDomain(warehouse))
+        }
+        return result
+    }
+
+    async getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo> {
+        let quantityAvailable: number = 0
+        if (warehouseName == undefined) {
+            let warehouses = await WarehouseModel.aggregate([
+                {
+                    "$match" : {
+                        "stock": {
+                            "$elemMatch": {
+                                "$and" : [
+                                    { "category": category},
+                                    { "brand": brand},
+                                    { "model": model}
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "$project" : {
+                        "name": 1,
+                        "stock": {
+                            "$filter": {
+                                "input": "$stock",
+                                "as": "stock",
+                                "cond": {
+                                    "and" : [
+                                        {"$eq": ["$stock.category", category]},
+                                        {"$eq": ["$stock.brand", brand]},
+                                        {"$eq": ["$stock.model", model]}
+                                    ]
+                                } 
+                            }
+                        }
+                    }
+                }
+            ])
+            for (var warehouse of warehouses) {
+                let stockInfo =  WarehouseMap.toDomain(warehouse).stock.pop()
+                if (stockInfo != undefined) quantityAvailable += stockInfo.quantityAvaible
+            }
+            return {
+                category: category,
+                brand: brand,
+                model: model,
+                quantityAvaible: quantityAvailable
+            }
+        } else {
+            let stock = await WarehouseModel.findOne({ name: warehouseName })
+            .select({ stock: { $elemMatch : { category: category, brand: brand, model: model }}})
+            console.log(stock)
+            let warehouse = WarehouseMap.toDomain(stock)
+            return {
+                category: category,
+                brand: brand,
+                model: model,
+                quantityAvaible: warehouse.stock.pop()?.quantityAvaible!
+            }
+        }
+    }
+
+    async updateStockProduct(product: Produit, wharehouseId: string, quantity: number): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo> {
+
+    async saveProduct(product: Produit, warehouseName: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    updateStockProduct(product: Produit, wharehouseId: string, quantity: number): Promise<void> {
+
+    async deleteProduct(product: Produit, warehouseName: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    saveProduct(product: Produit, warehouseName: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-    deleteProduct(product: Produit, warehouseName: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
     async getWarehouseByName(name: string): Promise<Warehouse | undefined> {
         let Warehouse = await WarehouseModel.findOne({name: name.toString()})
         if (Warehouse != null) return WarehouseMap.toDomain(Warehouse)
