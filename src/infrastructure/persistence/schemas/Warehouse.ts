@@ -20,17 +20,19 @@ export const warehouseSchema = new Schema<IWarehouseProps>({
         trim: true,
     },
     stock: [{
-        _id:true,
+        _id:false,
         category: {
             type: String,
             required: true,
             minlength: 2,
+            lowercase: true,
             maxlength: 255,
             trim: true,
         },
         brand: {
             type: String,
             required: true,
+            lowercase: true,
             minlength: 2,
             maxlength: 255,
             trim: true,
@@ -38,18 +40,15 @@ export const warehouseSchema = new Schema<IWarehouseProps>({
         model:{
             type: String,
             required: true,
+            lowercase: true,
             minlength: 2,
             maxlength: 255,
             trim: true,
         },
-        quantityStock: {
+        quantityAvaible: {
             type: Number,
             required: true
         },
-        quantitySold: {
-            type: Number,
-            required: true
-        }
     }]
 });
 

@@ -10,27 +10,7 @@ export const associationSchema = new Schema<IAssociationProps>({
         maxlength: 255,
         trim: true,
     },
-    description: {
-        type: String,
-        required: true,
-        minlength: 2,
-        maxlength: 255,
-        trim: true,
-    },
-    siret: {
-        type: String,
-        required: true,
-        unique: true,
-        minlength: 5,
-        maxlength: 255,
-    },
-    numRNA: {
-        type: String,
-        required: true,
-        unique: true,
-        minlength: 5,
-        maxlength: 255,
-    },
+    description: String,
     address: {
         _id:false,
         streetNumber: {
@@ -66,14 +46,29 @@ export const associationSchema = new Schema<IAssociationProps>({
             trim: true,
         }
     },
-    greenCoins: Number,
+    siret: {
+        type: String,
+        required: true,
+        unique: true,
+        minlength: 5,
+        maxlength: 255,
+    },
+    numRNA: {
+        type: String,
+        required: true,
+        unique: true,
+        minlength: 5,
+        maxlength: 255,
+    },
     verified: {
         type: Boolean,
         default: false,
     },
-    loginId: {
+    email: {
         type: String,
         required: true,
+        unique: true,
+        lowercase: true,
         minlength: 2,
         maxlength: 255,
         trim: true,
@@ -85,8 +80,44 @@ export const associationSchema = new Schema<IAssociationProps>({
         maxlength: 255,
         trim: true,
     },
-    token: String
-    
+    projects: [{
+        _id:false,
+        name: {
+            type: String,
+            required: true,
+        },
+        description: {
+            type: String,
+            required: true,
+            minlength: 2,
+            maxlength: 255,
+            trim: true,
+        },
+        actions: [{
+            _id:false,
+            name: {
+                type: String,
+                required: true,
+            },
+            greenCoins: {
+                type: Number,
+                required: true,
+            },
+            dateLimite: {
+                type: Date,
+                required: true,
+            },
+        }],
+        verified: {
+            type: Boolean,
+            required: true,
+        },
+    }],
+    token: String,
+    creationDate : {
+        type: Date,
+        require: true
+    }
 });
 
 export const AssociatonModel = model<IAssociationProps>("Association", associationSchema)

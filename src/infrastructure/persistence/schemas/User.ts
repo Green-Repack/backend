@@ -79,6 +79,33 @@ export const userSchema = new Schema<IUserProps>({
         type: Boolean,
         default: false,
     },
+    achats: {
+        _id:false,
+        amount: {
+            type: Number,
+            required: true,
+        },
+        paymentDate: {
+            type: Date,
+            required: true,
+        },
+        itemsId: {
+            type: Array,
+            required: true,
+        }
+    },
+    productSold: {
+        _id:false,
+        productId: {
+            type: Number,
+        },
+        priceReceived: {
+            type: Date
+        },
+        sellDate: {
+            type: Date
+        }
+    },
     token: String,
     siret: String,
     siren: String,

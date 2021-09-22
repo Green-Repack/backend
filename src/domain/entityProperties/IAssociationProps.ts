@@ -6,12 +6,11 @@ export interface IAssociationProps {
     description?: string
     address: IAddress
     numRNA?: string
-    siret?: string,
-    greenCoins: number
+    siret?: string
     verified: boolean
     email: string
     password: string
     projects: IProjectAssociation[]
     token?: string
-    creatonDate: Date
+    creationDate: Date
 }

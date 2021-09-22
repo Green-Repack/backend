@@ -28,10 +28,6 @@ export class Association extends Entity<IAssociationProps> {
         return this.props.siret!
     }
 
-    get greenCoins(): number {
-        return this.props.greenCoins
-    }
-
     get email(): string {
         return this.props.email
     }
@@ -45,7 +41,7 @@ export class Association extends Entity<IAssociationProps> {
     }
 
     get creationDate(): Date {
-        return this.props.creatonDate
+        return this.props.creationDate
     }
 
     get projects(): IProjectAssociation[] {

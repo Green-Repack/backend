@@ -26,6 +26,7 @@ export const greenRepackSchema = new Schema<IGreenRepackProps>({
         minlength: 6,
         maxlength: 255,
     },
+    token: String,
     admin: {
         type: Boolean,
         default: false,

@@ -1,4 +1,3 @@
-import { IProduitProps } from "../entityProperties/IProduitProps";
 import { IStockInfo } from "./IStockInfo";
 
 export interface IWarehouseProps {

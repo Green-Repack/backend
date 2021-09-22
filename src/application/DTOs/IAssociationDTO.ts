@@ -10,7 +10,6 @@ export interface IAssociationDTO {
     numRNA: string
     siret: string
     verified: boolean
-    greenCoins: number
     email: string
     password: string
     projects: IProjectAssociation[]

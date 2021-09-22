@@ -38,9 +38,15 @@ export class BuyUseCase implements IBuyUseCase {
             userDTO.greenCoins.amount += ((totalPrice % 10) * promoMultiplier)
             userDTO.greenCoins.expireDate = new Date(1, 1, currentDate.getFullYear() + 2)
 
+            let itemsId = await this.updateProductStock(itemBucket, warehouseRepository, productRepository)
+            userDTO.achats.push({
+                amount: totalPrice,
+                paymentDate: new Date(),
+                itemsId: itemsId
+            })
+
             await userRepository.save(UserMap.toDomain(userDTO))
-            await this.updateProductStock(itemBucket, warehouseRepository, productRepository)
-            
+
             return secretKey
         } catch(error) {
             throw error
@@ -55,17 +61,21 @@ export class BuyUseCase implements IBuyUseCase {
         return total
     }
 
-    private async updateProductStock(itemsBucket: any, warehouseRepository: IWarehouseRepository, productRepository: IProductRepository): Promise<void> {
+    private async updateProductStock(itemsBucket: any, warehouseRepository: IWarehouseRepository, 
+        productRepository: IProductRepository): Promise<Array<string>> {
+        let itemsId = new Array<string>()
         for(var article of itemsBucket) {
             let product = await productRepository.getProductById(article.id)
             if (product != undefined) {
+                itemsId.push(product.id)
                 let productDTO = ProductMap.toDTO(product)
                 productDTO.sold = true
                 await productRepository.save(ProductMap.toDomain(productDTO))
                 await warehouseRepository.updateStockProduct(product, product.warehouseId, article.quantity)
             } else {
-                throw new NotFoundError("The product does not exist : " + article.id)
+                throw new NotFoundError("Product not found : " + article.id)
             }
         }
+        return itemsId
     }
 }

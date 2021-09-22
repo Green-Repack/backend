@@ -1,4 +1,3 @@
-import { createRequire } from "module"
 import { Association } from "../../domain/entity/Association"
 import { IAssociationDTO } from "../DTOs/IAssociationDTO"
 
@@ -11,7 +10,6 @@ export class AssociationMap {
             address: association.address,
             numRNA: association.numRNA,
             siret: association.siret,
-            greenCoins: association.greenCoins,
             verified: association.isVerified(),
             email: association.email,
             password: association.password,
@@ -28,13 +26,12 @@ export class AssociationMap {
             address: association.address,
             numRNA: association.numRNA,
             siret: association.siret,
-            greenCoins: association.greenCoins,
             verified: association.verified,
             email: association.email,
             password: association.password,
             projects: association.projects,
             token: association.token,
-            creatonDate: association.creationDate
+            creationDate: association.creationDate
         }, association.id)
     }
 
@@ -46,12 +43,12 @@ export class AssociationMap {
             address: association.address,
             numRNA: association.numRNA,
             siret: association.siret,
-            greenCoins: association.greenCoins,
             verified: association.isVerified(),
             email: association.email,
             password: association.password,
             projects: association.projects, 
-            token: association.token
+            token: association.token,
+            creationDate: association.creationDate
         }
     }
 }
