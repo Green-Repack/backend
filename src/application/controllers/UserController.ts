@@ -1,5 +1,6 @@
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
+import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepository";
 import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
@@ -22,17 +23,20 @@ export class UserController extends BaseController {
     private _productRepository: IProductRepository;
     private _warehouseRepository: IWarehouseRepository;
     private _associationRepository: IAssociationRepository;
+    private _promoRepository: IPromoCoinsRepository;
 
     private _paymentHandler: IPaymentHandler;
     private _deliveryHandler: IDeliveryTicketHandler;
 
     public constructor(userRepository: IUserRepository, productRepository: IProductRepository, associationRepository: IAssociationRepository,
-        warehouseRepository: IWarehouseRepository, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler) {
+        warehouseRepository: IWarehouseRepository, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler,
+        promoRepository: IPromoCoinsRepository) {
         super();
         this._userRepository = userRepository
         this._productRepository = productRepository
         this._warehouseRepository = warehouseRepository
         this._associationRepository = associationRepository
+        this._promoRepository = promoRepository
         this._paymentHandler = paymentHandler
         this._deliveryHandler = deliveryHandler
     }
@@ -60,7 +64,7 @@ export class UserController extends BaseController {
     public async buyProducts(req: any, res: any) {
         try {
             let secretKey = await this._buyUseCase.execute(req.userId, req.body, this._paymentHandler, 
-                this._userRepository, this._productRepository, this._warehouseRepository)
+                this._userRepository, this._productRepository, this._warehouseRepository, this._promoRepository)
             res.status(200).json(secretKey)
         } catch(error) {
             console.log(error)
