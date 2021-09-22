@@ -9,6 +9,7 @@ import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHa
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
+import { AddProductUseCase } from "../useCases/green_repack/AddProductUseCase";
 import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
 import { CreatePromoCoinsUseCase } from "../useCases/green_repack/CreatePromoCoinsUseCase";
 import { CreateWarehouseUseCase } from "../useCases/green_repack/CreateWarehouseUseCase";
@@ -24,11 +25,12 @@ export class GreenRepackController extends BaseController{
     private readonly _createNewMemberUseCase = new CreateNewMemberUseCase;
     private readonly _verifyAssociationProjectUseCase = new VerifyAssociationProjectUseCase;
     private readonly _createWarehouseUseCase = new CreateWarehouseUseCase;
-    private readonly _createPromoCoins = new CreatePromoCoinsUseCase;
-    private readonly _acceptProduct = new AcceptProductUseCase;
-    private readonly _refuseProduct = new RefuseProductUseCase;
-    private readonly _getSellsNumber = new GetSellsNumberUseCase;
-    private readonly _getStockInfo = new GetStockInfoUseCase;
+    private readonly _createPromoCoinsUseCase = new CreatePromoCoinsUseCase;
+    private readonly _acceptProductUseCase = new AcceptProductUseCase;
+    private readonly _refuseProductUseCase = new RefuseProductUseCase;
+    private readonly _getSellsNumberUseCase = new GetSellsNumberUseCase;
+    private readonly _getStockInfoUseCase = new GetStockInfoUseCase;
+    private readonly _addProductUseCase = new AddProductUseCase;
 
     private _associationRepository: IAssociationRepository;
     private _greenRepackRepository: IGreenRepackRepository;
@@ -93,7 +95,7 @@ export class GreenRepackController extends BaseController{
     public async acceptProduct(req: any, res: any) {
         try {
             const {productId, warehouseName, counterOffer} = req.body
-            await this._acceptProduct.execute(productId, warehouseName, this._deliveryTicketHandler, this._paymentHandler, 
+            await this._acceptProductUseCase.execute(productId, warehouseName, this._deliveryTicketHandler, this._paymentHandler, 
                 this._userReposiory, this._productRepository, this._warehouseRepository, counterOffer)
             res.sendStatus(201)
         } catch(error) {
@@ -104,7 +106,7 @@ export class GreenRepackController extends BaseController{
 
     public async refuseProduct(req: any, res: any) {
         try {
-            await this._refuseProduct.execute(req.body.productId, this._userReposiory, this._productRepository)
+            await this._refuseProductUseCase.execute(req.body.productId, this._userReposiory, this._productRepository)
             res.ssendStatus(201)
         } catch(error) {
             console.log(error)
@@ -114,7 +116,7 @@ export class GreenRepackController extends BaseController{
 
     public async getSellsNumber(req: any, res: any) {
         try {
-            let sellsNumber = await this._getSellsNumber.execute(req.body, this._productRepository)
+            let sellsNumber = await this._getSellsNumberUseCase.execute(req.body, this._productRepository)
             res.status(200).json(sellsNumber);
         } catch(error) {
             console.log(error)
@@ -125,7 +127,7 @@ export class GreenRepackController extends BaseController{
     public async getStockInfo(req: any, res: any) {
         try {
             const {warehouseName, productInfo} = req.body
-            let stockInfo = await this._getStockInfo.execute(warehouseName, productInfo, this._warehouseRepository)
+            let stockInfo = await this._getStockInfoUseCase.execute(warehouseName, productInfo, this._warehouseRepository)
             res.status(200).json(stockInfo);
         } catch(error) {
             console.log(error)
@@ -143,9 +145,20 @@ export class GreenRepackController extends BaseController{
         }
     }
 
+    public async addProduct(req: any, res: any) {
+        try {
+            const {warehouseName, productInfo} = req.body
+            await this._addProductUseCase.execute(warehouseName, productInfo, this._productRepository, this._warehouseRepository)
+            res.sendStatus(200);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
     public async createPromo(req: any, res: any) {
         try {
-            await this._createPromoCoins.execute(req.body, this._promoCoinsRepository)
+            await this._createPromoCoinsUseCase.execute(req.body, this._promoCoinsRepository)
             res.sendStatus(201)
         } catch(error) {
             console.log(error)

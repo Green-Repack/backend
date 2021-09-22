@@ -11,6 +11,9 @@ export class SellUseCase implements ISellUseCase {
         userRepository: IUserRepository, productRepository: IProductRepository): Promise<number> {
         try{
             Guard.AgainstNullOrUndefined(userId, "User id is required")
+            Guard.AgainstNullOrUndefined(productInfo.name, "Name is required")
+            Guard.AgainstNullOrUndefined(productInfo.category, "Mategory is required")
+            Guard.AgainstNullOrUndefined(productInfo.model, "Model is required")
 
             let user = await userRepository.getUserById(userId)
             if (user == undefined) throw new NotFoundError("User not found")
