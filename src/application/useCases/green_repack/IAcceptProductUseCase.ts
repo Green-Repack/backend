@@ -5,6 +5,6 @@ import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicke
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 
 export interface IAcceptProductUseCase {
-    execute(productId: string, warehouseName: string, deliveryTicketHandler: IDeliveryTicketHandler, paymentHanlder: IPaymentHandler, 
-        userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository, counterOffer?: number): Promise<void>
+    execute(productId: string, warehouseName: string, paymentHanlder: IPaymentHandler, 
+        userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void>
 }

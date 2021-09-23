@@ -4,7 +4,6 @@ import { UserMap } from "../../mappers/UserMap";
 import { IPasswordHandler } from "../../interfaces/services/IPasswordHandler";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IJwtHandler } from "../../interfaces/services/IJwtHandler";
-import config from "../../../../config";
 import { IGreenRepackRepository } from "../../interfaces/repository/IGreenRepackRepository";
 import { IAssociationRepository } from "../../interfaces/repository/IAssociationRepository";
 import { GreenRepackMap } from "../../mappers/GreenRepackMap";
@@ -20,7 +19,7 @@ export class LoginUseCase  implements ILoginUseCase {
             let passwordVerification = await passwordHandler.checkPassword(user.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
 
-            let userToken = await jwtHandler.generateToken(config.TOKEN_EXPIRATION, user.id)
+            let userToken = await jwtHandler.generateToken(user.id)
             
             let userDTO = UserMap.toDTO(user)
             userDTO.token = userToken
@@ -31,7 +30,7 @@ export class LoginUseCase  implements ILoginUseCase {
             let passwordVerification = await passwordHandler.checkPassword(greenRepMember.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
 
-            let greenRepToken = await jwtHandler.generateToken(config.TOKEN_EXPIRATION, greenRepMember.id)
+            let greenRepToken = await jwtHandler.generateToken(greenRepMember.id)
             
             let greenRepDTO = GreenRepackMap.toDTO(greenRepMember)
             greenRepDTO.token = greenRepToken
@@ -42,7 +41,7 @@ export class LoginUseCase  implements ILoginUseCase {
             let passwordVerification = await passwordHandler.checkPassword(association.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
 
-            let associationToken = await jwtHandler.generateToken(config.TOKEN_EXPIRATION, association.id)
+            let associationToken = await jwtHandler.generateToken(association.id)
             
             let associationDTO = AssociationMap.toDTO(association)
             associationDTO.token = associationToken

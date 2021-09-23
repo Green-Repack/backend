@@ -5,6 +5,7 @@ import { IJwtHandler } from "../interfaces/services/IJwtHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { LoginUseCase } from "../useCases/user/LoginUseCase";
 import { RegisterUseCase } from "../useCases/user/RegisterUseCase";
+import { AuthControllerBuilder } from "./AuthControllerBuilder";
 import { BaseController } from "./BaseController";
 
 export class AuthController extends BaseController{
@@ -18,15 +19,14 @@ export class AuthController extends BaseController{
     private _jwtHandler: IJwtHandler;
     private _passwordHandler: IPasswordHandler;
 
-    public constructor(userRepo: IUserRepository, greenRepRepo: IGreenRepackRepository, assoRepo: IAssociationRepository,
-        jwtHandler: IJwtHandler, passwordHandler: IPasswordHandler) {
+    public constructor(builder: AuthControllerBuilder) {
         super();
-            this._userRepository = userRepo
-            this._greenRepRepository = greenRepRepo
-            this._associationRepository = assoRepo
+            this._userRepository = builder.userRepository
+            this._greenRepRepository = builder.greenRepRepository
+            this._associationRepository = builder.associationRepository
 
-            this._jwtHandler = jwtHandler
-            this._passwordHandler = passwordHandler
+            this._jwtHandler = builder.jwtHandler
+            this._passwordHandler = builder.passwordHandler
     }
     
 

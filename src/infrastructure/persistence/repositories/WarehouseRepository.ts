@@ -6,6 +6,9 @@ import { Produit } from "../../../domain/entity/Produit";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 
 export class WarehouseRepository implements IWarehouseRepository {
+    getWarehouseById(id: string): Promise<Warehouse | undefined> {
+        throw new Error("Method not implemented.");
+    }
     async getWarehouses(): Promise<Warehouse[]> {
         let result = new Array<Warehouse>()
         let warehouses = await WarehouseModel.find({})

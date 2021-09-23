@@ -1,34 +1,20 @@
 import { IJwtHandler } from "../../application/interfaces/services/IJwtHandler";
+import config from "../../../config";
+import jwt from "jsonwebtoken"
 
 export class JwtHandler implements IJwtHandler {
-    public generateToken(expireTime: number, id: string): Promise<string> {
-        throw new Error("Method not implemented.");
-    }
-    public async verifyToken(jwtToken: string): Promise<string> {
-        throw new Error("Method not implemented.");
-    }
-    
-    private static generateToken(expirationTime: number, id: string): string {
-        const token = jwt.sign({_id: id}, this.jwtKey(), {expiresIn: expirationTime })
+    public async generateToken(id: string): Promise<string> {
+        const token = await jwt.sign({_id: id}, config.JWT_KEY, {expiresIn: config.TOKEN_EXPIRATION })
         return token
     }
-
-    private static async verifyToken(token: string): Promise<string> {
-        const jwtData: any = await jwt.verify(token, this.jwtKey());
+    
+    public async verifyToken(jwtToken: string): Promise<string> {
+        const jwtData: any = await jwt.verify(jwtToken, config.JWT_KEY);
         return this.paylordVerification(jwtData)
     }
-
-    private static jwtKey(): string {
-        let jwtKey = process.env.JWT_KEY
-        if (jwtKey != undefined) {
-            return jwtKey
-        } else {
-            return "simplejwtkey"
-        }
-    }
     
-    private static paylordVerification(payload: any): string {
-        if (typeof payload === 'string') throw new InvalidTokenError("The payload is missing")
+    private paylordVerification(payload: any): string {
+        if (typeof payload === 'string') throw new UnauthorizedError("The payload is missing")
         else return payload._id.toString()
     }
 }

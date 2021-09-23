@@ -32,7 +32,7 @@ export class RegisterUseCase  implements IRegisterUseCase {
 
             if (userDTO.marchand) userDTO.productSold = new Array<IProductSold>()
 
-            userDTO.password = passwordHandler.generatePasswordHash(userInfo.passwrd)
+            userDTO.password = await passwordHandler.generatePasswordHash(userInfo.passwrd)
         
             let userExists = await repository.exists(userDTO.email);
             

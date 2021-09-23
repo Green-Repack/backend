@@ -2,6 +2,7 @@ import { IProductRepository } from "../../interfaces/repository/IProductReposito
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 
-export interface ISellUseCase {
-    execute(userId: string, productInfo: unknown, userRepository: IUserRepository, productRepository: IProductRepository): Promise<number>
+export interface IAcceptEstimationUseCase {
+    execute(produitId: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
+        productRepository: IProductRepository): Promise<void>
 }

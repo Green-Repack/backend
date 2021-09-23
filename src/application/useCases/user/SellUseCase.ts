@@ -7,8 +7,7 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { ISellUseCase } from "./ISellUseCase";
 
 export class SellUseCase implements ISellUseCase {
-    async execute(userId: string, productInfo: any, deliveryHandler: IDeliveryTicketHandler, 
-        userRepository: IUserRepository, productRepository: IProductRepository): Promise<number> {
+    async execute(userId: string, productInfo: any, userRepository: IUserRepository, productRepository: IProductRepository): Promise<number> {
         try{
             Guard.AgainstNullOrUndefined(userId, "User id is required")
             Guard.AgainstNullOrUndefined(productInfo.name, "Name is required")
@@ -34,7 +33,7 @@ export class SellUseCase implements ISellUseCase {
             }
 
             await productRepository.save(ProductMap.toDomain(productDTO))
-
+            
             return 123 // retourner le prix estimé au marchand
         } catch(error) {
             throw error
