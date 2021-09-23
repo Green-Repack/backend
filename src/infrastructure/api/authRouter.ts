@@ -1,10 +1,13 @@
+import 'reflect-metadata';
 import { Router } from "express";
 import { AuthController } from "../../application/controllers/AuthController";
+import DIcontainer from "../../../inversify.config";
 
-let userController = new AuthController()
-const usersRouter = Router();
+let authController: AuthController = DIcontainer.resolve<AuthController>(AuthController)
 
-usersRouter.post('/register', userController.register);
-usersRouter.post("/login", userController.login)
+const authRouter = Router();
 
-export default usersRouter
+authRouter.post('/register', authController.register);
+authRouter.post("/login", authController.login)
+
+export default authRouter

@@ -4,7 +4,9 @@ import { IWarehouseRepository } from "../../../application/interfaces/repository
 import { WarehouseModel } from "../schemas/Warehouse";
 import { Produit } from "../../../domain/entity/Produit";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
+import { injectable } from "inversify";
 
+@injectable()
 export class WarehouseRepository implements IWarehouseRepository {
     getWarehouseById(id: string): Promise<Warehouse | undefined> {
         throw new Error("Method not implemented.");

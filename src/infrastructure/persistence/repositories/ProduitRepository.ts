@@ -1,6 +1,8 @@
+import { injectable } from "inversify";
 import { IProductRepository } from "../../../application/interfaces/repository/IProductRepository";
 import { Produit } from "../../../domain/entity/Produit";
 
+@injectable()
 export class ProduitRepository implements IProductRepository {
     getProductById(clientId: string): Promise<Produit | undefined> {
         throw new Error("Method not implemented.");

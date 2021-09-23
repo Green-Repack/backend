@@ -2,6 +2,7 @@ import { IBaseRepository } from "./IBaseRepositoty";
 import { Association } from "../../../domain/entity/Association";
 import { IProjectAssociation } from "../../../domain/entityProperties/IProjectAssociation";
 import { IActionProjecAssociation } from "../../../domain/entityProperties/IActionProjetAssociation";
+import { injectable } from "inversify";
 
 export interface IAssociationRepository extends IBaseRepository<Association> {
     getAssociationByEmail(email: string): Promise<Association | undefined>

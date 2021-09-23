@@ -1,8 +1,11 @@
+import { injectable } from "inversify";
 import { IDeliveryTicketHandler } from "../../application/interfaces/services/IDeliveryTicketHandler";
-import { IAddress } from "../../domain/entityProperties/IAddress";
+import { User } from "../../domain/entity/User";
 
-export class DeliveryTicket implements IDeliveryTicketHandler {
-    generate(firstName: string, lastName: string, address: IAddress): unknown {
+
+@injectable()
+export class DeliveryTicketHanlder implements IDeliveryTicketHandler {
+    generate(user: User): unknown {
         throw new Error("Method not implemented.");
     }
     

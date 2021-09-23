@@ -2,7 +2,9 @@ import { GreenRepackMap } from "../../../application/mappers/GreenRepackMap";
 import { GreenRepack } from "../../../domain/entity/GreenRepack";
 import { IGreenRepackRepository } from "../../../application/interfaces/repository/IGreenRepackRepository";
 import { GreenRepackModel } from "../schemas/GreenRepack";
+import { injectable } from "inversify";
 
+@injectable()
 export class GreenRepackRepository implements IGreenRepackRepository {
     async getMemberByUsername(username: string): Promise<GreenRepack | undefined> {
         let member = await GreenRepackModel.findOne({username: username})

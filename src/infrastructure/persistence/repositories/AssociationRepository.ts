@@ -2,7 +2,9 @@ import { Association } from "../../../domain/entity/Association";
 import { IAssociationRepository } from "../../../application/interfaces/repository/IAssociationRepository";
 import { IActionProjecAssociation } from "../../../domain/entityProperties/IActionProjetAssociation";
 import { IProjectAssociation } from "../../../domain/entityProperties/IProjectAssociation";
+import { injectable } from "inversify";
 
+@injectable()
 export class AssociationRepository implements IAssociationRepository {
     saveAction(associationName: string, projectName: string, action: IActionProjecAssociation): Promise<void> {
         throw new Error("Method not implemented.");

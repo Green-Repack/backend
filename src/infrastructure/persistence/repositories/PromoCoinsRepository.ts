@@ -1,8 +1,10 @@
+import { injectable } from "inversify";
 import { IPromoCoinsRepository } from "../../../application/interfaces/repository/IPromoCoinsRepository";
 import { PromoCoinsMap } from "../../../application/mappers/PromoCoinsMap";
 import { PromoCoins } from "../../../domain/entity/PromoCoins";
 import { PromoCoinsModel } from "../schemas/PromoCoins";
 
+@injectable()
 export class PromoCoinsRepository implements IPromoCoinsRepository {
     async getActivePromo(currentDate: Date): Promise<PromoCoins | undefined> {
         let promo = await PromoCoinsModel.findOne({
