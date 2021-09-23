@@ -43,8 +43,8 @@ export class ProductRepository implements IProductRepository{
         const rawProductData = ProductMap.toPersistence(t)
 
         if (exists) {
-            const mongooseUser = await WarehouseModel.findOne({name: t.name.toLowerCase()})
-            if (mongooseUser) await mongooseUser.updateOne(rawProductData)
+            const mongooseProduct = await ProductModel.findOne({name: t.name.toLowerCase()})
+            if (mongooseProduct) await mongooseProduct.updateOne(rawProductData)
         } else {
             await ProductModel.create(rawProductData)
         }

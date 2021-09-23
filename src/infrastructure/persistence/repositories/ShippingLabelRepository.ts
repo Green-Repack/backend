@@ -1,3 +1,4 @@
+import {ShippingLabel} from "../../../domain/entity/ShippingLabel";
 import {IShippingLabelProps} from "../../../domain/interface/shippingLabel/IShippingLabelProps";
 import {IShippingLabelRepository} from "../../../domain/interface/shippingLabel/IShippingLabelRepository";
 
@@ -26,8 +27,11 @@ export class ShippingLabelRepository implements IShippingLabelRepository{
         return undefined;
     }
 
-    save(t: IShippingLabelProps): Promise<void> {
-        return undefined;
+    save(t: ShippingLabel): Promise<void> {
+        let exist = this.exists(t.id);
+        let rawShippingModelData = Shipp
+
+        if(exist)
     }
 
 }
