@@ -1,3 +1,4 @@
+import {IAddress} from "../entityProperties/IAddress";
 import { IWarehouseProps } from "../entityProperties/IWarehouseProps";
 import { Entity } from "./BaseEntity";
 import { IStockInfo } from "../entityProperties/IStockInfo";
@@ -11,7 +12,7 @@ export class Warehouse extends Entity<IWarehouseProps> {
         return this.props.name
     }
 
-    get location(): string {
+    get location(): IAddress {
         return this.props.location
     }
 

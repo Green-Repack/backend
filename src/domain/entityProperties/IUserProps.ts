@@ -10,7 +10,7 @@ export interface IUserProps {
     password: string
     address: IAddress
     greenCoins: IGreenCoins
-    marchand: boolean
+    merchant: boolean
     achats: IUserAchat[]
     productSold?: IProductSold[]
     token?: string

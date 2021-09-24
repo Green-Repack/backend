@@ -1,8 +1,8 @@
 import { User } from "../../../domain/entity/User";
 import { Guard } from "../../commons/Guard";
-import { IUserDTO } from "../dto/IUserDTO";
-import { UserMap } from "../mappers/UserMap";
 import bcrypt from "bcryptjs"
+import {IUserDTO} from "../../DTOs/IUserDTO";
+import {UserMap} from "../../mappers/UserMap";
 
 export class CreateUserService {
     public static async create(userInfo: IUserDTO): Promise<User> {
@@ -13,7 +13,9 @@ export class CreateUserService {
         Guard.AgainstNullOrUndefined(userInfo.address, "address required")
         Guard.AgainstNullOrUndefined(userInfo.password, "password required")
 
-        userInfo.greenCoins = {amount: 0, expireDate: 0}
+        let expireYear : number = (new Date()).getFullYear()+1
+
+        userInfo.greenCoins = {amount: 0, expireDate: new Date(expireYear, 1)}
         
         userInfo.merchant = this.isMerchant(userInfo.siren, userInfo.siret)
 

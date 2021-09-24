@@ -1,6 +1,6 @@
-import {ShippingLabel} from "../../entity/ShippingLabel";
-import {Repository} from "../Repository";
-import {IShippingLabelProps} from "./IShippingLabelProps";
+import {ShippingLabel} from "../../../domain/entity/ShippingLabel";
+import {Repository} from "../../../domain/interface/Repository";
+import {IShippingLabelProps} from "../../../domain/entityProperties/IShippingLabelProps";
 
 export interface IShippingLabelRepository extends Repository<ShippingLabel>{
     getAllByProductId(productId: string): Promise<IShippingLabelProps[]>

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import {IShippingLabelProps} from "../../../domain/interface/shippingLabel/IShippingLabelProps";
+import {IShippingLabelProps} from "../../../domain/entityProperties/IShippingLabelProps";
 
 export const shippingLabelSchema = new Schema<IShippingLabelProps>({
    url: {

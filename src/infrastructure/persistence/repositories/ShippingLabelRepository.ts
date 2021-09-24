@@ -1,7 +1,7 @@
 import { ShippingLabelMap } from "../../../application/mappers/ShippingLabelMap";
 import {ShippingLabel} from "../../../domain/entity/ShippingLabel";
-import {IShippingLabelProps} from "../../../domain/interface/shippingLabel/IShippingLabelProps";
-import {IShippingLabelRepository} from "../../../domain/interface/shippingLabel/IShippingLabelRepository";
+import {IShippingLabelProps} from "../../../domain/entityProperties/IShippingLabelProps";
+import {IShippingLabelRepository} from "../../../application/interfaces/repository/IShippingLabelRepository";
 import { ShippingLabelModel } from "../schemas/ShippingLabel";
 
 export class ShippingLabelRepository implements IShippingLabelRepository{

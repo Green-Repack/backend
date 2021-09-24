@@ -35,7 +35,7 @@ export class AuthorizationHandler {
         }
     }
 
-    public static async marchandAuthorization(req: any, res: any, next: any) {
+    public static async merchantAuthorization(req: any, res: any, next: any) {
         try {
             let user = await this._userRepository.getUserById(req.userId)
             if (user == undefined || !user.isMarchand()) return res.status(401).json("Unauthorized")

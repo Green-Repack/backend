@@ -1,4 +1,4 @@
-import {IShippingLabelProps} from "../interface/shippingLabel/IShippingLabelProps";
+import {IShippingLabelProps} from "../entityProperties/IShippingLabelProps";
 import {Entity} from "./BaseEntity";
 
 export class ShippingLabel extends Entity<IShippingLabelProps>{

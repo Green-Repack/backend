@@ -10,7 +10,7 @@ export interface IProduitDTO {
     price?: number
     priceSeller?: number
     images: string[]
-    marchandId?: string
+    merchantId?: string
     warehouseId?: string
     accepted?: boolean
     sold: boolean

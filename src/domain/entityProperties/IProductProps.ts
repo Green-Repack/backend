@@ -1,6 +1,6 @@
 import { IProduitSpecs } from "./IProduitSpecs";
 
-export interface IProduitProps {
+export interface IProductProps {
     name: string
     category: string
     brand: string
@@ -9,7 +9,7 @@ export interface IProduitProps {
     price?: number
     priceSeller?: number
     images: string[]
-    marchandId?: string
+    merchantId?: string
     warehouseId?: string
     accepted?: boolean
     sold: boolean

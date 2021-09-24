@@ -1,5 +1,5 @@
 import {IAddress} from "../../../../domain/entityProperties/IAddress";
-import {IProductRepository} from "../../../../domain/interface/product/IProductRepository";
+import {IProductRepository} from "../../../interfaces/repository/IProductRepository";
 import {IUserRepository} from "../../../../domain/interface/user/IUserRepository";
 import {ProductServices} from "../../services/ProductServices";
 import {IAcceptProduct} from "./IAcceptProduct";

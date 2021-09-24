@@ -1,17 +1,16 @@
 import { ProductMap } from "../../../application/mappers/ProductMap";
 import {Product} from "../../../domain/entity/Product";
-import {IProductRepository} from "../../../domain/interface/product/IProductRepository";
+import {IProductRepository} from "../../../application/interfaces/repository/IProductRepository";
 import {ProductModel} from "../schemas/Product";
 
 export class ProductRepository implements IProductRepository{
-    async delete(id: string): Promise<void> {
-        await ProductModel.findByIdAndDelete(id);
+    async delete(t: Product): Promise<void> {
+        await ProductModel.findByIdAndDelete(t.id);
     }
 
     async exists(id: string): Promise<boolean> {
         let product = await ProductModel.findById(id);
         return !!product;
-
     }
 
     async getAllProducts(): Promise<Product[]> {
@@ -56,4 +55,8 @@ export class ProductRepository implements IProductRepository{
         return []
     }
 
+
+    async getProductSellsNumber(category: string, brand: string, model: string): Promise<number> {
+        throw new Error("Method not implemented.");
+    }
 }

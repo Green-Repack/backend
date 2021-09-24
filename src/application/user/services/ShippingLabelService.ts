@@ -21,10 +21,10 @@ export class ShippingLabelService implements IShippingLabelService{
     async generateLabel(shippingLabel: IShippingLabelDTO): Promise<ShippingLabel> {
         let user = await this._userRepository.getUserById(shippingLabel.userId)
         let wareHouse = await this._wareHouseRepository.getWarehouseByName(shippingLabel.userId)
-        shippingLabel.url = this.generateColissimoUrl(user?.address)
+        shippingLabel.url = this.generateColissimoUrl(user?.address, wareHouse.location)
 
         let model = ShippingLabelMap.toDomain(shippingLabel);
-        this._shippingLabelRepository.save(model);
+        await this._shippingLabelRepository.save(model);
 
         return model
     }

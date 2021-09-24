@@ -2,29 +2,29 @@ import { Warehouse } from "../../domain/entity/Warehouse"
 import { IWarehouseDTO } from "../DTOs/IWarehouseDTO"
 
 export class WarehouseMap {
-    public static toDTO(warehourse: Warehouse): IWarehouseDTO {
+    public static toDTO(wareHouse: Warehouse): IWarehouseDTO {
         return {
-            id: warehourse.id,
-            location: warehourse.location,
-            name: warehourse.name,
-            stock: warehourse.stock
+            id: wareHouse.id,
+            location: wareHouse.location,
+            name: wareHouse.name,
+            stock: wareHouse.stock
         }
     }
 
-    public static toDomain(warehourse: any): Warehouse {
+    public static toDomain(wareHouse: any): Warehouse {
         return Warehouse.createEntrepot({
-            location: warehourse.location,
-            name: warehourse.name,
-            stock: warehourse.stock
-        }, warehourse.id)
+            location: wareHouse.location,
+            name: wareHouse.name,
+            stock: wareHouse.stock
+        }, wareHouse.id)
     }
 
-    public static toPersistence(warehourse: Warehouse): any {
+    public static toPersistence(wareHouse: Warehouse): any {
         return {
-            id: warehourse.id,
-            location: warehourse.location,
-            name: warehourse.name,
-            stock: warehourse.stock
+            id: wareHouse.id,
+            location: wareHouse.location,
+            name: wareHouse.name,
+            stock: wareHouse.stock
         }
     }
 }

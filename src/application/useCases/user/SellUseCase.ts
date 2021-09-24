@@ -26,7 +26,7 @@ export class SellUseCase implements ISellUseCase {
                 model: productInfo.model,
                 specificities: productInfo.specificities,
                 images: productInfo.images,
-                marchandId: user.id,
+                merchantId: user.id,
                 priceSeller: estimatePrice,
                 sold: false,
                 creationDate: new Date()

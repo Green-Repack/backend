@@ -1,65 +1,67 @@
-import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
-import { IProductProps } from "../interface/product/IProductProps";
+import { IProduitSpecs } from "../entityProperties/IProduitSpecs";
+import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
 
 export class Product extends Entity<IProductProps> {
-
-    get id(){
+    get id(): string {
         return this._id!
     }
 
-    get name(){
+    get name(): string {
         return this.props.name
     }
 
-    get creatorId(){
-        return this.props.creatorId
-    }
-
-    get category(){
+    get category(): string {
         return this.props.category
     }
 
-    get specificities(){
+    get brand(): string {
+        return this.props.brand
+    }
+
+    get model(): string {
+        return this.props.model
+    }
+
+    get specificities(): IProduitSpecs {
         return this.props.specificities
     }
 
-    get initialPrice(){
-        return this.props.initialPrice
+    get price(): number {
+        return this.props.price!
     }
 
-    get displayPrice(){
-        return this.props.displayPrice
-    }
-
-    get images(){
+    get images(): string[] {
         return this.props.images
     }
 
-    get status(){
-        return this.props.status
+
+    get merchantId(): string {
+        return this.props.merchantId!
     }
 
-    get state(){
-        return this.props.state
+    get accepted(): boolean {
+        return this.props.accepted!
     }
 
-    get weight(){
-        return this.props.weight
+    get creationDate(): Date {
+        return this.props.creationDate
     }
 
-    get accepted(){
-        return this.props.accepted
+    get acceptationDate(): Date {
+        return this.props.acceptationDate!
     }
 
-    set accepted(accepted: boolean){
-        this.accepted=accepted;
+    get warehouseId(): string {
+        return this.props.warehouseId!
     }
 
-    set status(status: PurchasePromiseStatus){
-        this.status=status;
+    get priceSeller(): number {
+        return this.props.priceSeller!
     }
-
+    public isSold(): boolean {
+        return this.props.sold
+    }
 
     private constructor(props: IProductProps, id?: string) {
         super(props, id)

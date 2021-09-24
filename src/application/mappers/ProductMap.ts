@@ -1,8 +1,8 @@
-import { Produit } from "../../domain/entity/Produit"
+import { Product } from "../../domain/entity/Product"
 import { IProduitDTO } from "../DTOs/IProduitDTO"
 
 export class ProductMap {
-    public static toDTO(product: Produit): IProduitDTO {
+    public static toDTO(product: Product): IProduitDTO {
         return {
             id: product.id,
             name: product.name,
@@ -13,7 +13,7 @@ export class ProductMap {
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
-            marchandId: product.marchandId,
+            merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
             sold: product.isSold(),
@@ -22,7 +22,7 @@ export class ProductMap {
         }
     }
 
-    public static toDomain(product: any): Produit {
+    public static toDomain(product: any): Product {
         return product.createEntrepot({
             name: product.name,
             category: product.category,
@@ -32,7 +32,7 @@ export class ProductMap {
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
-            marchandId: product.marchandId,
+            merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
             sold: product.isSold(),
@@ -41,7 +41,15 @@ export class ProductMap {
         }, product.id)
     }
 
-    public static toPersistence(product: Produit): any {
+    public static allToDomain(products: any[]): Product[]{
+        let list = []
+        for(let product of products){
+            list.push(this.toDomain(product))
+        }
+        return list
+    }
+
+    public static toPersistence(product: Product): any {
         return {
             name: product.name,
             category: product.category,
@@ -51,7 +59,7 @@ export class ProductMap {
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
-            marchandId: product.marchandId,
+            merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
             sold: product.isSold(),

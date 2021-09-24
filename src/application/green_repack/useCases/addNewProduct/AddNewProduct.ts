@@ -1,4 +1,4 @@
-import {IProductRepository} from "../../../../domain/interface/product/IProductRepository";
+import {IProductRepository} from "../../../interfaces/repository/IProductRepository";
 import {IProductPriceRepository} from "../../../../domain/interface/product/productData/IProductPriceRepository";
 import {ProductPriceRepository} from "../../../../infrastructure/persistence/repositories/ProductPriceRepository";
 import {IProductDTO} from "../../../user/dto/IProductDTO";

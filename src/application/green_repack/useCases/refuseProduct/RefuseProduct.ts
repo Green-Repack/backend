@@ -1,4 +1,4 @@
-import {IProductRepository} from "../../../../domain/interface/product/IProductRepository";
+import {IProductRepository} from "../../../interfaces/repository/IProductRepository";
 import {IUserRepository} from "../../../../domain/interface/user/IUserRepository";
 import {PurchasePromiseStatus} from "../../../user/enum/PurchasePromiseStatus";
 import {IRefuseProduct} from "./IRefuseProduct";

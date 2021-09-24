@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { IProduitProps } from "../../../domain/entityProperties/IProduitProps";
+import { IProductProps } from "../../../domain/entityProperties/IProductProps";
 
-export const produitSchema = new Schema<IProduitProps>({
+export const produitSchema = new Schema<IProductProps>({
     name: {
         type: String,
         required: true,
@@ -47,7 +47,7 @@ export const produitSchema = new Schema<IProduitProps>({
         type: String,
         required: true
     }],
-    marchandId: String,
+    merchantId: String,
     warehouseId: String,
     accepted: Boolean,
     sold: {
@@ -61,4 +61,4 @@ export const produitSchema = new Schema<IProduitProps>({
     acceptationDate: Date
 });
 
-export const ProduitModel = model<IProduitProps>("Produit", produitSchema)
+export const ProduitModel = model<IProductProps>("Produit", produitSchema)
