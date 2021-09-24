@@ -4,7 +4,7 @@ import {ShippingLabelRepository} from "../../../infrastructure/persistence/repos
 import {UserRepository} from "../../../infrastructure/persistence/repositories/UserRepository";
 import {WarehouseRepository} from "../../../infrastructure/persistence/repositories/WarehouseRepository";
 
-export interface IShippingLabelService{
+export interface IGenerateShippingLabelUseCase {
     _shippingLabelRepository: ShippingLabelRepository;
     _userRepository: UserRepository
     _wareHouseRepository: WarehouseRepository
