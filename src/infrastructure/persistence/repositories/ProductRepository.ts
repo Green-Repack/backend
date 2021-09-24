@@ -1,11 +1,11 @@
-import {ProductMap} from "../../../application/user/mappers/ProductMap";
+import { ProductMap } from "../../../application/mappers/ProductMap";
 import {Product} from "../../../domain/entity/Product";
 import {IProductRepository} from "../../../domain/interface/product/IProductRepository";
 import {ProductModel} from "../schemas/Product";
 
 export class ProductRepository implements IProductRepository{
     async delete(id: string): Promise<void> {
-        return undefined;
+        await ProductModel.findByIdAndDelete(id);
     }
 
     async exists(id: string): Promise<boolean> {
@@ -21,7 +21,7 @@ export class ProductRepository implements IProductRepository{
     }
 
     async getProductByCategory(category: string): Promise<Product[]> {
-        let products = await ProductModel.find({category: category});
+        let products = await ProductModel.find({ category: category.toLowerCase() });
         if(products) return products;
         return []
     }
@@ -43,7 +43,7 @@ export class ProductRepository implements IProductRepository{
         const rawProductData = ProductMap.toPersistence(t)
 
         if (exists) {
-            const mongooseProduct = await ProductModel.findOne({name: t.name.toLowerCase()})
+            const mongooseProduct = await ProductModel.findById(t.id)
             if (mongooseProduct) await mongooseProduct.updateOne(rawProductData)
         } else {
             await ProductModel.create(rawProductData)

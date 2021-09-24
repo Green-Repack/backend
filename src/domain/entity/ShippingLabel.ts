@@ -3,6 +3,30 @@ import {Entity} from "./BaseEntity";
 
 export class ShippingLabel extends Entity<IShippingLabelProps>{
 
+    get id(){
+        return this._id!
+    }
+
+    get url(): string{
+        return this.url!
+    }
+
+    get creationDate(): Date{
+        return this.creationDate!
+    }
+
+    get productId(): string{
+        return this.productId!
+    }
+
+    get userId(): string{
+        return this.userId!
+    }
+
+    get wareHouseId(): string{
+        return this.wareHouseId!
+    }
+
     constructor(props: IShippingLabelProps, id: string) {
         super(props, id);
     }
@@ -13,13 +37,5 @@ export class ShippingLabel extends Entity<IShippingLabelProps>{
         const instance = new ShippingLabel(props, id!);
         return instance
     }
-    get id(){
-        return this._id!
-    }
-
-    get productId(){
-        return this.props.productId
-    }
-
 
 }

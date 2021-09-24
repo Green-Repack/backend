@@ -1,5 +1,5 @@
-import {Product} from "../../../domain/entity/Product";
-import {IProductDTO} from "../dto/IProductDTO";
+import {Product} from "../../domain/entity/Product";
+import {IProductDTO} from "../user/dto/IProductDTO";
 
 export class ProductMap {
     public static toDTO(product: Product): IProductDTO {

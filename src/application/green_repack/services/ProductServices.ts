@@ -1,4 +1,4 @@
-import {IAddress} from "../../../domain/interface/common/IAddress";
+import {IAddress} from "../../../domain/entityProperties/IAddress";
 
 export class ProductServices{
     static generateColissimoLabel(sender: IAddress, receiver: IAddress) : string{

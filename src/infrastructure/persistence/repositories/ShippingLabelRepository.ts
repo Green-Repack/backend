@@ -1,37 +1,58 @@
+import { ShippingLabelMap } from "../../../application/mappers/ShippingLabelMap";
 import {ShippingLabel} from "../../../domain/entity/ShippingLabel";
 import {IShippingLabelProps} from "../../../domain/interface/shippingLabel/IShippingLabelProps";
 import {IShippingLabelRepository} from "../../../domain/interface/shippingLabel/IShippingLabelRepository";
+import { ShippingLabelModel } from "../schemas/ShippingLabel";
 
 export class ShippingLabelRepository implements IShippingLabelRepository{
-    delete(id: string): Promise<void> {
-        return undefined;
+    async delete(id: string): Promise<void> {
+        await ShippingLabelModel.findByIdAndDelete(id);
     }
 
-    exists(idOrEmail: string): Promise<boolean> {
-        return undefined;
+    async exists(id: string): Promise<boolean> {
+        let label = await ShippingLabelModel.findById(id);
+        return !!label;
     }
 
-    getAllByProductId(productId: string): Promise<IShippingLabelProps[]> {
-        return undefined;
+    async getAllByProductId(prodId: string): Promise<IShippingLabelProps[]> {
+        let labels = await ShippingLabelModel.find({productId: prodId});
+        if(labels) return labels;
+        return []
     }
 
-    getAllByUserId(userId: string): Promise<IShippingLabelProps[]> {
-        return undefined;
+    async getAllByUserId(userId: string): Promise<IShippingLabelProps[]> {
+        let labels = await ShippingLabelModel.find({userId: userId});
+        if(labels) return labels;
+        return []
     }
 
-    getAllByWareHouseId(wareHouseId: string): Promise<IShippingLabelProps[]> {
-        return undefined;
+    async getAllByWareHouseId(wareHouseId: string): Promise<IShippingLabelProps[]> {
+        let labels = await ShippingLabelModel.find({wareHouseId: wareHouseId});
+        if(labels) return labels;
+        return []
     }
 
-    getAllWhereDateIsPast(date: Date): Promise<IShippingLabelProps[]> {
-        return undefined;
+    async getAllWhereDateIsPast(date: Date): Promise<IShippingLabelProps[]> {
+        let maxDate = new Date(Date.now()-1000*60*60*24*14)
+        let products = await ShippingLabelModel.find({
+            creationDate: {
+                $lt: maxDate
+            }
+        });
+        if(products) return products
+        return [];
     }
 
-    save(t: ShippingLabel): Promise<void> {
-        let exist = this.exists(t.id);
-        let rawShippingModelData = Shipp
+    async save(t: ShippingLabel): Promise<void> {
+        let exist = await this.exists(t.id);
+        let rawShippingModelData = ShippingLabelMap.toPersistence(t);
 
-        if(exist)
+        if(exist){
+            const mongoLabel = await ShippingLabelModel.findById(t.id);
+            if(mongoLabel) await ShippingLabelModel.updateOne(rawShippingModelData);
+        }else{
+            await ShippingLabelModel.create(rawShippingModelData);
+        }
     }
 
 }

@@ -1,7 +1,7 @@
-import { Repository } from "../Repository";
 import { Product } from "../../entity/Product";
+import { IBaseRepository } from "../../../application/interfaces/repository/IBaseRepositoty";
 
-export interface IProductRepository extends Repository<Product> {
+export interface IProductRepository extends IBaseRepository<Product> {
     getProductById(productId: string): Promise<Product | null>
     getProductByCategory(category: string): Promise<Product[]>
     getProductByFilter(filter: any): Promise<Product[]>

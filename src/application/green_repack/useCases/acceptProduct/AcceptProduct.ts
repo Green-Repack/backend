@@ -1,9 +1,9 @@
+import {IAddress} from "../../../../domain/entityProperties/IAddress";
 import {IProductRepository} from "../../../../domain/interface/product/IProductRepository";
 import {IUserRepository} from "../../../../domain/interface/user/IUserRepository";
 import {ProductServices} from "../../services/ProductServices";
 import {IAcceptProduct} from "./IAcceptProduct";
 import {PurchasePromiseStatus} from "../../../user/enum/PurchasePromiseStatus";
-import {IAddress} from "../../../../domain/interface/common/IAddress"
 
 export class AcceptProduct implements IAcceptProduct{
 

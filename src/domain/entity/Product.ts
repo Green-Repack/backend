@@ -61,7 +61,6 @@ export class Product extends Entity<IProductProps> {
     }
 
 
-
     private constructor(props: IProductProps, id?: string) {
         super(props, id)
     }
