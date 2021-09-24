@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import usersRouter from './userRouter';
-import greenRepackRouter from './greenRepackRouter'
+import authRouter from './authRouter';
 
 const routes = Router();
 
-routes.use('/user', usersRouter);
-routes.use('/team', greenRepackRouter)
+routes.use('/auth', authRouter);
 
 export default routes;

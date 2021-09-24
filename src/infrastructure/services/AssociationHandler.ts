@@ -1,7 +1,9 @@
+import { injectable } from "inversify";
 import { IAssociationHandler } from "../../application/interfaces/services/IAssociationHandler";
 
+@injectable()
 export class AssociaionHandler implements IAssociationHandler {
-    verify(name?: string, siret?: string, numRNA?: string): boolean {
+    async verify(name?: string, siret?: string, numRNA?: string): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
     

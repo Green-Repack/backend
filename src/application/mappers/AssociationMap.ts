@@ -1,8 +1,8 @@
-import { Assocation } from "../../domain/entity/Association"
+import { Association } from "../../domain/entity/Association"
 import { IAssociationDTO } from "../DTOs/IAssociationDTO"
 
 export class AssociationMap {
-    public static toDTO(association: Assocation): IAssociationDTO {
+    public static toDTO(association: Association): IAssociationDTO {
         return {
             id: association.id,
             name: association.name,
@@ -10,30 +10,32 @@ export class AssociationMap {
             address: association.address,
             numRNA: association.numRNA,
             siret: association.siret,
-            greenCoins: association.greenCoins,
             verified: association.isVerified(),
-            loginId: association.loginId,
+            email: association.email,
             password: association.password,
-            token: association.token
+            projects: association.projects, 
+            token: association.token,
+            creationDate: association.creationDate
         }
     }
 
-    public static toDomain(association: any): Assocation {
-        return Assocation.createAssociation({
+    public static toDomain(association: any): Association {
+        return Association.createAssociation({
             name: association.name,
             description: association.description,
             address: association.address,
             numRNA: association.numRNA,
             siret: association.siret,
-            greenCoins: association.greenCoins,
             verified: association.verified,
-            loginId: association.loginId,
+            email: association.email,
             password: association.password,
-            token: association.token 
+            projects: association.projects,
+            token: association.token,
+            creationDate: association.creationDate
         }, association.id)
     }
 
-    public static toPersistence(association: Assocation): any {
+    public static toPersistence(association: Association): any {
         return {
             id: association.id,
             name: association.name,
@@ -41,11 +43,12 @@ export class AssociationMap {
             address: association.address,
             numRNA: association.numRNA,
             siret: association.siret,
-            greenCoins: association.greenCoins,
             verified: association.isVerified(),
-            loginId: association.loginId,
+            email: association.email,
             password: association.password,
-            token: association.token
+            projects: association.projects, 
+            token: association.token,
+            creationDate: association.creationDate
         }
     }
 }

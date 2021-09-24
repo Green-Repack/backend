@@ -1,11 +1,17 @@
 import { IPasswordHandler } from "../../application/interfaces/services/IPasswordHandler";
+import bcrypt from "bcryptjs"
+import { injectable } from "inversify";
 
+@injectable()
 export class PasswordHandler implements IPasswordHandler {
-    generatePasswordHash(password: string): string {
-        throw new Error("Method not implemented.");
+    public async generatePasswordHash(password: string): Promise<string> {
+        const hash = await bcrypt.genSalt(10);
+        let passwordHash = await bcrypt.hash(password, hash);
+        return passwordHash
     }
-    checkPassword(passwordHash: string, password: string): string {
-        throw new Error("Method not implemented.");
+    public async checkPassword(passwordHash: string, password: string): Promise<boolean> {
+        let passwordVerification = await bcrypt.compare(password, passwordHash);
+        return passwordVerification
     }
     
 }

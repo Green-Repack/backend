@@ -1,5 +1,5 @@
-import { IAddress } from "../../../domain/entityProperties/IAddress";
+import { User } from "../../../domain/entity/User";
 
 export interface IDeliveryTicketHandler {
-    generate(firstName: string, lastName: string, address: IAddress): unknown
+    generate(user: User): unknown
 }

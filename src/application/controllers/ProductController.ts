@@ -1,27 +1,25 @@
-import {ProductRepository} from "../../infrastructure/persistence/repositories/ProductRepository";
-import {AddNewProduct} from "../green_repack/useCases/addNewProduct/AddNewProduct";
-import {BaseController} from "./BaseController";
+import { IProductRepository } from "../interfaces/repository/IProductRepository";
+import { GetSellsNumberUseCase } from "../useCases/green_repack/GetSellsNumber";
+import { BaseController } from "./BaseController";
 
-export class ProductController extends BaseController{
+export class ProductController extends BaseController {
+    private readonly _getSellsNumber = new GetSellsNumberUseCase;
 
-    public async createProduct(req: any, res: any){
-        try{
-            let productRepository = new ProductRepository();
-            let addNewProductUseCase = new AddNewProduct(productRepository);
+    private _productRepository: IProductRepository;
 
-            await addNewProductUseCase.execute(req.body, "role", "userId")
-        }catch (e) {
-            res.status(400).json(e.message);
-        }
+    public constructor(productRepository: IProductRepository) {
+        super();
+        this._productRepository = productRepository
+        
     }
 
-    public async acceptProduct(req: any, res: any){
-        try{
-
-        }catch (e) {
-            if(e instanceof UnauthorizedError){
-                res.status(403)
-            }
+    public async getSellsNumber(req: any, res: any) {
+        try {
+            let number = await this._getSellsNumber.execute(req.body, this._productRepository)
+            res.status(200).json(number)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
         }
     }
 }

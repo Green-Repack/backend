@@ -1,4 +1,4 @@
 export interface IPasswordHandler {
-    generatePasswordHash(password: string): string
-    checkPassword(passwordHash: string, password: string): string
+    generatePasswordHash(password: string): Promise<string>
+    checkPassword(passwordHash: string, password: string): Promise<boolean>
 }

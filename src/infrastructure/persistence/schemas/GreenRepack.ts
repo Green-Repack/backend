@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IGreenRepackProps } from "../../../domain/interface/green_repack/IGreenRepackProps"
+import { IGreenRepackProps } from "../../../domain/entityProperties/IGreenRepackProps"
 
 export const greenRepackSchema = new Schema<IGreenRepackProps>({
     firstName: {
@@ -26,6 +26,7 @@ export const greenRepackSchema = new Schema<IGreenRepackProps>({
         minlength: 6,
         maxlength: 255,
     },
+    token: String,
     admin: {
         type: Boolean,
         default: false,

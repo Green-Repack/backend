@@ -1,5 +1,6 @@
-import { IStockInfoDTO } from "../../DTOs/IStockInfoDTO";
+import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
+import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 
 export interface IGetStockInfoUseCase {
-    execute(productInfo: unknown): Promise<IStockInfoDTO>
+    execute(warehouseName: string, productInfo: unknown, warehouseRepository: IWarehouseRepository): Promise<IStockInfo>
 }

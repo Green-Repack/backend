@@ -1,9 +1,12 @@
 import { IRegisterUseCase } from "./IRegisterUseCase";
 import { Guard } from "../../commons/Guard";
-import { UserAlreadyExistsError } from "../../errors/UserAlreadyExistsError";
 import { IPasswordHandler } from "../../interfaces/services/IPasswordHandler";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { UserMap } from "../../mappers/UserMap";
+import { AlreadyExistsError } from "../../errors/AlreadyExistsError";
+import { IUserDTO } from "../../DTOs/IUserDTO";
+import { IUserAchat } from "../../../domain/entityProperties/IUserAchat";
+import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 
 export class RegisterUseCase  implements IRegisterUseCase {
     public async execute(userInfo: any, passwordHandler: IPasswordHandler, repository: IUserRepository): Promise<void> {
@@ -15,18 +18,27 @@ export class RegisterUseCase  implements IRegisterUseCase {
             Guard.AgainstNullOrUndefined(userInfo.address, "address required")
             Guard.AgainstNullOrUndefined(userInfo.password, "password required")
 
-            userInfo.greenCoins = {amount: 0, expireDate: new Date()}
-            
-            userInfo.marchand = this.isMarchand(userInfo.siren, userInfo.siret)
-            userInfo.creationDate = new Date()
+            let userDTO: IUserDTO = {
+                firstName: userInfo.firstName,
+                lastName: userInfo.lastName,
+                email: userInfo.email,
+                address: userInfo.address,
+                password: "",
+                achats: new Array<IUserAchat>(),
+                greenCoins: {amount: 0, expireDate: new Date()},
+                marchand: this.isMarchand(userInfo.siren, userInfo.siret),
+                creationDate: new Date()
+            }
 
-            userInfo.password = passwordHandler.generatePasswordHash(userInfo.passwrd)
+            if (userDTO.marchand) userDTO.productSold = new Array<IProductSold>()
+
+            userDTO.password = await passwordHandler.generatePasswordHash(userInfo.password)
         
-            let userExists = await repository.exists(userInfo.email);
-
-            if (userExists) throw new UserAlreadyExistsError()
-
-            let newUser = UserMap.toDomain(userInfo)
+            let userExists = await repository.exists(userDTO.email);
+            
+            if (userExists) throw new AlreadyExistsError("The use already exists")
+            
+            let newUser = UserMap.toDomain(userDTO)
             await repository.save(newUser)
         } catch(error) {
             throw error

@@ -1,53 +1,62 @@
-import {Product} from "../../domain/entity/Product";
-import {IProductDTO} from "../user/dto/IProductDTO";
+import { Produit } from "../../domain/entity/Produit"
+import { IProduitDTO } from "../DTOs/IProduitDTO"
 
 export class ProductMap {
-    public static toDTO(product: Product): IProductDTO {
-        return {
-            name: product.name,
-            creatorId: product.creatorId!,
-            category: product.category!,
-            specificities: product.specificities!,
-            initialPrice: product.initialPrice!,
-            displayPrice: product.displayPrice!,
-            images: product.images,
-            status: product.status,
-            state: product.state,
-            weight: product.weight,
-            accepted: product.accepted
-        }
-    }
-
-    public static toDomain(product: any): Product {
-        return Product.createProduct({
-            name: product.name,
-            creatorId: product.creatorId!,
-            category: product.category!,
-            specificities: product.specificities!,
-            initialPrice: product.initialPrice!,
-            displayPrice: product.displayPrice!,
-            images: product.images,
-            status: product.status,
-            state: product.state,
-            weight: product.weight,
-            accepted: product.accepted
-        }, product.id)
-    }
-
-    public static toPersistence(product: Product): any {
+    public static toDTO(product: Produit): IProduitDTO {
         return {
             id: product.id,
             name: product.name,
-            creatorId: product.creatorId!,
-            category: product.category!,
-            specificities: product.specificities!,
-            initialPrice: product.initialPrice!,
-            displayPrice: product.displayPrice!,
+            category: product.category,
+            brand: product.brand,
+            model: product.model,
+            specificities: product.specificities,
+            price: product.price,
+            priceSeller: product.priceSeller,
             images: product.images,
-            status: product.status,
-            state: product.state,
-            weight: product.weight,
-            accepted: product.accepted
+            marchandId: product.marchandId,
+            warehouseId: product.warehouseId,
+            accepted: product.accepted,
+            sold: product.isSold(),
+            creationDate: product.creationDate,
+            acceptationDate: product.acceptationDate
+        }
+    }
+
+    public static toDomain(product: any): Produit {
+        return product.createEntrepot({
+            name: product.name,
+            category: product.category,
+            brand: product.brand,
+            model: product.model,
+            specificities: product.specificities,
+            price: product.price,
+            priceSeller: product.priceSeller,
+            images: product.images,
+            marchandId: product.marchandId,
+            warehouseId: product.warehouseId,
+            accepted: product.accepted,
+            sold: product.isSold(),
+            creationDate: product.creationDate,
+            acceptationDate: product.acceptationDate
+        }, product.id)
+    }
+
+    public static toPersistence(product: Produit): any {
+        return {
+            name: product.name,
+            category: product.category,
+            brand: product.brand,
+            model: product.model,
+            specificities: product.specificities,
+            price: product.price,
+            priceSeller: product.priceSeller,
+            images: product.images,
+            marchandId: product.marchandId,
+            warehouseId: product.warehouseId,
+            accepted: product.accepted,
+            sold: product.isSold(),
+            creationDate: product.creationDate,
+            acceptationDate: product.acceptationDate
         }
     }
 }

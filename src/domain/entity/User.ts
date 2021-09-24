@@ -2,6 +2,8 @@ import { IUserProps } from "../entityProperties/IUserProps";
 import { IAddress } from "../entityProperties/IAddress";
 import { IGreenCoins } from "../entityProperties/IGreenCoins";
 import { Entity } from "./BaseEntity";
+import { IUserAchat } from "../entityProperties/IUserAchat";
+import { IProductSold } from "../entityProperties/IProductSold";
 
 export class User extends Entity<IUserProps> {
     get id(): string {
@@ -46,6 +48,14 @@ export class User extends Entity<IUserProps> {
 
     get creationDate(): Date {
         return this.props.creationDate
+    }
+
+    get achats(): IUserAchat[] {
+        return this.props.achats
+    }
+
+    get productSold(): IProductSold[] {
+        return this.props.productSold!
     }
     
     private constructor(props: IUserProps, id?: string) {

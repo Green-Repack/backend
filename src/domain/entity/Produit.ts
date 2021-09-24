@@ -11,7 +11,7 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.name
     }
 
-    get categroy(): string {
+    get category(): string {
         return this.props.category
     }
 
@@ -44,10 +44,24 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.accepted!
     }
 
+    get creationDate(): Date {
+        return this.props.creationDate
+    }
+
     get acceptationDate(): Date {
         return this.props.acceptationDate!
     }
 
+    get warehouseId(): string {
+        return this.props.warehouseId!
+    }
+
+    get priceSeller(): number {
+        return this.props.priceSeller!
+    }
+    public isSold(): boolean {
+        return this.props.sold
+    }
 
     private constructor(props: IProduitProps, id?: string) {
         super(props, id)

@@ -1,26 +1,90 @@
-import { ICategoryRepository } from "../../domain/entityProperties/category_produit/ICategoryRepository";
-import { IEntrepotRepository } from "../../domain/entityProperties/entrepot/IEntrepotRepository";
-import { IGreenRepackRepository } from "../../domain/entityProperties/green_repack/IGreenRepackRepository";
-import { CategoryRepository } from "../../infrastructure/persistence/repositories/CategoryRepository";
-import { EntrepotRepository } from "../../infrastructure/persistence/repositories/WarehouseRepository";
-import { GreenRepackRepository } from "../../infrastructure/persistence/repositories/GreenRepackRepository";
-import { GreenRepackMap } from "../green_repack/mappers/GreenRepackMap";
-import { AddNewCategryUseCase } from "../green_repack/useCases/addNewCategory/AddNewCategoryUseCase";
-import { CreateNewMemberUseCase } from "../green_repack/useCases/CreateNewMemberUseCase";
-import { DeleteCategoryUseCase } from "../green_repack/useCases/deleteCategory/DeleteCategoryUseCase";
-import { GetStockInfoUseCase } from "../green_repack/useCases/getStockInfo/GetStockInfoUseCase";
-import { LoginMemberUseCase } from "../green_repack/useCases/loginMember/LoginMemberUseCase";
+import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
+import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
+import { IProductRepository } from "../interfaces/repository/IProductRepository";
+import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepository";
+import { IUserRepository } from "../interfaces/repository/IUserRepository";
+import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
+import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
+import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
+import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
+import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
+import { AddProductUseCase } from "../useCases/green_repack/AddProductUseCase";
+import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
+import { CreatePromoCoinsUseCase } from "../useCases/green_repack/CreatePromoCoinsUseCase";
+import { CreateWarehouseUseCase } from "../useCases/green_repack/CreateWarehouseUseCase";
+import { GetSellsNumberUseCase } from "../useCases/green_repack/GetSellsNumber";
+import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
+import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
+import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProject";
+import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
 import { BaseController } from "./BaseController";
 
 export class GreenRepackController extends BaseController{
-    static _greenRepackRepository: IGreenRepackRepository = new GreenRepackRepository;
-    static _entrepotRepository: IEntrepotRepository = new EntrepotRepository;
-    static _categoryRepository: ICategoryRepository = new CategoryRepository
+    private readonly _verifyAssociationUseCase = new VerifyAssociationUseCase;
+    private readonly _createNewMemberUseCase = new CreateNewMemberUseCase;
+    private readonly _verifyAssociationProjectUseCase = new VerifyAssociationProjectUseCase;
+    private readonly _createWarehouseUseCase = new CreateWarehouseUseCase;
+    private readonly _createPromoCoinsUseCase = new CreatePromoCoinsUseCase;
+    private readonly _acceptProductUseCase = new AcceptProductUseCase;
+    private readonly _refuseProductUseCase = new RefuseProductUseCase;
+    private readonly _getSellsNumberUseCase = new GetSellsNumberUseCase;
+    private readonly _getStockInfoUseCase = new GetStockInfoUseCase;
+    private readonly _addProductUseCase = new AddProductUseCase;
+
+    private _associationRepository: IAssociationRepository;
+    private _greenRepackRepository: IGreenRepackRepository;
+    private _warehouseRepository: IWarehouseRepository;
+    private _promoCoinsRepository: IPromoCoinsRepository;
+    private _productRepository: IProductRepository;
+    private _userReposiory: IUserRepository;
+
+    private _passwordHandler: IPasswordHandler;
+    private _associationHandler: IAssociationHandler;
+    private _deliveryTicketHandler: IDeliveryTicketHandler;
+    private _paymentHandler: IPaymentHandler
+
+    public constructor(greenRepackRepository: IGreenRepackRepository, associatioRepostory: IAssociationRepository, userRepository: IUserRepository,
+        warehouseRepository: IWarehouseRepository, productRepository: IProductRepository , promoCoinsRepository: IPromoCoinsRepository,
+        passwordHandler: IPasswordHandler, associationHandler: IAssociationHandler, deliveryTicketHandler: IDeliveryTicketHandler,
+        paymentHandler: IPaymentHandler) {
+            super();
+            this._associationRepository = associatioRepostory
+            this._greenRepackRepository = greenRepackRepository
+            this._productRepository = productRepository
+            this._promoCoinsRepository = promoCoinsRepository
+            this._warehouseRepository = warehouseRepository
+            this._userReposiory = userRepository
+            this._passwordHandler = passwordHandler
+            this._associationHandler = associationHandler
+            this._deliveryTicketHandler = deliveryTicketHandler
+            this._paymentHandler = paymentHandler
+    }
+
+    public async verifyAssociation(req: any, res: any) {
+        try {
+            await this._verifyAssociationUseCase.execute(req.body.name, this._associationRepository, this._associationHandler)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async verifyAssociationProject(req: any, res: any) {
+        try {
+            const {associationName, projectName} = req.body
+            await this._verifyAssociationProjectUseCase.execute(associationName, projectName, this._associationRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
 
     public async createNewMember(req: any, res: any) {
         try {
-            let createNewMemberUseCase = new CreateNewMemberUseCase(GreenRepackController._greenRepackRepository)
-            let username = await createNewMemberUseCase.execute(GreenRepackMap.toDTO(GreenRepackMap.toDomain(req.body)))
+            let username = await this._createNewMemberUseCase.execute(req.body, this._passwordHandler, this._greenRepackRepository)
             res.status(201).json(username);
         } catch(error) {
             console.log(error)
@@ -28,93 +92,11 @@ export class GreenRepackController extends BaseController{
         }
     }
 
-    public async loginMember(req: any, res: any) {
+    public async acceptProduct(req: any, res: any) {
         try {
-            let loginMemberUseCase = new LoginMemberUseCase(GreenRepackController._greenRepackRepository)
-            let userDTO = await loginMemberUseCase.execute(req.body.username, req.body.password)
-            res.status(200).json(userDTO);
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
-
-    public async getStockInfoByCategory(req: any, res: any) {
-        try {
-            let getStockInfoUserCase = new GetStockInfoUseCase(GreenRepackController._entrepotRepository)
-            let info = await getStockInfoUserCase.execute(req.body.category, undefined, undefined, undefined)
-            if (info == undefined) res.sendStatus(404)
-            else res.status(200).json(info)
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
-
-    public async getStockInfoByCategoryFromEntrepot(req: any, res: any) {
-        try {
-            let getStockInfoUserCase = new GetStockInfoUseCase(GreenRepackController._entrepotRepository)
-            let info = await getStockInfoUserCase.execute(req.body.category, undefined, undefined, req.body.entrepot)
-            if (info == undefined) res.sendStatus(404)
-            else res.status(200).json(info)
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
-
-    public async getStockInfoByBrand(req: any, res: any) {
-        try {
-            let getStockInfoUserCase = new GetStockInfoUseCase(GreenRepackController._entrepotRepository)
-            let info = await getStockInfoUserCase.execute(undefined, req.body.brand, undefined, undefined)
-            if (info == undefined) res.sendStatus(404)
-            else res.status(200).json(info)
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
-
-    public async getStockInfoByBrandFromEntrepot(req: any, res: any) {
-        try {
-            let getStockInfoUserCase = new GetStockInfoUseCase(GreenRepackController._entrepotRepository)
-            let info = await getStockInfoUserCase.execute(undefined, req.body.brand, undefined, req.body.entrepot)
-            if (info == undefined) res.sendStatus(404)
-            else res.status(200).json(info)
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
- 
-    public async getStockInfoByModel(req: any, res: any) {
-        try {
-            let getStockInfoUserCase = new GetStockInfoUseCase(GreenRepackController._entrepotRepository)
-            let info = await getStockInfoUserCase.execute(req.body.category, req.body.brand, req.body.model, undefined)
-            if (info == undefined) res.sendStatus(404)
-            else res.status(200).json(info)
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
-
-    public async getStockInfoByModelFromEntrepot(req: any, res: any) {
-        try {
-            let getStockInfoUserCase = new GetStockInfoUseCase(GreenRepackController._entrepotRepository)
-            let info = await getStockInfoUserCase.execute(req.body.category, req.body.brand, req.body.model, req.body.entrepot)
-            if (info == undefined) res.sendStatus(404)
-            else res.status(200).json(info)
-        } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
-        }
-    }
-
-    public async addNewProductCategory(req: any, res: any) {
-        try {
-            let addNewCategoryUseCase = new AddNewCategryUseCase(GreenRepackController._categoryRepository)
-            await addNewCategoryUseCase.execute(req.body.name)
+            const {productId, warehouseName, counterOffer} = req.body
+            await this._acceptProductUseCase.execute(productId, warehouseName, this._deliveryTicketHandler, this._paymentHandler, 
+                this._userReposiory, this._productRepository, this._warehouseRepository, counterOffer)
             res.sendStatus(201)
         } catch(error) {
             console.log(error)
@@ -122,14 +104,66 @@ export class GreenRepackController extends BaseController{
         }
     }
 
-    public async deleteProductCategory(req: any, res: any) {
+    public async refuseProduct(req: any, res: any) {
         try {
-            let deleteCategoryUseCase = new DeleteCategoryUseCase(GreenRepackController._categoryRepository)
-            await deleteCategoryUseCase.execute(req.body.name)
+            await this._refuseProductUseCase.execute(req.body.productId, this._userReposiory, this._productRepository)
+            res.ssendStatus(201)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async getSellsNumber(req: any, res: any) {
+        try {
+            let sellsNumber = await this._getSellsNumberUseCase.execute(req.body, this._productRepository)
+            res.status(200).json(sellsNumber);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async getStockInfo(req: any, res: any) {
+        try {
+            const {warehouseName, productInfo} = req.body
+            let stockInfo = await this._getStockInfoUseCase.execute(warehouseName, productInfo, this._warehouseRepository)
+            res.status(200).json(stockInfo);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async createWarehouse(req: any, res: any) {
+        try {
+            let warehouseDTO = await this._createWarehouseUseCase.execute(req.body, this._warehouseRepository)
+            res.status(201).json(warehouseDTO);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async addProduct(req: any, res: any) {
+        try {
+            const {warehouseName, productInfo} = req.body
+            await this._addProductUseCase.execute(warehouseName, productInfo, this._productRepository, this._warehouseRepository)
+            res.sendStatus(200);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async createPromo(req: any, res: any) {
+        try {
+            await this._createPromoCoinsUseCase.execute(req.body, this._promoCoinsRepository)
             res.sendStatus(201)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
         }
     }
+    
 }
