@@ -7,6 +7,7 @@ import { GetInfoUseCase } from "../useCases/association/GetInfoUseCase";
 import autoBind from "auto-bind"
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
+import { getAllAssociationUseCase } from "../useCases/association/GetAllAssociationsUseCase";
 
 @injectable()
 export class AssociationController{
@@ -14,6 +15,7 @@ export class AssociationController{
     private readonly _getInfoUseCase = new GetInfoUseCase;
     private readonly _createProjectUseCase = new CreateProjectUseCase;
     private readonly _createActionUseCase = new CreateActionUseCase;
+    private readonly _getAllAssocationsUseCase = new getAllAssociationUseCase;
 
     @inject(TYPES.IAssociationRepository)
     private _associationRepository!: IAssociationRepository;
@@ -61,6 +63,16 @@ export class AssociationController{
             const { associationName } = req.body
             let associationDTO = await this._getInfoUseCase.execute(associationName, this._associationRepository)
             res.status(200).json(associationDTO);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async getAllAssociations(req: any, res: any) {
+        try {
+            let associationsDTO = await this._getAllAssocationsUseCase.execute(this._associationRepository)
+            res.status(200).json(associationsDTO);
         } catch(error) {
             console.log(error)
             res.status(400).json(error);

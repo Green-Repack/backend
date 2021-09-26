@@ -43,7 +43,7 @@ export class AssociationRepository implements IAssociationRepository {
         else return undefined
     }
 
-    async getAllAssociation(): Promise<Association[]> {
+    async getAllAssociations(): Promise<Association[]> {
         let result: Association[] = new Array<Association>()
         let associations = await AssociationModel.find({})
         for(var association of associations) {
