@@ -58,7 +58,8 @@ export class AssociationController{
 
     public async getInfo(req: any, res: any) {
         try {
-            let associationDTO = await this._getInfoUseCase.execute(req.body.name, this._associationRepository)
+            const { associationName } = req.body
+            let associationDTO = await this._getInfoUseCase.execute(associationName, this._associationRepository)
             res.status(200).json(associationDTO);
         } catch(error) {
             console.log(error)

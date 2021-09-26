@@ -1,3 +1,6 @@
+import autoBind from "auto-bind";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../commons/types";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
 import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepository";
@@ -10,35 +13,33 @@ import { GetUserInfoUseCase } from "../useCases/user/GetUserInfoUseCase";
 import { GiveGreenCoinsUseCase } from "../useCases/user/GiveGreenCoinsUseCase";
 import { SellUseCase } from "../useCases/user/SellUseCase";
 import { UpdateUserInfoUseCase } from "../useCases/user/UpdateUserInfoUseCase";
-import { BaseController } from "./BaseController";
 
-export class UserController extends BaseController {
+@injectable()
+export class UserController {
     private readonly _getUserInfoUseCase = new GetUserInfoUseCase;
     private readonly _updateUserInfoUseCase = new UpdateUserInfoUseCase;
     private readonly _buyUseCase = new BuyUseCase;
     private readonly _sellUseCase = new SellUseCase;
     private readonly _giveGreenCoinsUseCase = new GiveGreenCoinsUseCase;
 
+    @inject(TYPES.IUserRepository)
     private _userRepository: IUserRepository;
+    @inject(TYPES.IProductRepository)
     private _productRepository: IProductRepository;
+    @inject(TYPES.IWarehouseRepository)
     private _warehouseRepository: IWarehouseRepository;
+    @inject(TYPES.IAssociationRepository)
     private _associationRepository: IAssociationRepository;
+    @inject(TYPES.IPromoCoinsRepository)
     private _promoRepository: IPromoCoinsRepository;
 
+    @inject(TYPES.IPaymentHandler)
     private _paymentHandler: IPaymentHandler;
+    @inject(TYPES.IDeliveryTicketHandler)
     private _deliveryHandler: IDeliveryTicketHandler;
 
-    public constructor(userRepository: IUserRepository, productRepository: IProductRepository, associationRepository: IAssociationRepository,
-        warehouseRepository: IWarehouseRepository, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler,
-        promoRepository: IPromoCoinsRepository) {
-        super();
-        this._userRepository = userRepository
-        this._productRepository = productRepository
-        this._warehouseRepository = warehouseRepository
-        this._associationRepository = associationRepository
-        this._promoRepository = promoRepository
-        this._paymentHandler = paymentHandler
-        this._deliveryHandler = deliveryHandler
+    public constructor() {
+        autoBind(this);
     }
 
     public async getUserInfo(req: any, res: any) {
@@ -74,7 +75,7 @@ export class UserController extends BaseController {
 
     public async sellProduct(req: any, res: any) {
         try {
-            let estimatePrice = await this._sellUseCase.execute(req.userId, req.body, this._deliveryHandler, 
+            let estimatePrice = await this._sellUseCase.execute(req.userId, req.body,
                 this._userRepository, this._productRepository)
             res.status(200).json(estimatePrice)
         } catch(error) {

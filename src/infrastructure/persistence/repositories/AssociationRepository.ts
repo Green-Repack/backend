@@ -10,9 +10,9 @@ import { AssociationMap } from "../../../application/mappers/AssociationMap";
 export class AssociationRepository implements IAssociationRepository {
     async updateAction(associationName: string, projectName: string, action: IActionProjecAssociation): Promise<void> {
         await AssociationModel.updateOne({name: associationName, "projects.name": projectName},
-            {$set: {"projects.$.actions.name": action.name, 
-                    "projects.$.actions.greenCoins": action.greenCoins,
-                    "projects.$.actions.dateLimite": action.dateLimite}})
+            {$set: { "projects.$.actions.$[elem].greenCoins": action.greenCoins }},
+            {multi: false,
+             arrayFilters: [{"elem.name": action.name}]})
     }
 
     async updateProject(associationName: string, projectInfo: IProjectAssociation): Promise<void> {

@@ -2,9 +2,9 @@ import { Guard } from "../../commons/Guard";
 import { IProduitDTO } from "../../DTOs/IProduitDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
-import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { ISellUseCase } from "./ISellUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class SellUseCase implements ISellUseCase {
     async execute(userId: string, productInfo: any, userRepository: IUserRepository, productRepository: IProductRepository): Promise<number> {
