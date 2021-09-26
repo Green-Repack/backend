@@ -27,7 +27,7 @@ export class GiveGreenCoinsUseCase implements IGiveGreenCoinsUseCase {
 
             if (user.greenCoins.amount >= requestInfo.greenCoinsAmount) {
                 action.greenCoins += requestInfo.greenCoinsAmount
-                await associationRepository.saveAction(requestInfo.associationName, requestInfo.projectName, action)
+                await associationRepository.updateAction(requestInfo.associationName, requestInfo.projectName, action)
                 user.greenCoins.amount -= requestInfo.greenCoinsAmount
             } else {
                 throw new InsufficientAmountError("The amount of green coins is not sufficient")

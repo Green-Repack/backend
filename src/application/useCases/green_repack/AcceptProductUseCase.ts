@@ -7,6 +7,7 @@ import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class AcceptProductUseCase implements IAcceptProductUseCase {
     async execute(productId: string, warehouseName: string, paymentHanlder: IPaymentHandler, userRepository: IUserRepository,

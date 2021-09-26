@@ -28,7 +28,7 @@ export class CreateNewMemberUseCase  implements ICreateNewMemberUseCase {
                 newGreenRepackDTO.username = memberInfo.firstName[0] + memberInfo.lastName
             }
             
-            newGreenRepackDTO.password = passwordHandler.generatePasswordHash(memberInfo.password)
+            newGreenRepackDTO.password = await passwordHandler.generatePasswordHash(memberInfo.password)
 
             let greenRepackMember = GreenRepackMap.toDomain(newGreenRepackDTO)
             await greenRepackRepository.save(greenRepackMember)

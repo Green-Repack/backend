@@ -2,7 +2,6 @@ import { UserMap } from "../../../application/mappers/UserMap";
 import { User } from "../../../domain/entity/User";
 import { IUserRepository } from "../../../application/interfaces/repository/IUserRepository";
 import { UserModel } from "../schemas/User";
-import 'reflect-metadata';
 import { injectable } from "inversify";
 
 @injectable()

@@ -1,3 +1,6 @@
+import autoBind from "auto-bind";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../commons/types";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
@@ -16,11 +19,11 @@ import { CreateWarehouseUseCase } from "../useCases/green_repack/CreateWarehouse
 import { GetSellsNumberUseCase } from "../useCases/green_repack/GetSellsNumber";
 import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
-import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProject";
+import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
-import { BaseController } from "./BaseController";
 
-export class GreenRepackController extends BaseController{
+@injectable()
+export class GreenRepackController{
     private readonly _verifyAssociationUseCase = new VerifyAssociationUseCase;
     private readonly _createNewMemberUseCase = new CreateNewMemberUseCase;
     private readonly _verifyAssociationProjectUseCase = new VerifyAssociationProjectUseCase;
@@ -32,38 +35,35 @@ export class GreenRepackController extends BaseController{
     private readonly _getStockInfoUseCase = new GetStockInfoUseCase;
     private readonly _addProductUseCase = new AddProductUseCase;
 
+    @inject(TYPES.IAssociationRepository)
     private _associationRepository: IAssociationRepository;
+    @inject(TYPES.IGreeRepackRepository)
     private _greenRepackRepository: IGreenRepackRepository;
+    @inject(TYPES.IWarehouseRepository)
     private _warehouseRepository: IWarehouseRepository;
+    @inject(TYPES.IPromoCoinsRepository)
     private _promoCoinsRepository: IPromoCoinsRepository;
+    @inject(TYPES.IProductRepository)
     private _productRepository: IProductRepository;
+    @inject(TYPES.IUserRepository)
     private _userReposiory: IUserRepository;
 
+    @inject(TYPES.IPasswordHandler)
     private _passwordHandler: IPasswordHandler;
+    @inject(TYPES.IAssociationHandler)
     private _associationHandler: IAssociationHandler;
+    @inject(TYPES.IDeliveryTicketHandler)
     private _deliveryTicketHandler: IDeliveryTicketHandler;
+    @inject(TYPES.IPaymentHandler)
     private _paymentHandler: IPaymentHandler
 
-    public constructor(greenRepackRepository: IGreenRepackRepository, associatioRepostory: IAssociationRepository, userRepository: IUserRepository,
-        warehouseRepository: IWarehouseRepository, productRepository: IProductRepository , promoCoinsRepository: IPromoCoinsRepository,
-        passwordHandler: IPasswordHandler, associationHandler: IAssociationHandler, deliveryTicketHandler: IDeliveryTicketHandler,
-        paymentHandler: IPaymentHandler) {
-            super();
-            this._associationRepository = associatioRepostory
-            this._greenRepackRepository = greenRepackRepository
-            this._productRepository = productRepository
-            this._promoCoinsRepository = promoCoinsRepository
-            this._warehouseRepository = warehouseRepository
-            this._userReposiory = userRepository
-            this._passwordHandler = passwordHandler
-            this._associationHandler = associationHandler
-            this._deliveryTicketHandler = deliveryTicketHandler
-            this._paymentHandler = paymentHandler
+    public constructor() {
+        autoBind(this)
     }
 
     public async verifyAssociation(req: any, res: any) {
         try {
-            await this._verifyAssociationUseCase.execute(req.body.name, this._associationRepository, this._associationHandler)
+            await this._verifyAssociationUseCase.execute(req.body.associationName, this._associationRepository, this._associationHandler)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)
@@ -94,9 +94,9 @@ export class GreenRepackController extends BaseController{
 
     public async acceptProduct(req: any, res: any) {
         try {
-            const {productId, warehouseName, counterOffer} = req.body
-            await this._acceptProductUseCase.execute(productId, warehouseName, this._deliveryTicketHandler, this._paymentHandler, 
-                this._userReposiory, this._productRepository, this._warehouseRepository, counterOffer)
+            const {productId, warehouseName} = req.body
+            await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
+                this._userReposiory, this._productRepository, this._warehouseRepository)
             res.sendStatus(201)
         } catch(error) {
             console.log(error)
@@ -106,7 +106,9 @@ export class GreenRepackController extends BaseController{
 
     public async refuseProduct(req: any, res: any) {
         try {
-            await this._refuseProductUseCase.execute(req.body.productId, this._userReposiory, this._productRepository)
+            const {productId, deliveryFee} = req.body
+            await this._refuseProductUseCase.execute(productId, deliveryFee, this._paymentHandler, 
+                this._deliveryTicketHandler, this._userReposiory, this._productRepository)
             res.ssendStatus(201)
         } catch(error) {
             console.log(error)

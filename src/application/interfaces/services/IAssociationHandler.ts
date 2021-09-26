@@ -1,3 +1,5 @@
 export interface IAssociationHandler {
-    verify(name?: string, siret?: string, numRNA?: string): Promise<boolean>
+    verifyByName(name: string): Promise<boolean>
+    verifyBySiret(siret: string): Promise<boolean>
+    verifyByRNA(numRNA: string): Promise<boolean>
 }

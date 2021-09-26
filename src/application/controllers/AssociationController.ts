@@ -4,22 +4,25 @@ import { CreateActionUseCase } from "../useCases/association/CreateActionUseCase
 import { CreateAssociatonUseCase } from "../useCases/association/CreateAssciationUseCase";
 import { CreateProjectUseCase } from "../useCases/association/CreateProjectUseCase";
 import { GetInfoUseCase } from "../useCases/association/GetInfoUseCase";
-import { BaseController } from "./BaseController";
+import autoBind from "auto-bind"
+import { inject, injectable } from "inversify";
+import { TYPES } from "../commons/types";
 
-export class AssociationController extends BaseController{
+@injectable()
+export class AssociationController{
     private readonly _createAssociationUseCase = new CreateAssociatonUseCase;
     private readonly _getInfoUseCase = new GetInfoUseCase;
     private readonly _createProjectUseCase = new CreateProjectUseCase;
     private readonly _createActionUseCase = new CreateActionUseCase;
 
-    private _associationRepository: IAssociationRepository;
+    @inject(TYPES.IAssociationRepository)
+    private _associationRepository!: IAssociationRepository;
 
-    private _passwordHandler: IPasswordHandler;
+    @inject(TYPES.IPasswordHandler)
+    private _passwordHandler!: IPasswordHandler;
 
-    public constructor( associatioRepostory: IAssociationRepository, passwordHandler: IPasswordHandler) {
-            super();
-            this._associationRepository = associatioRepostory
-            this._passwordHandler = passwordHandler
+    public constructor() {
+        autoBind(this);
     }
 
     public async createAssociation(req: any, res: any) {
@@ -34,8 +37,7 @@ export class AssociationController extends BaseController{
 
     public async createProject(req: any, res: any) {
         try {
-            const {associationName, projectInfo} = req.body
-            await this._createProjectUseCase.execute(associationName, projectInfo, this._associationRepository)
+            await this._createProjectUseCase.execute(req.body, this._associationRepository)
             res.sendStatus(201);
         } catch(error) {
             console.log(error)

@@ -5,6 +5,7 @@ import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicke
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IRefuseProductUseCase } from "./IRefuseProductUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class RefuseProductUseCase implements IRefuseProductUseCase {
     async execute(productId: string, deliveryFee: number, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler, 

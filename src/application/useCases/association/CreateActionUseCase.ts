@@ -1,10 +1,9 @@
 import { IActionProjecAssociation } from "../../../domain/entityProperties/IActionProjetAssociation";
-import { IProjectAssociation } from "../../../domain/entityProperties/IProjectAssociation";
 import { Guard } from "../../commons/Guard";
-import { IAssociationDTO } from "../../DTOs/IAssociationDTO";
 import { NotVerifiedError } from "../../errors/NotVerifiedError";
 import { IAssociationRepository } from "../../interfaces/repository/IAssociationRepository";
 import { ICreateActionUseCase } from "./ICreateActionUseCase";
+import { NotFoundError } from "../../errors/NotFoundError"
 
 export class CreateActionUseCase implements ICreateActionUseCase{
     async execute(associationName: string, projectName: string, actionInfo: any, associationRepository: IAssociationRepository): Promise<void> {
@@ -25,10 +24,10 @@ export class CreateActionUseCase implements ICreateActionUseCase{
             let action: IActionProjecAssociation = {
                 name: actionInfo.name,
                 greenCoins: 0,
-                dateLimite: actionInfo.daleLimite
+                dateLimite: new Date(actionInfo.dateLimite)
             }
             
-            await associationRepository.saveAction(associationName, projectName, action)
+            await associationRepository.addActionToProject(associationName, projectName, action)
         } catch (error) {
             throw error
         }

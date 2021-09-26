@@ -22,7 +22,7 @@ export class CreateAssociatonUseCase implements ICreateAssociationUseCase {
             associationInfo.verified = false
             associationInfo.creationDate = new Date()
 
-            associationInfo.password = passwordHandler.generatePasswordHash(associationInfo.passwrd)
+            associationInfo.password = await passwordHandler.generatePasswordHash(associationInfo.password)
             
             let newAssociaton = AssociationMap.toDomain(associationInfo)
             await associationRepository.save(newAssociaton)

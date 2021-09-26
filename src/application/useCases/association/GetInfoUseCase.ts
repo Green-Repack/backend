@@ -3,6 +3,7 @@ import { IAssociationDTO } from "../../DTOs/IAssociationDTO";
 import { IAssociationRepository } from "../../interfaces/repository/IAssociationRepository";
 import { AssociationMap } from "../../mappers/AssociationMap";
 import { IGetInfoUseCase } from "./IGetInfoUseCase";
+import { NotFoundError } from "../../errors/NotFoundError"
 
 export class GetInfoUseCase implements IGetInfoUseCase {
     async execute(name: string, associationRepository: IAssociationRepository): Promise<IAssociationDTO> {

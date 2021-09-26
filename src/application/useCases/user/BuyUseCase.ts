@@ -22,7 +22,7 @@ export class BuyUseCase implements IBuyUseCase {
             let user = await userRepository.getUserById(userId)
             if (user == undefined) throw new NotFoundError("User not found")
 
-            let promotion = await promoCoinsRepository.getActivePromo()
+            let promotion = await promoCoinsRepository.getActivePromo(currentDate)
             if (promotion !=  undefined) promoMultiplier = promotion.multiplicateur
 
             let userDTO = UserMap.toDTO(user)

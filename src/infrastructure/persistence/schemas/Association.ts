@@ -48,14 +48,12 @@ export const associationSchema = new Schema<IAssociationProps>({
     },
     siret: {
         type: String,
-        required: true,
         unique: true,
         minlength: 5,
         maxlength: 255,
     },
     numRNA: {
         type: String,
-        required: true,
         unique: true,
         minlength: 5,
         maxlength: 255,
@@ -120,4 +118,4 @@ export const associationSchema = new Schema<IAssociationProps>({
     }
 });
 
-export const AssociatonModel = model<IAssociationProps>("Association", associationSchema)
+export const AssociationModel = model<IAssociationProps>("Association", associationSchema)

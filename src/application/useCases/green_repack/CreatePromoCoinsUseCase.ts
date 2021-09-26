@@ -23,7 +23,7 @@ export class CreatePromoCoinsUseCase implements ICreatePromoCoinsUseCase {
 
             let promo = PromoCoinsMap.toDomain(promoCoinsDTO)
 
-            let exists = await promoCoinsRepository.promoExists(promo)
+            let exists = await promoCoinsRepository.exists(promo.name)
             if (exists) throw new AlreadyExistsError("This promotion already exists")
 
             await promoCoinsRepository.save(promo)

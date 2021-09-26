@@ -4,6 +4,7 @@ import { IProductRepository } from "../../interfaces/repository/IProductReposito
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IAddProductUseCase } from "./IAddProductUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class AddProductUseCase implements IAddProductUseCase {
     async execute(warehouseName: string, productInfo: any, productRepository: IProductRepository, 
