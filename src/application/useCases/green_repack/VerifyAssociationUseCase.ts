@@ -15,6 +15,7 @@ export class VerifyAssociationUseCase implements IVerifyAssociationUseCase {
         let existsByName = await associationHandler.verifyByName(associationName)
         let existsBySiret = await associationHandler.verifyBySiret(association.siret)
         let existsByNumRNA = await associationHandler.verifyByRNA(association.numRNA)
+        
 
         if (existsByName || existsBySiret || existsByNumRNA) {
             let associationDTO  = AssociationMap.toDTO(association)
