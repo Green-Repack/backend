@@ -10,7 +10,7 @@ export interface IUserDTO {
     email: string
     password: string
     greenCoins: IGreenCoins
-    marchand: boolean
+    merchant: boolean
     achats: IUserAchat[]
     productSold?: IProductSold[]
     token?: string

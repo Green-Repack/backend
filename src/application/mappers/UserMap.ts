@@ -14,7 +14,7 @@ export class UserMap {
             achats: user.achats,
             productSold: user.productSold,
             greenCoins: user.greenCoins,
-            marchand: user.isMarchand(),
+            merchant: user.isMarchand(),
             siren: user.siren,
             siret: user.siret,
             creationDate: user.creationDate
@@ -32,7 +32,7 @@ export class UserMap {
             achats: user.achats,
             productSold: user.productSold,
             greenCoins: user.greenCoins,
-            marchand: user.marchand,
+            merchant: user.merchant,
             siren: user.siren,
             siret: user.siret,
             creationDate: user.creationDate
@@ -51,7 +51,7 @@ export class UserMap {
             achats: user.achats,
             productSold: user.productSold,
             greenCoins: user.greenCoins,
-            marchand: user.isMarchand(),
+            merchant: user.isMarchand(),
             siren: user.siren,
             siret: user.siret,
             creationDate: user.creationDate

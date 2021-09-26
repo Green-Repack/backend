@@ -17,27 +17,27 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
             let product = await productRepository.getProductById(productId)
             if (product == undefined) throw new NotFoundError("Product not found")
 
-            let marchand = await userRepository.getUserById(product.marchandId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
-            let marchandDTO = UserMap.toDTO(marchand)
+            let merchantDTO = UserMap.toDTO(merchant)
 
             productDTO.accepted = true
             productDTO.acceptationDate = new Date()
 
-            if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
+            if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
 
-            marchandDTO.productSold.push({
+            merchantDTO.productSold.push({
                 productId: product.id,
                 priceReceived: product.priceSeller,
                 sellDate: new Date()
             })
 
             await productRepository.save(ProductMap.toDomain(productDTO))
-            await userRepository.save(UserMap.toDomain(marchandDTO))
+            await userRepository.save(UserMap.toDomain(merchantDTO))
 
-            await paymentHandler.emitPayment(product.priceSeller, marchand.id)
+            await paymentHandler.emitPayment(product.priceSeller, merchant.id)
         } catch(error) {
             throw error
         }

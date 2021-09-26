@@ -1,5 +1,5 @@
 import { Guard } from "../../commons/Guard";
-import { IProduitDTO } from "../../DTOs/IProduitDTO";
+import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
@@ -8,7 +8,7 @@ import { IMakeCounterOfferUseCase } from "./IMakeCounterOfferUseCase";
 
 export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
     async execute(productId: string, warehouseName: string, counterOffer: number, warehouseRepository: IWarehouseRepository, 
-        productRepository: IProductRepository, userRepository: IUserRepository): Promise<IProduitDTO> {
+        productRepository: IProductRepository, userRepository: IUserRepository): Promise<IProductDTO> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
             Guard.AgainstNullOrUndefined(warehouseName, "Warehouse's name is required")
@@ -20,8 +20,8 @@ export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
-            let marchand = await userRepository.getUserById(product.marchandId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
             productDTO.priceSeller = counterOffer

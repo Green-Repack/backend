@@ -26,11 +26,11 @@ export class RegisterUseCase  implements IRegisterUseCase {
                 password: "",
                 achats: new Array<IUserAchat>(),
                 greenCoins: {amount: 0, expireDate: new Date()},
-                marchand: this.isMarchand(userInfo.siren, userInfo.siret),
+                merchant: this.isMarchand(userInfo.siren, userInfo.siret),
                 creationDate: new Date()
             }
 
-            if (userDTO.marchand) userDTO.productSold = new Array<IProductSold>()
+            if (userDTO.merchant) userDTO.productSold = new Array<IProductSold>()
 
             userDTO.password = await passwordHandler.generatePasswordHash(userInfo.password)
         

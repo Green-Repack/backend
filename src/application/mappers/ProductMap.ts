@@ -1,8 +1,8 @@
-import { Produit } from "../../domain/entity/Produit"
-import { IProduitDTO } from "../DTOs/IProduitDTO"
+import { Product } from "../../domain/entity/Product"
+import { IProductDTO } from "../DTOs/IProductDTO"
 
 export class ProductMap {
-    public static toDTO(product: Produit): IProduitDTO {
+    public static toDTO(product: Product): IProductDTO {
         return {
             id: product.id,
             name: product.name,
@@ -10,10 +10,12 @@ export class ProductMap {
             brand: product.brand,
             model: product.model,
             specificities: product.specificities,
+            state: product.state,
+            status: product.status,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
-            marchandId: product.marchandId,
+            merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
             sold: product.isSold(),
@@ -22,7 +24,7 @@ export class ProductMap {
         }
     }
 
-    public static toDomain(product: any): Produit {
+    public static toDomain(product: any): Product {
         return product.createEntrepot({
             name: product.name,
             category: product.category,
@@ -31,8 +33,10 @@ export class ProductMap {
             specificities: product.specificities,
             price: product.price,
             priceSeller: product.priceSeller,
+            state: product.state,
+            status: product.status,
             images: product.images,
-            marchandId: product.marchandId,
+            merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
             sold: product.isSold(),
@@ -41,17 +45,27 @@ export class ProductMap {
         }, product.id)
     }
 
-    public static toPersistence(product: Produit): any {
+    public static allToDomain(products: any[]): Product[]{
+        let list = []
+        for(let product of products){
+            list.push(this.toDomain(product))
+        }
+        return list
+    }
+
+    public static toPersistence(product: Product): any {
         return {
             name: product.name,
             category: product.category,
             brand: product.brand,
             model: product.model,
             specificities: product.specificities,
+            state: product.state,
+            status: product.status,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
-            marchandId: product.marchandId,
+            merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
             sold: product.isSold(),

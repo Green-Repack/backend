@@ -1,5 +1,5 @@
 import { Guard } from "../../commons/Guard";
-import { IProduitDTO } from "../../DTOs/IProduitDTO";
+import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
@@ -19,14 +19,14 @@ export class SellUseCase implements ISellUseCase {
 
             let estimatePrice = 1233 //TODO estimer du produit en fonction du produit
 
-            let productDTO: IProduitDTO = {
+            let productDTO: IProductDTO = {
                 name: productInfo.name,
                 category: productInfo.category,
                 brand: productInfo.brand,
                 model: productInfo.model,
                 specificities: productInfo.specificities,
                 images: productInfo.images,
-                marchandId: user.id,
+                merchantId: user.id,
                 priceSeller: estimatePrice,
                 sold: false,
                 creationDate: new Date()

@@ -1,8 +1,11 @@
+import {ProductCategory} from "../../application/user/enum/ProductCategory";
+import {ProductState} from "../../application/user/enum/ProductState";
+import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
 import { IProduitSpecs } from "../entityProperties/IProduitSpecs";
-import { IProduitProps } from "../entityProperties/IProduitProps";
+import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
 
-export class Produit extends Entity<IProduitProps> {
+export class Product extends Entity<IProductProps> {
     get id(): string {
         return this._id!
     }
@@ -11,7 +14,7 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.name
     }
 
-    get category(): string {
+    get category(): ProductCategory {
         return this.props.category
     }
 
@@ -35,9 +38,16 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.images
     }
 
+    get status(): PurchasePromiseStatus {
+        return this.props.status
+    }
 
-    get marchandId(): string {
-        return this.props.marchandId!
+    get state(): ProductState {
+        return this.props.state
+    }
+
+    get merchantId(): string {
+        return this.props.merchantId!
     }
 
     get accepted(): boolean {
@@ -63,12 +73,12 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.sold
     }
 
-    private constructor(props: IProduitProps, id?: string) {
+    private constructor(props: IProductProps, id?: string) {
         super(props, id)
     }
 
-    public static createProduit(props: IProduitProps, id?: string): Produit {
-        const instance = new Produit(props, id)
+    public static createProduct(props: IProductProps, id?: string): Product {
+        const instance = new Product(props, id)
         return instance
     }
 }

@@ -21,19 +21,19 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
             
-            let marchand = await userRepository.getUserById(product.marchandId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
-            let marchandDTO = UserMap.toDTO(marchand)
+            let merchantDTO = UserMap.toDTO(merchant)
             
             productDTO.accepted = true
             productDTO.acceptationDate = new Date()
             productDTO.warehouseId = warehouse.id
 
-            if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
+            if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
 
-            marchandDTO.productSold.push({
+            merchantDTO.productSold.push({
                 productId: product.id,
                 priceReceived: product.priceSeller,
                 sellDate: new Date()
@@ -41,9 +41,9 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
 
             await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), warehouse.id)
             await productRepository.save(ProductMap.toDomain(productDTO))
-            await userRepository.save(UserMap.toDomain(marchandDTO))
+            await userRepository.save(UserMap.toDomain(merchantDTO))
 
-            paymentHanlder.emitPayment(product.priceSeller, marchand.id)
+            paymentHanlder.emitPayment(product.priceSeller, merchant.id)
         } catch(error) {
             throw error
         }

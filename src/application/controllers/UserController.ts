@@ -61,10 +61,11 @@ export class UserController extends BaseController {
         }
     }
 
-    public async buyProducts(req: any, res: any) {
+    public async buyProducts(req: any, res: any, view: any) {
         try {
             let secretKey = await this._buyUseCase.execute(req.userId, req.body, this._paymentHandler, 
-                this._userRepository, this._productRepository, this._warehouseRepository, this._promoRepository)
+                this._userRepository, this._productRepository, this._warehouseRepository, this._promoRepository,
+                req, view)
             res.status(200).json(secretKey)
         } catch(error) {
             console.log(error)

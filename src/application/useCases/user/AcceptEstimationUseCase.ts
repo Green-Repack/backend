@@ -15,10 +15,10 @@ export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
             let product = await productRepository.getProductById(productId)
             if (product == undefined) throw new NotFoundError("Product not found")
             
-            let marchand = await userRepository.getUserById(product.marchandId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
-            await deliveryHandler.generate(marchand)
+            await deliveryHandler.generate(merchant)
         } catch(error) {
             throw error
         }
