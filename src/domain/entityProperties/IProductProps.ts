@@ -17,7 +17,7 @@ export interface IProductProps {
     merchantId?: string
     warehouseId?: string
     accepted?: boolean
-    sold: boolean
     creationDate: Date
     acceptationDate?: Date
+    weight: number
 }

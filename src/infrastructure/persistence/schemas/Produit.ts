@@ -50,10 +50,6 @@ export const produitSchema = new Schema<IProductProps>({
     merchantId: String,
     warehouseId: String,
     accepted: Boolean,
-    sold: {
-        type: Boolean,
-        required: true
-    },
     creationDate: {
         type: Date,
         required: true

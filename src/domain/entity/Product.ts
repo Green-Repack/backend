@@ -69,10 +69,10 @@ export class Product extends Entity<IProductProps> {
     get priceSeller(): number {
         return this.props.priceSeller!
     }
-    public isSold(): boolean {
-        return this.props.sold
+    
+    get weight(): number {
+        return this.props.weight!
     }
-
     private constructor(props: IProductProps, id?: string) {
         super(props, id)
     }

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import {IProductProps} from "../../../domain/interface/product/IProductProps";
+import { IProductProps } from "../../../domain/entityProperties/IProductProps";
 
 export const productSchema = new Schema<IProductProps>({
     name: {
@@ -9,42 +9,39 @@ export const productSchema = new Schema<IProductProps>({
         maxlength: 255,
         trim: true,
     },
-    creatorId: {
+    category: {
         type: String,
         required: true,
-        trim: true,
     },
-    category: {
+    brand: {
+        type: String,
+        required: true,
+    },
+    model: {
         type: String,
         required: true,
     },
     specificities: {
         _id:false,
-        brand: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        description:{
-            type: String,
-            required: true,
-            trim: true,
-        },
-        technicalSpec: [{
-            type: String,
-            required: true,
-            trim: true,
-        }],
-        productionYear: {
-            type: Number,
-            required: true
-        }
+        specList: [{
+            name: {
+                type: String
+            }
+        }]
     },
-    initialPrice: {
+    status: {
+        type: String,
+        required: true,
+    },
+    state: {
+        type: String,
+        required: true,
+    },
+    price: {
         type: Number,
         default: 0,
     },
-    displayPrice: {
+    priceSeller: {
         type: Number,
         default: 0,
     },
@@ -54,23 +51,29 @@ export const productSchema = new Schema<IProductProps>({
         maxlength: 255,
         trim: true,
     }],
-    status: {
+    merchantId: {
         type: String,
         required: true,
     },
-    weight: {
-        type: Number,
-        default: 0,
-        required: true
-    },
-    state: {
+    warehouseId: {
         type: String,
-        required: true,
     },
     accepted: {
         type: Boolean,
         required: true,
         default: false
+    },
+    creationDate: {
+        type: Date,
+        required: true,
+    },
+    acceptationDate: {
+        type: Date,
+    },
+    weight: {
+        type: Number,
+        default: 5,
+        required: true
     },
 });
 

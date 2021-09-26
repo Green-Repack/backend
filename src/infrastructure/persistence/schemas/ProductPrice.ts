@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import {IProductPriceProps} from "../../../domain/interface/product/productData/IProductPriceProps";
+import { IProductPriceProps } from "../../../domain/entityProperties/IProductPriceProps";
 
 export const productPrice = new Schema<IProductPriceProps>({
     productCategory: {

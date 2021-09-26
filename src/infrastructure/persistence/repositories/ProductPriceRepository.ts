@@ -1,5 +1,6 @@
-import {IProductPriceRepository} from "../../../domain/interface/product/productData/IProductPriceRepository";
-import {IProductPriceProps} from "../../../domain/interface/product/productData/IProductPriceProps";
+import { IProductPriceRepository } from "../../../application/interfaces/repository/IProductPriceRepository";
+import { ProductPrice } from "../../../domain/entity/ProductPrice";
+import { IProductPriceProps } from "../../../domain/entityProperties/IProductPriceProps";
 import {ProductPriceModel} from "../schemas/ProductPrice";
 
 export class ProductPriceRepository implements IProductPriceRepository{
@@ -15,15 +16,17 @@ export class ProductPriceRepository implements IProductPriceRepository{
         return null
     }
 
-    delete(id: string): Promise<void> {
-        return Promise.resolve(undefined);
+    async delete(t: ProductPrice): Promise<void> {
+        await ProductPriceModel.findByIdAndDelete(t.id)
     }
 
-    exists(idOrEmail: string): Promise<boolean> {
-        return Promise.resolve(false);
+    async exists(id: string): Promise<boolean> {
+        let priceProduct = await ProductPriceModel.findById(id);
+        if(priceProduct) return true
+        return false
     }
 
-    save(t: IProductPriceProps): Promise<void> {
+    async save(t: IProductPriceProps): Promise<void> {
         return Promise.resolve(undefined);
     }
 
