@@ -2,7 +2,7 @@ import { WarehouseMap } from "../../../application/mappers/WarehouseMap";
 import { Warehouse } from "../../../domain/entity/Warehouse";
 import { IWarehouseRepository } from "../../../application/interfaces/repository/IWarehouseRepository";
 import { WarehouseModel } from "../schemas/Warehouse";
-import { Produit } from "../../../domain/entity/Produit";
+import { Product } from "../../../domain/entity/Product";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { injectable } from "inversify";
 
@@ -80,15 +80,15 @@ export class WarehouseRepository implements IWarehouseRepository {
         }
     }
 
-    async updateStockProduct(product: Produit, wharehouseId: string, quantity: number): Promise<void> {
+    async updateStockProduct(product: Product, wharehouseId: string, quantity: number): Promise<void> {
         throw new Error("Method not implemented.");
     }
 
-    async saveProduct(product: Produit, warehouseName: string): Promise<void> {
+    async saveProduct(product: Product, warehouseName: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
 
-    async deleteProduct(product: Produit, warehouseName: string): Promise<void> {
+    async deleteProduct(product: Product, warehouseName: string): Promise<void> {
         throw new Error("Method not implemented.");
     }
 

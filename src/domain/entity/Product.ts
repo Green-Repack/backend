@@ -1,8 +1,8 @@
-import { IProduitSpecs } from "../entityProperties/IProduitSpecs";
-import { IProduitProps } from "../entityProperties/IProduitProps";
+import { IProductSpecs } from "../entityProperties/IProductSpecs";
+import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
 
-export class Produit extends Entity<IProduitProps> {
+export class Product extends Entity<IProductProps> {
     get id(): string {
         return this._id!
     }
@@ -23,7 +23,7 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.model
     }
 
-    get specificities(): IProduitSpecs {
+    get specificities(): IProductSpecs {
         return this.props.specificities
     }
 
@@ -36,8 +36,8 @@ export class Produit extends Entity<IProduitProps> {
     }
 
 
-    get marchandId(): string {
-        return this.props.marchandId!
+    get merchantId(): string {
+        return this.props.merchantId!
     }
 
     get accepted(): boolean {
@@ -63,12 +63,12 @@ export class Produit extends Entity<IProduitProps> {
         return this.props.sold
     }
 
-    private constructor(props: IProduitProps, id?: string) {
+    private constructor(props: IProductProps, id?: string) {
         super(props, id)
     }
 
-    public static createProduit(props: IProduitProps, id?: string): Produit {
-        const instance = new Produit(props, id)
+    public static createProduct(props: IProductProps, id?: string): Product {
+        const instance = new Product(props, id)
         return instance
     }
 }

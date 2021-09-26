@@ -1,16 +1,15 @@
-import { IProduitSpecs } from "../../domain/entityProperties/IProduitSpecs";
+import { IProductSpecs } from "./IProductSpecs";
 
-export interface IProduitDTO {
-    id?: string
+export interface IProductProps {
     name: string
     category: string
     brand: string
     model: string
-    specificities: IProduitSpecs
+    specificities: IProductSpecs
     price?: number
     priceSeller?: number
     images: string[]
-    marchandId?: string
+    merchantId?: string
     warehouseId?: string
     accepted?: boolean
     sold: boolean

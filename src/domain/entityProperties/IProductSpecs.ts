@@ -1,4 +1,4 @@
-export interface IProduitSpecs {
+export interface IProductSpecs {
     memoire?: number
     ram?: number
     color: string

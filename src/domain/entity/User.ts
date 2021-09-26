@@ -67,7 +67,7 @@ export class User extends Entity<IUserProps> {
         return instance
     }
 
-    public isMarchand(): boolean {
-        return this.props.marchand
+    public isMerchant(): boolean {
+        return this.props.merchant
     }
 }
