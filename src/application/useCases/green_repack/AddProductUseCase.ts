@@ -5,10 +5,11 @@ import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepo
 import { ProductMap } from "../../mappers/ProductMap";
 import { IAddProductUseCase } from "./IAddProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { IProductPriceRepository } from "../../interfaces/repository/IProductPriceRepository";
 
 export class AddProductUseCase implements IAddProductUseCase {
     async execute(warehouseName: string, productInfo: any, productRepository: IProductRepository, 
-        warehouseRepository: IWarehouseRepository): Promise<void> {
+        warehouseRepository: IWarehouseRepository, productPriceRepository: IProductPriceRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(warehouseName, "WarehouseName is required")
             Guard.AgainstNullOrUndefined(productInfo.name, "Name is required")
@@ -22,6 +23,8 @@ export class AddProductUseCase implements IAddProductUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
+            let productPrice = await productPriceRepository.getByCategoryAndState(productInfo.category, productInfo.state)
+
             let productDTO: IProductDTO = {
                 name: productInfo.name,
                 category: productInfo.category,
@@ -32,6 +35,7 @@ export class AddProductUseCase implements IAddProductUseCase {
                 state: productInfo.state,
                 status: productInfo.status,
                 weight: productInfo.weight,
+                price: productPrice.price,
                 creationDate: new Date()
             }
 
