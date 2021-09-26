@@ -18,14 +18,14 @@ export class ProductMap {
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
-            sold: product.isSold(),
+            weight: product.weight,
             creationDate: product.creationDate,
             acceptationDate: product.acceptationDate
         }
     }
 
     public static toDomain(product: any): Product {
-        return product.createEntrepot({
+        return Product.createProduct({
             name: product.name,
             category: product.category,
             brand: product.brand,
@@ -39,7 +39,7 @@ export class ProductMap {
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
-            sold: product.isSold(),
+            weight: product.weight,
             creationDate: product.creationDate,
             acceptationDate: product.acceptationDate
         }, product.id)
@@ -68,7 +68,7 @@ export class ProductMap {
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
             accepted: product.accepted,
-            sold: product.isSold(),
+            weight: product.weight,
             creationDate: product.creationDate,
             acceptationDate: product.acceptationDate
         }

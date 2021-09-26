@@ -2,7 +2,10 @@ import { ProductMap } from "../../../application/mappers/ProductMap";
 import {Product} from "../../../domain/entity/Product";
 import {IProductRepository} from "../../../application/interfaces/repository/IProductRepository";
 import {ProductModel} from "../schemas/Product";
+import { ProductCategory } from "../../../application/user/enum/ProductCategory";
+import { injectable } from "inversify";
 
+@injectable()
 export class ProductRepository implements IProductRepository{
     async delete(t: Product): Promise<void> {
         await ProductModel.findByIdAndDelete(t.id);
@@ -15,25 +18,26 @@ export class ProductRepository implements IProductRepository{
 
     async getAllProducts(): Promise<Product[]> {
         let products = await ProductModel.find({});
-        if(products) return products;
+        if(products) return ProductMap.allToDomain(products);
         return []
     }
 
     async getProductByCategory(category: string): Promise<Product[]> {
-        let products = await ProductModel.find({ category: category.toLowerCase() });
-        if(products) return products;
+        if(!ProductCategory[category]) return []
+        let products = await ProductModel.find({ category: ProductCategory[category] });
+        if(products) return ProductMap.allToDomain(products);
         return []
     }
 
     async getProductById(productId: string): Promise<Product | null> {
         let product = await ProductModel.findById(productId);
-        if(product) return product;
+        if(product) return ProductMap.toDomain(product);
         return null
     }
 
     async getProductByMerchant(merchantId: string): Promise<Product[]> {
         let products = await ProductModel.find({creatorId: merchantId});
-        if(products) return products;
+        if(products) return ProductMap.allToDomain(products);
         return []
     }
 
@@ -51,7 +55,7 @@ export class ProductRepository implements IProductRepository{
 
     async getProductByFilter(filter: any): Promise<Product[]> {
         let products = await ProductModel.find(filter);
-        if(products) return products;
+        if(products) return ProductMap.allToDomain(products);
         return []
     }
 

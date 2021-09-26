@@ -18,7 +18,7 @@ export interface IProductDTO {
     merchantId?: string
     warehouseId?: string
     accepted?: boolean
-    sold: boolean
     creationDate: Date
+    weight: number,
     acceptationDate?: Date
 }

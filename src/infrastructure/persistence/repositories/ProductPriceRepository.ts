@@ -2,7 +2,9 @@ import { IProductPriceRepository } from "../../../application/interfaces/reposit
 import { ProductPrice } from "../../../domain/entity/ProductPrice";
 import { IProductPriceProps } from "../../../domain/entityProperties/IProductPriceProps";
 import {ProductPriceModel} from "../schemas/ProductPrice";
+import { injectable } from "inversify";
 
+@injectable()
 export class ProductPriceRepository implements IProductPriceRepository{
     async getByCategory(category: string): Promise<IProductPriceProps[]> {
         let productPrices = await ProductPriceModel.find({productCategory: category})
