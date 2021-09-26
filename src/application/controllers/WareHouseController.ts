@@ -1,4 +1,3 @@
-import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
 import { BaseController } from "./BaseController";
