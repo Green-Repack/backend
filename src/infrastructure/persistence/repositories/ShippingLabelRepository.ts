@@ -14,6 +14,11 @@ export class ShippingLabelRepository implements IShippingLabelRepository{
         return !!label;
     }
 
+    async existsByProductUserWareHouse(productId: string, userId: string, wareHouseId: string): Promise<boolean> {
+        let label = await ShippingLabelModel.findOne({productId: productId, userId: userId, wareHouseId: wareHouseId});
+        return !!label;
+    }
+
     async getAllByProductId(prodId: string): Promise<IShippingLabelProps[]> {
         let labels = await ShippingLabelModel.find({productId: prodId});
         if(labels) return labels;
@@ -44,7 +49,7 @@ export class ShippingLabelRepository implements IShippingLabelRepository{
     }
 
     async save(t: ShippingLabel): Promise<void> {
-        let exist = await this.exists(t.id);
+        let exist = await this.existsByProductUserWareHouse(t.productId, t.userId, t.wareHouseId);
         let rawShippingModelData = ShippingLabelMap.toPersistence(t);
 
         if(exist){

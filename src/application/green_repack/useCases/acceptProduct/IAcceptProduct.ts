@@ -1,5 +1,5 @@
-import {IAddress} from "../../../../domain/interface/common/IAddress";
+import {ShippingLabel} from "../../../../domain/entity/ShippingLabel";
 
 export interface IAcceptProduct{
-    execute(productId: string, userId: string, warehouseAddress: IAddress): Promise<string>
+    execute(productId: string, userId: string, wareHouseId: string): Promise<ShippingLabel>
 }

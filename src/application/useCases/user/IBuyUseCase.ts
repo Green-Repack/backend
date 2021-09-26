@@ -6,5 +6,5 @@ import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 
 export interface IBuyUseCase {
     execute(userId: string, itemBucket: any, paymentHandler: IPaymentHandler, userRepository: IUserRepository, productRepository: IProductRepository, 
-        warehouseRepository: IWarehouseRepository, promoCoinsRepository: IPromoCoinsRepository): Promise<string>
+        warehouseRepository: IWarehouseRepository, promoCoinsRepository: IPromoCoinsRepository, request: any, view: any): Promise<string>
 }

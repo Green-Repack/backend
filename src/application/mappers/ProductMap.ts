@@ -1,8 +1,8 @@
 import { Product } from "../../domain/entity/Product"
-import { IProduitDTO } from "../DTOs/IProduitDTO"
+import { IProductDTO } from "../DTOs/IProductDTO"
 
 export class ProductMap {
-    public static toDTO(product: Product): IProduitDTO {
+    public static toDTO(product: Product): IProductDTO {
         return {
             id: product.id,
             name: product.name,
@@ -10,6 +10,8 @@ export class ProductMap {
             brand: product.brand,
             model: product.model,
             specificities: product.specificities,
+            state: product.state,
+            status: product.status,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
@@ -31,6 +33,8 @@ export class ProductMap {
             specificities: product.specificities,
             price: product.price,
             priceSeller: product.priceSeller,
+            state: product.state,
+            status: product.status,
             images: product.images,
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
@@ -56,6 +60,8 @@ export class ProductMap {
             brand: product.brand,
             model: product.model,
             specificities: product.specificities,
+            state: product.state,
+            status: product.status,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,

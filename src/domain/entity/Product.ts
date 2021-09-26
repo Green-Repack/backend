@@ -1,3 +1,6 @@
+import {ProductCategory} from "../../application/user/enum/ProductCategory";
+import {ProductState} from "../../application/user/enum/ProductState";
+import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
 import { IProduitSpecs } from "../entityProperties/IProduitSpecs";
 import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
@@ -11,7 +14,7 @@ export class Product extends Entity<IProductProps> {
         return this.props.name
     }
 
-    get category(): string {
+    get category(): ProductCategory {
         return this.props.category
     }
 
@@ -35,6 +38,13 @@ export class Product extends Entity<IProductProps> {
         return this.props.images
     }
 
+    get status(): PurchasePromiseStatus {
+        return this.props.status
+    }
+
+    get state(): ProductState {
+        return this.props.state
+    }
 
     get merchantId(): string {
         return this.props.merchantId!

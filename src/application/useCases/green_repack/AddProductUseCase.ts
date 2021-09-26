@@ -1,5 +1,5 @@
 import { Guard } from "../../commons/Guard";
-import { IProduitDTO } from "../../DTOs/IProduitDTO";
+import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 import { ProductMap } from "../../mappers/ProductMap";
@@ -18,7 +18,7 @@ export class AddProductUseCase implements IAddProductUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
-            let productDTO: IProduitDTO = {
+            let productDTO: IProductDTO = {
                 name: productInfo.name,
                 category: productInfo.category,
                 brand: productInfo.brand,
