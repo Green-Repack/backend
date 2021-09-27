@@ -1,3 +1,4 @@
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
 import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
@@ -24,6 +25,7 @@ export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
             if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
+            productDTO.sellingStatus = EPurchasePromiseStatus.WaitingForCounterOfferApproval
             productDTO.priceSeller = counterOffer
             productDTO.warehouseId = warehouse.id
 

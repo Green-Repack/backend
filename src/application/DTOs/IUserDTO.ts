@@ -1,7 +1,7 @@
 import { IAddress } from "../../domain/entityProperties/IAddress";
 import { IGreenCoins } from "../../domain/entityProperties/IGreenCoins";
 import { IProductSold } from "../../domain/entityProperties/IProductSold";
-import { IUserAchat } from "../../domain/entityProperties/IUserAchat";
+import { IUserOrders } from "../../domain/entityProperties/IUserOrders";
 
 export interface IUserDTO {
     id?: string
@@ -11,7 +11,7 @@ export interface IUserDTO {
     password: string
     greenCoins: IGreenCoins
     merchant: boolean
-    achats: IUserAchat[]
+    orders: IUserOrders[]
     productSold?: IProductSold[]
     token?: string
     address: IAddress

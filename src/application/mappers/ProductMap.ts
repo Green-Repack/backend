@@ -9,35 +9,39 @@ export class ProductMap {
             category: product.category,
             brand: product.brand,
             model: product.model,
+            sellingStatus: product.sellingStatus,
+            state: product.state,
             specificities: product.specificities,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
-            accepted: product.accepted,
             sold: product.isSold(),
             creationDate: product.creationDate,
-            acceptationDate: product.acceptationDate
+            weight: product.weight,
+            year: product.year
         }
     }
 
     public static toDomain(product: any): Product {
-        return product.createEntrepot({
+        return Product.createProduct({
             name: product.name,
             category: product.category,
             brand: product.brand,
             model: product.model,
+            sellingStatus: product.sellingStatus,
+            state: product.state,
             specificities: product.specificities,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
-            accepted: product.accepted,
-            sold: product.isSold(),
+            sold: product.sold,
             creationDate: product.creationDate,
-            acceptationDate: product.acceptationDate
+            weight: product.weight,
+            year: product.year
         }, product.id)
     }
 
@@ -47,16 +51,18 @@ export class ProductMap {
             category: product.category,
             brand: product.brand,
             model: product.model,
+            sellingStatus: product.sellingStatus,
+            state: product.state,
             specificities: product.specificities,
             price: product.price,
             priceSeller: product.priceSeller,
             images: product.images,
             merchantId: product.merchantId,
             warehouseId: product.warehouseId,
-            accepted: product.accepted,
             sold: product.isSold(),
             creationDate: product.creationDate,
-            acceptationDate: product.acceptationDate
+            weight: product.weight,
+            year: product.year
         }
     }
 }

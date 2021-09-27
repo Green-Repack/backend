@@ -6,6 +6,7 @@ import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IRefuseProductUseCase } from "./IRefuseProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 
 export class RefuseProductUseCase implements IRefuseProductUseCase {
     async execute(productId: string, deliveryFee: number, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler, 
@@ -16,13 +17,12 @@ export class RefuseProductUseCase implements IRefuseProductUseCase {
             let product = await productRepository.getProductById(productId)
             if (product == undefined) throw new NotFoundError("Product not found")
 
-            let marchand = await userRepository.getUserById(product.marchandId)
+            let marchand = await userRepository.getUserById(product.merchantId)
             if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
 
-            productDTO.accepted = false
-            productDTO.acceptationDate = new Date()
+            productDTO.sellingStatus = EPurchasePromiseStatus.Declined
             productDTO.priceSeller = 0
             
             await productRepository.save(ProductMap.toDomain(productDTO))

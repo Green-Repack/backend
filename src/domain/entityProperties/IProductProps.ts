@@ -1,18 +1,23 @@
+import { EProductCategory } from "./EProductCategory";
+import { EProductState } from "./EProductState";
+import { EPurchasePromiseStatus } from "./EPurchasePromiseStatus";
 import { IProductSpecs } from "./IProductSpecs";
 
 export interface IProductProps {
     name: string
-    category: string
+    category: EProductCategory
     brand: string
     model: string
-    specificities: IProductSpecs
+    sellingStatus: EPurchasePromiseStatus
+    state: EProductState
+    specificities: [{[name: string]: string}]
     price?: number
     priceSeller?: number
     images: string[]
     merchantId?: string
     warehouseId?: string
-    accepted?: boolean
     sold: boolean
     creationDate: Date
-    acceptationDate?: Date
+    weight: number
+    year: number
 }

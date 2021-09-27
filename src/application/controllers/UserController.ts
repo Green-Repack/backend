@@ -7,6 +7,7 @@ import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepos
 import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
+import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 import { BuyUseCase } from "../useCases/user/BuyUseCase";
 import { GetUserInfoUseCase } from "../useCases/user/GetUserInfoUseCase";
@@ -37,6 +38,8 @@ export class UserController {
     private _paymentHandler: IPaymentHandler;
     @inject(TYPES.IDeliveryTicketHandler)
     private _deliveryHandler: IDeliveryTicketHandler;
+    @inject(TYPES.IGenertorIdHandler)
+    private _IdGeneratorHandler: IGeneratorIdHandler;
 
     public constructor() {
         autoBind(this);
@@ -54,8 +57,8 @@ export class UserController {
 
     public async updateUserInfo(req: any, res: any) {
         try {
-            let userInfo = await this._updateUserInfoUseCase.execute(req.userId, req.body, this._userRepository)
-            res.status(200).json(userInfo)
+            await this._updateUserInfoUseCase.execute(req.userId, req.body, this._userRepository)
+            res.sendStatus(200)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
@@ -64,7 +67,7 @@ export class UserController {
 
     public async buyProducts(req: any, res: any) {
         try {
-            let secretKey = await this._buyUseCase.execute(req.userId, req.body, this._paymentHandler, 
+            let secretKey = await this._buyUseCase.execute(req.userId, req.body, this._paymentHandler, this._IdGeneratorHandler,
                 this._userRepository, this._productRepository, this._warehouseRepository, this._promoRepository)
             res.status(200).json(secretKey)
         } catch(error) {

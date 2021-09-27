@@ -8,9 +8,12 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IBuyUseCase } from "./IBuyUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { IGeneratorIdHandler } from "../../interfaces/services/IGeneratorIdHandler";
 
 export class BuyUseCase implements IBuyUseCase {
-    async execute(userId: string, itemBucket: any, paymentHandler: IPaymentHandler, userRepository: IUserRepository, 
+    private _totalPrice: number = 0
+
+    async execute(userId: string, itemBucket: any, paymentHandler: IPaymentHandler, idGenerator: IGeneratorIdHandler, userRepository: IUserRepository, 
         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository, 
         promoCoinsRepository: IPromoCoinsRepository): Promise<string> {
         try {
@@ -27,8 +30,7 @@ export class BuyUseCase implements IBuyUseCase {
             if (promotion !=  undefined) promoMultiplier = promotion.multiplicateur
 
             let userDTO = UserMap.toDTO(user)
-            let totalPrice = this.calculateBucketAmount(itemBucket)
-            let secretKey = paymentHandler.acceptPayment(totalPrice)
+            let secretKey = paymentHandler.acceptPayment(this._totalPrice)
 
             if (userDTO.greenCoins.expireDate != undefined) {
                 if (currentDate.toISOString() === userDTO.greenCoins.expireDate.toISOString()) {
@@ -36,12 +38,13 @@ export class BuyUseCase implements IBuyUseCase {
                 }
             }
 
-            userDTO.greenCoins.amount += ((totalPrice % 10) * promoMultiplier)
+            userDTO.greenCoins.amount += ((this._totalPrice % 10) * promoMultiplier)
             userDTO.greenCoins.expireDate = new Date(1, 1, currentDate.getFullYear() + 2)
 
-            let itemsId = await this.updateProductStock(itemBucket, warehouseRepository, productRepository)
-            userDTO.achats.push({
-                amount: totalPrice,
+            let itemsId = await this.calculateTotalPrice(itemBucket, warehouseRepository, productRepository)
+            userDTO.orders.push({
+                id: idGenerator.generate(),
+                amount: this._totalPrice,
                 paymentDate: new Date(),
                 itemsId: itemsId
             })
@@ -54,15 +57,7 @@ export class BuyUseCase implements IBuyUseCase {
         }
     }
 
-    private calculateBucketAmount(itemsBucket: any): number {
-        let total: number = 0
-        for(var article of itemsBucket) {
-            total += (article.price * article.quantity)
-        }
-        return total
-    }
-
-    private async updateProductStock(itemsBucket: any, warehouseRepository: IWarehouseRepository, 
+    private async calculateTotalPrice(itemsBucket: any, warehouseRepository: IWarehouseRepository, 
         productRepository: IProductRepository): Promise<Array<string>> {
         let itemsId = new Array<string>()
         for(var article of itemsBucket) {
@@ -71,8 +66,9 @@ export class BuyUseCase implements IBuyUseCase {
                 itemsId.push(product.id)
                 let productDTO = ProductMap.toDTO(product)
                 productDTO.sold = true
+                this._totalPrice += productDTO.price
                 await productRepository.save(ProductMap.toDomain(productDTO))
-                await warehouseRepository.updateStockProduct(product, product.warehouseId, article.quantity)
+                await warehouseRepository.updateStockProduct(product, true)
             } else {
                 throw new NotFoundError("Product not found : " + article.id)
             }

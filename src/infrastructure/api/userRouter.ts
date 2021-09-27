@@ -8,6 +8,8 @@ let userController: UserController = DIcontainer.resolve<UserController>(UserCon
 
 const userRouter = Router();
 
+userRouter.get("/info", AuthorizationHandler.userAuth, userController.getUserInfo)
+userRouter.put("/info/update", AuthorizationHandler.userAuth, userController.updateUserInfo)
 userRouter.post("/givegreencoins", AuthorizationHandler.userAuth, userController.giveGreenCoins)
 
 export default userRouter

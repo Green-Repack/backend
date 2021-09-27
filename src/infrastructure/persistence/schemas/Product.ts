@@ -13,7 +13,6 @@ export const productSchema = new Schema<IProductProps>({
     category: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         minlength: 5,
         maxlength: 255,
@@ -21,7 +20,6 @@ export const productSchema = new Schema<IProductProps>({
     brand: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         minlength: 5,
         maxlength: 255,
@@ -29,18 +27,19 @@ export const productSchema = new Schema<IProductProps>({
     model: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         minlength: 5,
         maxlength: 255,
     },
-    specificities: {
-        _id:false,
-        memoire: Number,
-        ram: Date,
-        color: Array,
-        poids: Number
+    sellingStatus: {
+        type: String,
+        required: true,
     },
+    state: {
+        type: String,
+        required: true,
+    },
+    specificities: [Schema.Types.Mixed],
     price: Number,
     priceSeller: Number,
     images: [{
@@ -49,7 +48,6 @@ export const productSchema = new Schema<IProductProps>({
     }],
     merchantId: String,
     warehouseId: String,
-    accepted: Boolean,
     sold: {
         type: Boolean,
         required: true
@@ -58,7 +56,11 @@ export const productSchema = new Schema<IProductProps>({
         type: Date,
         required: true
     },
-    acceptationDate: Date
+    weight : Number,
+    year: {
+        type: Number,
+        required: true
+    }
 });
 
-export const ProduitModel = model<IProductProps>("Produit", productSchema)
+export const ProductModel = model<IProductProps>("Product", productSchema)

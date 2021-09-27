@@ -8,6 +8,7 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 
 export class AcceptProductUseCase implements IAcceptProductUseCase {
     async execute(productId: string, warehouseName: string, paymentHanlder: IPaymentHandler, userRepository: IUserRepository,
@@ -21,14 +22,13 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
             
-            let marchand = await userRepository.getUserById(product.marchandId)
+            let marchand = await userRepository.getUserById(product.merchantId)
             if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
             let marchandDTO = UserMap.toDTO(marchand)
             
-            productDTO.accepted = true
-            productDTO.acceptationDate = new Date()
+            productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
             productDTO.warehouseId = warehouse.id
 
             if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
@@ -39,7 +39,7 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
                 sellDate: new Date()
             })
 
-            await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), warehouse.id)
+            await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), false)
             await productRepository.save(ProductMap.toDomain(productDTO))
             await userRepository.save(UserMap.toDomain(marchandDTO))
 

@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
 import autoBind from "auto-bind"

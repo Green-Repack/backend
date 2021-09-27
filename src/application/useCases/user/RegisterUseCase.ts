@@ -5,7 +5,7 @@ import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { UserMap } from "../../mappers/UserMap";
 import { AlreadyExistsError } from "../../errors/AlreadyExistsError";
 import { IUserDTO } from "../../DTOs/IUserDTO";
-import { IUserAchat } from "../../../domain/entityProperties/IUserAchat";
+import { IUserOrders } from "../../../domain/entityProperties/IUserOrders";
 import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 
 export class RegisterUseCase  implements IRegisterUseCase {
@@ -24,13 +24,13 @@ export class RegisterUseCase  implements IRegisterUseCase {
                 email: userInfo.email,
                 address: userInfo.address,
                 password: "",
-                achats: new Array<IUserAchat>(),
+                orders: new Array<IUserOrders>(),
                 greenCoins: {amount: 0, expireDate: new Date()},
-                marchand: this.isMarchand(userInfo.siren, userInfo.siret),
+                merchant: this.isMerchant(userInfo.siren, userInfo.siret),
                 creationDate: new Date()
             }
 
-            if (userDTO.marchand) userDTO.productSold = new Array<IProductSold>()
+            if (userDTO.merchant) userDTO.productSold = new Array<IProductSold>()
 
             userDTO.password = await passwordHandler.generatePasswordHash(userInfo.password)
         
@@ -45,7 +45,7 @@ export class RegisterUseCase  implements IRegisterUseCase {
         }
     }
 
-    private isMarchand(siren?: string, siret?: string): boolean {
+    private isMerchant(siren?: string, siret?: string): boolean {
         if ((siren! != null || siren! != undefined) || (siret! != null || siren! != undefined)) {
             return true
         }

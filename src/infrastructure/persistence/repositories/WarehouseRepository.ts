@@ -11,7 +11,7 @@ export class WarehouseRepository implements IWarehouseRepository {
     getWarehouseById(id: string): Promise<Warehouse | undefined> {
         throw new Error("Method not implemented.");
     }
-    async getWarehouses(): Promise<Warehouse[]> {
+    async getAllWarehouses(): Promise<Warehouse[]> {
         let result = new Array<Warehouse>()
         let warehouses = await WarehouseModel.find({})
         for (var warehouse of warehouses) {
@@ -20,7 +20,7 @@ export class WarehouseRepository implements IWarehouseRepository {
         return result
     }
 
-    async getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo> {
+    async getStockProduct(category: string, brand: string, model: string, year: number, warehouseName?: string): Promise<IStockInfo> {
         let quantityAvailable: number = 0
         if (warehouseName == undefined) {
             let warehouses = await WarehouseModel.aggregate([
@@ -31,7 +31,8 @@ export class WarehouseRepository implements IWarehouseRepository {
                                 "$and" : [
                                     { "category": category},
                                     { "brand": brand},
-                                    { "model": model}
+                                    { "model": model},
+                                    { "year": year},
                                 ]
                             }
                         }
@@ -48,7 +49,8 @@ export class WarehouseRepository implements IWarehouseRepository {
                                     "and" : [
                                         {"$eq": ["$stock.category", category]},
                                         {"$eq": ["$stock.brand", brand]},
-                                        {"$eq": ["$stock.model", model]}
+                                        {"$eq": ["$stock.model", model]},
+                                        {"$eq": ["$stock.year", year]}
                                     ]
                                 } 
                             }
@@ -58,13 +60,14 @@ export class WarehouseRepository implements IWarehouseRepository {
             ])
             for (var warehouse of warehouses) {
                 let stockInfo =  WarehouseMap.toDomain(warehouse).stock.pop()
-                if (stockInfo != undefined) quantityAvailable += stockInfo.quantityAvaible
+                if (stockInfo != undefined) quantityAvailable += stockInfo.quantityAvailable
             }
             return {
                 category: category,
                 brand: brand,
                 model: model,
-                quantityAvaible: quantityAvailable
+                year: year,
+                quantityAvailable: quantityAvailable
             }
         } else {
             let stock = await WarehouseModel.findOne({ name: warehouseName })
@@ -75,13 +78,45 @@ export class WarehouseRepository implements IWarehouseRepository {
                 category: category,
                 brand: brand,
                 model: model,
-                quantityAvaible: warehouse.stock.pop()?.quantityAvaible!
+                year: year,
+                quantityAvailable: warehouse.stock.pop()?.quantityAvailable!
             }
         }
     }
 
-    async updateStockProduct(product: Product, wharehouseId: string, quantity: number): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateStockProduct(product: Product, sell?: boolean): Promise<void> {
+        let warehouse = await WarehouseModel.findById(product.warehouseId)
+        let productInStock = await WarehouseModel.findOne({name: warehouse.name, 
+            "stock.category": product.category,
+            "stock.brand": product.brand,
+            "stock.model": product.model})
+        if (productInStock) {
+            if (sell!) {
+                await WarehouseModel.updateOne(
+                    {name: warehouse.name, 
+                    "stock.category": product.category,
+                    "stock.brand": product.brand,
+                    "stock.model": product.model},
+                {$inc: {"stock.$.quantityAvailable": -1}})
+            } else {
+                await WarehouseModel.updateOne(
+                    {name: warehouse.name, 
+                    "stock.category": product.category,
+                    "stock.brand": product.brand,
+                    "stock.model": product.model},
+                {$inc: {"stock.$.quantityAvailable": 1}})
+            }
+        } else {
+            let stockInfo: IStockInfo = {
+                category: product.category,
+                brand: product.brand,
+                model: product.model,
+                year: product.year,
+                quantityAvailable: 1
+            }
+            await WarehouseModel.updateOne({name: warehouse.name},
+                {$push : {"stock": stockInfo}})
+        }
     }
 
     async saveProduct(product: Product, warehouseName: string): Promise<void> {
@@ -121,7 +156,7 @@ export class WarehouseRepository implements IWarehouseRepository {
 
     async getStockByProductModel(model: string, brand: string, WarehouseName?: string): Promise<Warehouse[]> {
         let result: Warehouse[] = new Array<Warehouse>()
-        let Warehouses
+        let Warehouses = null
 
         if (WarehouseName! != undefined) {
             Warehouses = await WarehouseModel.find({name: WarehouseName!, 'stock.brand': brand, 'stock.model': model})
@@ -136,7 +171,7 @@ export class WarehouseRepository implements IWarehouseRepository {
 
     async getStockByProductBrand(brand: string, WarehouseName?: string): Promise<Warehouse[]> {
         let result: Warehouse[] = new Array<Warehouse>()
-        let Warehouses
+        let Warehouses = null
 
         if (WarehouseName! != undefined) {
             Warehouses = await WarehouseModel.find({name: WarehouseName!, 'stock.brand': brand})

@@ -1,6 +1,3 @@
 export interface IProductSpecs {
-    memoire?: number
-    ram?: number
-    color: string
-    wieght?: number
+    specList: [{[name: string]: string}]
 }

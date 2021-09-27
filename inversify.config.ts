@@ -14,7 +14,7 @@ import { IDeliveryTicketHandler } from "./src/application/interfaces/services/ID
 import { UserRepository } from "./src/infrastructure/persistence/repositories/UserRepository";
 import { AssociationRepository } from "./src/infrastructure/persistence/repositories/AssociationRepository";
 import { GreenRepackRepository } from "./src/infrastructure/persistence/repositories/GreenRepackRepository";
-import { ProduitRepository } from "./src/infrastructure/persistence/repositories/ProduitRepository";
+import { ProductRepository } from "./src/infrastructure/persistence/repositories/ProductRepository";
 import { WarehouseRepository } from "./src/infrastructure/persistence/repositories/WarehouseRepository";
 import { PromoCoinsRepository } from "./src/infrastructure/persistence/repositories/PromoCoinsRepository";
 import { PaymentHandler } from "./src/infrastructure/services/PaymentHandler";
@@ -22,12 +22,14 @@ import { PasswordHandler } from "./src/infrastructure/services/PasswordHandler";
 import { JwtHandler } from "./src/infrastructure/services/JwtHandler";
 import { AssociaionHandler } from "./src/infrastructure/services/AssociationHandler";
 import { DeliveryTicketHanlder } from "./src/infrastructure/services/DeliveryTicketHandler";
+import { IGeneratorIdHandler } from "./src/application/interfaces/services/IGeneratorIdHandler";
+import { IdGeneratorHandler } from "./src/infrastructure/services/IdGeneratorHandler";
 
 const DIcontainer = new Container()
 DIcontainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository)
 DIcontainer.bind<IGreenRepackRepository>(TYPES.IGreeRepackRepository).to(GreenRepackRepository)
 DIcontainer.bind<IAssociationRepository>(TYPES.IAssociationRepository).to(AssociationRepository)
-DIcontainer.bind<IProductRepository>(TYPES.IProductRepository).to(ProduitRepository)
+DIcontainer.bind<IProductRepository>(TYPES.IProductRepository).to(ProductRepository)
 DIcontainer.bind<IPromoCoinsRepository>(TYPES.IPromoCoinsRepository).to(PromoCoinsRepository)
 DIcontainer.bind<IWarehouseRepository>(TYPES.IWarehouseRepository).to(WarehouseRepository)
 
@@ -36,6 +38,7 @@ DIcontainer.bind<IPasswordHandler>(TYPES.IPasswordHandler).to(PasswordHandler)
 DIcontainer.bind<IJwtHandler>(TYPES.IJwtHandler).to(JwtHandler)
 DIcontainer.bind<IAssociationHandler>(TYPES.IAssociationHandler).to(AssociaionHandler)
 DIcontainer.bind<IDeliveryTicketHandler>(TYPES.IDeliveryTicketHandler).to(DeliveryTicketHanlder)
+DIcontainer.bind<IGeneratorIdHandler>(TYPES.IGenertorIdHandler).to(IdGeneratorHandler)
 
 
 export default DIcontainer

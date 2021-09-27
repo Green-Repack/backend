@@ -5,7 +5,6 @@ export const warehouseSchema = new Schema<IWarehouseProps>({
     location: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         minlength: 5,
         maxlength: 255,
@@ -45,7 +44,11 @@ export const warehouseSchema = new Schema<IWarehouseProps>({
             maxlength: 255,
             trim: true,
         },
-        quantityAvaible: {
+        year: {
+            type: Number,
+            required: true
+        },
+        quantityAvailable: {
             type: Number,
             required: true
         },

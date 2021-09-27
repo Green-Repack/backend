@@ -1,16 +1,18 @@
+import autoBind from "auto-bind";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../commons/types";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
 import { GetSellsNumberUseCase } from "../useCases/green_repack/GetSellsNumber";
-import { BaseController } from "./BaseController";
 
-export class ProductController extends BaseController {
+@injectable()
+export class ProductController {
     private readonly _getSellsNumber = new GetSellsNumberUseCase;
 
+    @inject(TYPES.IProductRepository)
     private _productRepository: IProductRepository;
 
-    public constructor(productRepository: IProductRepository) {
-        super();
-        this._productRepository = productRepository
-        
+    public constructor() {
+        autoBind(this);
     }
 
     public async getSellsNumber(req: any, res: any) {

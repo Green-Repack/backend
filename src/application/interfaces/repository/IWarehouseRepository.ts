@@ -4,11 +4,11 @@ import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { IBaseRepository } from "./IBaseRepositoty";
 
 export interface IWarehouseRepository extends IBaseRepository<Warehouse> {
-    getWarehouses(): Promise<Warehouse[]>
+    getAllWarehouses(): Promise<Warehouse[]>
     getWarehouseById(id: string): Promise<Warehouse | undefined>
     getWarehouseByName(name: string): Promise<Warehouse | undefined>
     getWarehouseByLocation(location: string): Promise<Warehouse | undefined>
-    getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo>
+    getStockProduct(category: string, brand: string, model: string, year: number, warehouseName?: string): Promise<IStockInfo>
     saveProduct(product: Product, wharehouseId?: string, warehouseName?: string): Promise<void>
-    updateStockProduct(product: Product, wharehouseId: string, quantity?: number): Promise<void>
+    updateStockProduct(product: Product, sell?: boolean): Promise<void>
 }

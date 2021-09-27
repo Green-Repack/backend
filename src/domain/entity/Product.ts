@@ -1,6 +1,9 @@
 import { IProductSpecs } from "../entityProperties/IProductSpecs";
 import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
+import { EProductState } from "../entityProperties/EProductState";
+import { EPurchasePromiseStatus } from "../entityProperties/EPurchasePromiseStatus";
+import { EProductCategory } from "../entityProperties/EProductCategory";
 
 export class Product extends Entity<IProductProps> {
     get id(): string {
@@ -11,7 +14,7 @@ export class Product extends Entity<IProductProps> {
         return this.props.name
     }
 
-    get category(): string {
+    get category(): EProductCategory {
         return this.props.category
     }
 
@@ -23,7 +26,7 @@ export class Product extends Entity<IProductProps> {
         return this.props.model
     }
 
-    get specificities(): IProductSpecs {
+    get specificities(): [{[name: string]: string}] {
         return this.props.specificities
     }
 
@@ -37,23 +40,31 @@ export class Product extends Entity<IProductProps> {
 
 
     get merchantId(): string {
+        
         return this.props.merchantId!
     }
-
-    get accepted(): boolean {
-        return this.props.accepted!
-    }
-
     get creationDate(): Date {
         return this.props.creationDate
     }
 
-    get acceptationDate(): Date {
-        return this.props.acceptationDate!
+    get state(): EProductState {
+        return this.props.state
+    }
+
+    get sellingStatus(): EPurchasePromiseStatus {
+        return this.props.sellingStatus
     }
 
     get warehouseId(): string {
         return this.props.warehouseId!
+    }
+
+    get weight(): number {
+        return this.props.weight
+    }
+
+    get year(): number {
+        return this.props.year
     }
 
     get priceSeller(): number {

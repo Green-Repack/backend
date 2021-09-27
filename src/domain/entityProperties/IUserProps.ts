@@ -1,7 +1,7 @@
 import { IAddress } from "./IAddress";
 import { IGreenCoins } from "./IGreenCoins"
 import { IProductSold } from "./IProductSold";
-import { IUserAchat } from "./IUserAchat";
+import { IUserOrders } from "./IUserOrders";
 
 export interface IUserProps {
     firstName: string
@@ -11,7 +11,7 @@ export interface IUserProps {
     address: IAddress
     greenCoins: IGreenCoins
     merchant: boolean
-    achats: IUserAchat[]
+    orders: IUserOrders[]
     productSold?: IProductSold[]
     token?: string
     siret?: string
