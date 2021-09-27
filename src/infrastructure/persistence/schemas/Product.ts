@@ -21,14 +21,14 @@ export const productSchema = new Schema<IProductProps>({
         type: String,
         required: true,
     },
-    specificities: {
-        _id:false,
-        specList: [{
-            name: {
-                type: String
-            }
-        }]
-    },
+    specificities: [{
+        name: {
+            type: String
+        },
+        detail:{
+            type: String
+        }
+    }],
     status: {
         type: String,
         required: true,

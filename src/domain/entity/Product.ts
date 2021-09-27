@@ -1,7 +1,6 @@
 import {ProductCategory} from "../../application/user/enum/ProductCategory";
 import {ProductState} from "../../application/user/enum/ProductState";
 import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
-import { IProduitSpecs } from "../entityProperties/IProduitSpecs";
 import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
 
@@ -26,7 +25,7 @@ export class Product extends Entity<IProductProps> {
         return this.props.model
     }
 
-    get specificities(): IProduitSpecs {
+    get specificities(): [{name: string, detail: string}] {
         return this.props.specificities
     }
 

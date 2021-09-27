@@ -1,4 +1,3 @@
-import { IProduitSpecs } from "../../domain/entityProperties/IProduitSpecs";
 import {ProductCategory} from "../user/enum/ProductCategory";
 import {ProductState} from "../user/enum/ProductState";
 import {PurchasePromiseStatus} from "../user/enum/PurchasePromiseStatus";
@@ -9,7 +8,7 @@ export interface IProductDTO {
     category: ProductCategory
     brand: string
     model: string
-    specificities: IProduitSpecs
+    specificities: [{name: string, detail: string}]
     status: PurchasePromiseStatus
     state: ProductState
     price?: number

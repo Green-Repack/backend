@@ -11,5 +11,9 @@ const greenRepackRouter = Router();
 greenRepackRouter.post("/createMember", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.createNewMember)
 greenRepackRouter.post("/verify/association", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociation)
 greenRepackRouter.post("/verify/association/project", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociationProject)
+greenRepackRouter.post("/warehouse/", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.createWarehouse)
+greenRepackRouter.delete("/warehouse/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.deleteWarehouse)
+greenRepackRouter.patch("/warehouse/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.updateWarehouse)
+greenRepackRouter.get("/warehouse/:id", greenRepackController.getWarehouse)
 
 export default greenRepackRouter

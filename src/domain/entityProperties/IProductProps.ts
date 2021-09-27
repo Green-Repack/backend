@@ -1,14 +1,13 @@
 import {ProductCategory} from "../../application/user/enum/ProductCategory";
 import {ProductState} from "../../application/user/enum/ProductState";
 import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
-import { IProduitSpecs } from "./IProduitSpecs";
 
 export interface IProductProps {
     name: string
     category: ProductCategory
     brand: string
     model: string
-    specificities: IProduitSpecs
+    specificities: [{name: string, detail: string}]
     status: PurchasePromiseStatus
     state: ProductState
     price?: number

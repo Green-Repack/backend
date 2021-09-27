@@ -1,6 +1,7 @@
 import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
+import { NotFoundError } from "../errors/NotFoundError";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
@@ -12,13 +13,15 @@ import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHa
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
-import { AddProductUseCase } from "../useCases/green_repack/AddProductUseCase";
 import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
 import { CreatePromoCoinsUseCase } from "../useCases/green_repack/CreatePromoCoinsUseCase";
 import { CreateWarehouseUseCase } from "../useCases/green_repack/CreateWarehouseUseCase";
+import { DeleteWarehouseUseCase } from "../useCases/green_repack/DeleteWarehouseUseCase";
 import { GetSellsNumberUseCase } from "../useCases/green_repack/GetSellsNumber";
 import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
+import { GetWarehouseUseCase } from "../useCases/green_repack/GetWarehouseUseCase";
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
+import { UpdateWarehouseUseCase } from "../useCases/green_repack/UpdateWarehouseUseCase";
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
 
@@ -28,12 +31,14 @@ export class GreenRepackController{
     private readonly _createNewMemberUseCase = new CreateNewMemberUseCase;
     private readonly _verifyAssociationProjectUseCase = new VerifyAssociationProjectUseCase;
     private readonly _createWarehouseUseCase = new CreateWarehouseUseCase;
+    private readonly _deleteWarehouseUseCase = new DeleteWarehouseUseCase;
+    private readonly _updateWarehouseUseCase = new UpdateWarehouseUseCase;
+    private readonly _getWarehouseUseCase = new GetWarehouseUseCase;
     private readonly _createPromoCoinsUseCase = new CreatePromoCoinsUseCase;
     private readonly _acceptProductUseCase = new AcceptProductUseCase;
     private readonly _refuseProductUseCase = new RefuseProductUseCase;
     private readonly _getSellsNumberUseCase = new GetSellsNumberUseCase;
     private readonly _getStockInfoUseCase = new GetStockInfoUseCase;
-    private readonly _addProductUseCase = new AddProductUseCase;
 
     @inject(TYPES.IAssociationRepository)
     private _associationRepository: IAssociationRepository;
@@ -147,14 +152,47 @@ export class GreenRepackController{
         }
     }
 
-    public async addProduct(req: any, res: any) {
+    
+    public async deleteWarehouse(req: any, res: any) {
         try {
-            const {warehouseName, productInfo} = req.body
-            await this._addProductUseCase.execute(warehouseName, productInfo, this._productRepository, this._warehouseRepository)
-            res.sendStatus(200);
+            await this._deleteWarehouseUseCase.execute(req.params.id, this._warehouseRepository)
+            res.status(200).json("Deleted");
         } catch(error) {
             console.log(error)
-            res.status(400).json(error);
+            if(error instanceof NotFoundError){
+                res.status(404).json(error.message)
+            }else{
+                res.status(400).json(error);
+            }
+        }
+    }
+
+    
+    public async updateWarehouse(req: any, res: any) {
+        try {
+            await this._updateWarehouseUseCase.execute(req.body, req.params.id, this._warehouseRepository)
+            res.status(200).json("Updated");
+        } catch(error) {
+            console.log(error)
+            if(error instanceof NotFoundError){
+                res.status(404).json(error.message)
+            }else{
+                res.status(400).json(error);
+            }
+        }
+    }
+    
+    public async getWarehouse(req: any, res: any) {
+        try {
+            let warehouseDTO = await this._getWarehouseUseCase.execute(req.params.id, this._warehouseRepository)
+            res.status(200).json(warehouseDTO);
+        } catch(error) {
+            console.log(error)
+            if(error instanceof NotFoundError){
+                res.status(404).json(error.message)
+            }else{
+                res.status(400).json(error);
+            }
         }
     }
 
