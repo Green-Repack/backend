@@ -25,7 +25,7 @@ export class LoginUseCase  implements ILoginUseCase {
             userDTO.token = userToken
             
             await userRepository.save(UserMap.toDomain(userDTO))
-            return {user: userToken}
+            return {token: userToken, type: "user"}
         } else if (greenRepMember != undefined) {
             let passwordVerification = await passwordHandler.checkPassword(greenRepMember.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
@@ -36,7 +36,7 @@ export class LoginUseCase  implements ILoginUseCase {
             greenRepDTO.token = greenRepToken
             
             await greenRepRepository.save(GreenRepackMap.toDomain(greenRepDTO))
-            return {greenRepack: greenRepToken}
+            return {token: greenRepToken, type: "greenrepack"}
         } else if (association != undefined) {
             let passwordVerification = await passwordHandler.checkPassword(association.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
@@ -47,7 +47,7 @@ export class LoginUseCase  implements ILoginUseCase {
             associationDTO.token = associationToken
             
             await assoRepository.save(AssociationMap.toDomain(associationDTO))
-            return {association: associationToken}
+            return {token: associationToken, type: "association"}
         } else {
             throw new InvalidCredentialsError()
         }

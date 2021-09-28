@@ -7,5 +7,5 @@ import { IPasswordHandler } from "../../interfaces/services/IPasswordHandler";
 export interface ILoginUseCase {
     execute(credentials: any, passwordHandler: IPasswordHandler, jwtHandler: IJwtHandler,
         userRepository: IUserRepository, greenRepRepository: IGreenRepackRepository, 
-        assoRepository: IAssociationRepository, ): Promise<{[name: string]: string}>
+        assoRepository: IAssociationRepository, ): Promise<{[token: string]: string}>
 }
