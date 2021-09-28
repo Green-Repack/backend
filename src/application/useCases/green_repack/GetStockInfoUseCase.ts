@@ -15,9 +15,9 @@ export class GetStockInfoUseCase  implements IGetStockInfoUseCase {
             let stockInfo = null
             let category: EProductCategory = productInfo.category as EProductCategory
             if (productInfo.warehouseName != undefined) {
-                stockInfo = await warehouseRepository.getStockProduct(productInfo.category, productInfo.brand, productInfo.model, productInfo.year, productInfo.warehouseName)
+                stockInfo = await warehouseRepository.getStockProduct(category, productInfo.brand, productInfo.model, productInfo.year, productInfo.warehouseName)
             } else {
-                stockInfo = await warehouseRepository.getStockProduct(productInfo.category, productInfo.brand, productInfo.model, productInfo.year)
+                stockInfo = await warehouseRepository.getStockProduct(category, productInfo.brand, productInfo.model, productInfo.year)
             }
             return stockInfo
         } catch(error) {
