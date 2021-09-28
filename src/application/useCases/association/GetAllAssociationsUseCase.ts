@@ -5,11 +5,15 @@ import { IGetAllAssociationsUseCase } from "./IGetAllAssociationsUseCase";
 
 export class getAllAssociationUseCase implements IGetAllAssociationsUseCase {
     async execute(associationRepository: IAssociationRepository): Promise<IAssociationDTO[]> {
-        let associations = await associationRepository.getAllAssociations()
-        let associationsDTO: IAssociationDTO[] = new Array<IAssociationDTO>()
-        for (var association of associations) {
-            associationsDTO.push(AssociationMap.toDTO(association))
+        try {
+            let associations = await associationRepository.getAllAssociations()
+            let associationsDTO: IAssociationDTO[] = new Array<IAssociationDTO>()
+            for (var association of associations) {
+                associationsDTO.push(AssociationMap.toDTO(association))
+            }
+            return associationsDTO
+        } catch(error) {
+            throw error
         }
-        return associationsDTO
     }
 }

@@ -13,6 +13,7 @@ export class UserMap {
             token: user.token,
             orders: user.orders,
             productSold: user.productSold,
+            stripeCustomerId: user.stripeCustomerId,
             greenCoins: user.greenCoins,
             merchant: user.isMerchant(),
             siren: user.siren,
@@ -33,6 +34,7 @@ export class UserMap {
             productSold: user.productSold,
             greenCoins: user.greenCoins,
             merchant: user.merchant,
+            stripeCustomerId: user.stripeCustomerId,
             siren: user.siren,
             siret: user.siret,
             creationDate: user.creationDate
@@ -51,6 +53,7 @@ export class UserMap {
             orders: user.orders,
             productSold: user.productSold,
             greenCoins: user.greenCoins,
+            stripeCustomerId: user.stripeCustomerId,
             merchant: user.isMerchant(),
             siren: user.siren,
             siret: user.siret,

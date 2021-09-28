@@ -9,6 +9,7 @@ import { UserMap } from "../../mappers/UserMap";
 import { IBuyUseCase } from "./IBuyUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { IGeneratorIdHandler } from "../../interfaces/services/IGeneratorIdHandler";
+import { IUserOrders } from "../../../domain/entityProperties/IUserOrders";
 
 export class BuyUseCase implements IBuyUseCase {
     private _totalPrice: number = 0
@@ -30,8 +31,9 @@ export class BuyUseCase implements IBuyUseCase {
             if (promotion !=  undefined) promoMultiplier = promotion.multiplicateur
 
             let userDTO = UserMap.toDTO(user)
-            let secretKey = paymentHandler.acceptPayment(this._totalPrice)
+            //let secretKey = paymentHandler.acceptPayment(this._totalPrice)
 
+            // mettre cette partie dans le login pour update les greens coins quand le user se log
             if (userDTO.greenCoins.expireDate != undefined) {
                 if (currentDate.toISOString() === userDTO.greenCoins.expireDate.toISOString()) {
                     userDTO.greenCoins.amount = 0
@@ -42,16 +44,18 @@ export class BuyUseCase implements IBuyUseCase {
             userDTO.greenCoins.expireDate = new Date(1, 1, currentDate.getFullYear() + 2)
 
             let itemsId = await this.calculateTotalPrice(itemBucket, warehouseRepository, productRepository)
-            userDTO.orders.push({
+            let order: IUserOrders = {
                 id: idGenerator.generate(),
                 amount: this._totalPrice,
                 paymentDate: new Date(),
                 itemsId: itemsId
-            })
+            }
+
+            userDTO.orders.push(order)
 
             await userRepository.save(UserMap.toDomain(userDTO))
 
-            return secretKey
+            return "Done"
         } catch(error) {
             throw error
         }
@@ -60,8 +64,8 @@ export class BuyUseCase implements IBuyUseCase {
     private async calculateTotalPrice(itemsBucket: any, warehouseRepository: IWarehouseRepository, 
         productRepository: IProductRepository): Promise<Array<string>> {
         let itemsId = new Array<string>()
-        for(var article of itemsBucket) {
-            let product = await productRepository.getProductById(article.id)
+        for(var id of itemsBucket) {
+            let product = await productRepository.getProductById(id)
             if (product != undefined) {
                 itemsId.push(product.id)
                 let productDTO = ProductMap.toDTO(product)
@@ -70,7 +74,7 @@ export class BuyUseCase implements IBuyUseCase {
                 await productRepository.save(ProductMap.toDomain(productDTO))
                 await warehouseRepository.updateStockProduct(product, true)
             } else {
-                throw new NotFoundError("Product not found : " + article.id)
+                throw new NotFoundError("Product not found : " + id)
             }
         }
         return itemsId

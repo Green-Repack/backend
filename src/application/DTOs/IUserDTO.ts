@@ -10,8 +10,9 @@ export interface IUserDTO {
     email: string
     password: string
     greenCoins: IGreenCoins
-    merchant: boolean
     orders: IUserOrders[]
+    merchant: boolean
+    stripeCustomerId?: string
     productSold?: IProductSold[]
     token?: string
     address: IAddress

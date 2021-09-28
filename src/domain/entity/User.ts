@@ -54,6 +54,10 @@ export class User extends Entity<IUserProps> {
         return this.props.orders
     }
 
+    get stripeCustomerId(): string {
+        return this.props.stripeCustomerId!
+    }
+
     get productSold(): IProductSold[] {
         return this.props.productSold!
     }

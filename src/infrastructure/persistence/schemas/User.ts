@@ -65,8 +65,8 @@ export const userSchema = new Schema<IUserProps>({
             type: Number,
             required: true,
         },
-        expirationDate: {
-            type: Number,
+        expireDate: {
+            type: Date,
         }
     },
     password: {
@@ -79,26 +79,22 @@ export const userSchema = new Schema<IUserProps>({
         type: Boolean,
         default: false,
     },
-    orders: {
+    orders: [{
         _id:false,
         id: {
-            type: String,
-            require: true
+            type: String
         },
         amount: {
-            type: Number,
-            require: true
+            type: Number
         },
         paymentDate: {
-            type: Date,
-            require: true
+            type: Date
         },
         itemsId: {
-            type: Array,
-            require: true,
+            type: Array
         }
-    },
-    productSold: {
+    }],
+    productSold: [{
         _id:false,
         productId: {
             type: Number,
@@ -109,7 +105,8 @@ export const userSchema = new Schema<IUserProps>({
         sellDate: {
             type: Date
         }
-    },
+    }],
+    stripeCustomerId: String,
     token: String,
     siret: String,
     siren: String,

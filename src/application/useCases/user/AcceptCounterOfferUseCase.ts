@@ -1,3 +1,4 @@
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
@@ -17,14 +18,13 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
             let product = await productRepository.getProductById(productId)
             if (product == undefined) throw new NotFoundError("Product not found")
 
-            let marchand = await userRepository.getUserById(product.marchandId)
+            let marchand = await userRepository.getUserById(product.merchantId)
             if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
             let marchandDTO = UserMap.toDTO(marchand)
 
-            productDTO.accepted = true
-            productDTO.acceptationDate = new Date()
+            productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
 
             if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
 

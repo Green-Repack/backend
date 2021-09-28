@@ -5,11 +5,15 @@ import { IGetAllWarehouseUseCase } from "./IGetAllWarehouseUseCase";
 
 export class GetAllWarehouseUseCase implements IGetAllWarehouseUseCase {
     async execute(warehouseRepository: IWarehouseRepository): Promise<IWarehouseDTO[]> {
-        let warehouses = await warehouseRepository.getAllWarehouses()
-        let warehousesDTO: IWarehouseDTO[] = new Array<IWarehouseDTO>()
-        for (var warehouse of warehouses) {
-            warehousesDTO.push(WarehouseMap.toDTO(warehouse))
+        try {
+            let warehouses = await warehouseRepository.getAllWarehouses()
+            let warehousesDTO: IWarehouseDTO[] = new Array<IWarehouseDTO>()
+            for (var warehouse of warehouses) {
+                warehousesDTO.push(WarehouseMap.toDTO(warehouse))
+            }
+            return warehousesDTO
+        } catch(error) {
+            throw error
         }
-        return warehousesDTO
     }
 }

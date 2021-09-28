@@ -6,6 +6,7 @@ import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IMakeCounterOfferUseCase } from "./IMakeCounterOfferUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
     async execute(productId: string, warehouseName: string, counterOffer: number, warehouseRepository: IWarehouseRepository, 

@@ -13,7 +13,8 @@ export class AssociationMap {
             verified: association.isVerified(),
             email: association.email,
             password: association.password,
-            projects: association.projects, 
+            projects: association.projects,
+            stripeCustomerId: association.stripeCustomerId, 
             token: association.token,
             creationDate: association.creationDate
         }
@@ -30,6 +31,7 @@ export class AssociationMap {
             email: association.email,
             password: association.password,
             projects: association.projects,
+            stripeCustomerId: association.stripeCustomerId, 
             token: association.token,
             creationDate: association.creationDate
         }, association.id)
@@ -47,6 +49,7 @@ export class AssociationMap {
             email: association.email,
             password: association.password,
             projects: association.projects, 
+            stripeCustomerId: association.stripeCustomerId, 
             token: association.token,
             creationDate: association.creationDate
         }

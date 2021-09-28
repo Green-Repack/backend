@@ -6,7 +6,6 @@ import { IGeneratorIdHandler } from "../../application/interfaces/services/IGene
 export class IdGeneratorHandler implements IGeneratorIdHandler {
     generate(): string {
         let id = new mongoose.Types.ObjectId().toString()
-        console.log(id)
         return id
     }
 }

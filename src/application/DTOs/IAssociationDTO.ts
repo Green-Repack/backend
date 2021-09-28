@@ -12,6 +12,7 @@ export interface IAssociationDTO {
     verified: boolean
     email: string
     password: string
+    stripeCustomerId?: string
     projects: IProjectAssociation[]
     token?: string
     creationDate: Date

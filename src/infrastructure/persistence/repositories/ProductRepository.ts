@@ -7,6 +7,24 @@ import { ProductModel } from "../schemas/Product";
 
 @injectable()
 export class ProductRepository implements IProductRepository {
+    async getProductByCategory(category: EProductCategory): Promise<Product[]> {
+        let result: Product[] = new Array<Product>()
+        let products = await ProductModel.find({category: category})
+        for(var product of products) {
+            result.push(ProductMap.toDomain(product))
+        }
+        return result
+    }
+
+    async getProductByBrand(category: EProductCategory, brand: string): Promise<Product[]> {
+        let result: Product[] = new Array<Product>()
+        let products = await ProductModel.find({category: category, brand: brand})
+        for(var product of products) {
+            result.push(ProductMap.toDomain(product))
+        }
+        return result
+    }
+
     async getProductById(id: string): Promise<Product | undefined> {
         let product = await ProductModel.findById(id)
         if (product) return ProductMap.toDomain(product)

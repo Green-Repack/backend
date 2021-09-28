@@ -10,6 +10,7 @@ export class GreenRepackMap {
             username: member.username,
             password: member.password,
             admin: member.isAdmin(),
+            token: member.token,
             creationDate: member.creationDate
         }
     }
@@ -21,6 +22,7 @@ export class GreenRepackMap {
             username: member.username,
             password: member.password,
             admin: member.admin,
+            token: member.token,
             creationDate: member.creationDate
         }, member.id)
     }
@@ -33,6 +35,7 @@ export class GreenRepackMap {
             username: member.username,
             password: member.password,
             admn: member.isAdmin(),
+            token: member.token,
             creationDate: member.creationDate
         }
     }

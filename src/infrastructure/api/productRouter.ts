@@ -7,6 +7,9 @@ let productController: ProductController = DIcontainer.resolve<ProductController
 
 const productRouter = Router();
 
+productRouter.get("/", productController.getAllProduct)
+productRouter.get("/category", productController.getProductByCategory)
+productRouter.get("/category/brand", productController.getProductByBrand)
 productRouter.get("/info/sold", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.getSellsNumber)
 
 export default productRouter

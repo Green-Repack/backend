@@ -13,6 +13,8 @@ import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
 import { AddProductUseCase } from "../useCases/green_repack/AddProductUseCase";
 import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
+import { GetMemberInfoUseCase } from "../useCases/green_repack/GetMemberInfoUseCase";
+import { MakeCounterOfferUseCase } from "../useCases/green_repack/MakeCounterOfferUseCase";
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
@@ -25,7 +27,8 @@ export class GreenRepackController{
     private readonly _refuseProductUseCase = new RefuseProductUseCase;
     private readonly _verifyAssociationUseCase = new VerifyAssociationUseCase;
     private readonly _verifyAssociationProjectUseCase = new VerifyAssociationProjectUseCase;
-
+    private readonly _getInfoUseCase = new GetMemberInfoUseCase;
+    private readonly _makeCounterOfferUseCase = new MakeCounterOfferUseCase;
     
     @inject(TYPES.IGreeRepackRepository)
     private _greenRepackRepository: IGreenRepackRepository;
@@ -61,6 +64,16 @@ export class GreenRepackController{
         }
     }
 
+    public async getInfo(req: any, res: any) {
+        try {
+            let memberInfo = await this._getInfoUseCase.execute(req.userId, this._greenRepackRepository)
+            res.status(201).json(memberInfo);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
     public async addProduct(req: any, res: any) {
         try {
             const {warehouseName, productInfo} = req.body
@@ -77,6 +90,19 @@ export class GreenRepackController{
             const {productId, warehouseName} = req.body
             await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
                 this._userReposiory, this._productRepository, this._warehouseRepository)
+            res.sendStatus(201)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+
+    public async makeCounterOffer(req: any, res: any) {
+        try {
+            const {productId, warehouseName, counterOffer} = req.body
+            await this._makeCounterOfferUseCase.execute(productId, warehouseName, counterOffer, 
+                this._warehouseRepository, this._productRepository, this._userReposiory)
             res.sendStatus(201)
         } catch(error) {
             console.log(error)

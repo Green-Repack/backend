@@ -67,7 +67,8 @@ export class UserController {
 
     public async buyProducts(req: any, res: any) {
         try {
-            let secretKey = await this._buyUseCase.execute(req.userId, req.body, this._paymentHandler, this._IdGeneratorHandler,
+            const {itemsBucket} = req.body
+            let secretKey = await this._buyUseCase.execute(req.userId, itemsBucket, this._paymentHandler, this._IdGeneratorHandler,
                 this._userRepository, this._productRepository, this._warehouseRepository, this._promoRepository)
             res.status(200).json(secretKey)
         } catch(error) {
