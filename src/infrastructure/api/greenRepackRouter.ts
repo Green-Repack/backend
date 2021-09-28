@@ -8,10 +8,12 @@ let greenRepackController: GreenRepackController = DIcontainer.resolve<GreenRepa
 
 const greenRepackRouter = Router();
 
-greenRepackRouter.post("/create/member", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.createNewMember)
-greenRepackRouter.post("/create/warehouse", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.createWarehouse)
-greenRepackRouter.post("/verify/association", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociation)
-greenRepackRouter.post("/verify/association/project", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociationProject)
+greenRepackRouter.post("/create", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.createNewMember)
+greenRepackRouter.post("/association/verify", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociation)
+greenRepackRouter.post("/association/verify/project", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociationProject)
 greenRepackRouter.post("/product/add", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.addProduct)
+
+greenRepackRouter.post("/product/accept", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.acceptProduct)
+greenRepackRouter.post("/product/decline", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.refuseProduct)
 
 export default greenRepackRouter

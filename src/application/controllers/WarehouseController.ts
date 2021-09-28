@@ -2,6 +2,7 @@ import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
+import { CreateWarehouseUseCase } from "../useCases/green_repack/CreateWarehouseUseCase";
 import { GetAllWarehouseUseCase } from "../useCases/green_repack/GetAllWarehouseUseCase";
 import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
 
@@ -9,6 +10,8 @@ import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCas
 export class WarehouseController {
     private readonly _getStockInfoUseCase = new GetStockInfoUseCase;
     private readonly _getAllWarehouseUseCase = new GetAllWarehouseUseCase;
+    private readonly _createWarehouseUseCase = new CreateWarehouseUseCase;
+    
 
     @inject(TYPES.IWarehouseRepository)
     private _warehouseRepository: IWarehouseRepository;
@@ -17,11 +20,20 @@ export class WarehouseController {
         autoBind(this);
     }
 
+    public async createWarehouse(req: any, res: any) {
+        try {
+            let warehouseDTO = await this._createWarehouseUseCase.execute(req.body, this._warehouseRepository)
+            res.status(201).json(warehouseDTO);
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
     public async getStockInfo(req: any, res: any) {
         try {
-            const {warehouseName, productInfo} = req.body
-            let stockInfo = await this._getStockInfoUseCase.execute(warehouseName, productInfo, this._warehouseRepository)
-            res.status(200).json(stockInfo)
+            let stockInfo = await this._getStockInfoUseCase.execute(req.body, this._warehouseRepository)
+            res.status(200).json(stockInfo);
         } catch(error) {
             console.log(error)
             res.status(400).json(error);

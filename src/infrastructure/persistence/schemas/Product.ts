@@ -13,7 +13,6 @@ export const productSchema = new Schema<IProductProps>({
     category: {
         type: String,
         required: true,
-        lowercase: true,
         minlength: 5,
         maxlength: 255,
     },

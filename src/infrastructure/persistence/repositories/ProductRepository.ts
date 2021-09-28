@@ -2,6 +2,7 @@ import { injectable } from "inversify";
 import { IProductRepository } from "../../../application/interfaces/repository/IProductRepository";
 import { ProductMap } from "../../../application/mappers/ProductMap";
 import { Product } from "../../../domain/entity/Product";
+import { EProductCategory } from "../../../domain/entityProperties/EProductCategory";
 import { ProductModel } from "../schemas/Product";
 
 @injectable()
@@ -12,12 +13,19 @@ export class ProductRepository implements IProductRepository {
         else return undefined
     }
 
-    async getProductSellsNumber(category: string, brand: string, model: string): Promise<number> {
-        throw new Error("Method not implemented.");
+    async getProductSellsNumber(category: EProductCategory, brand: string, model: string, year: number): Promise<number> {
+        let productsSold = await ProductModel.find(
+            { category: category, brand: brand, model: model, year: year, sold: true}).count()
+        return productsSold
     }
 
     async getAllProducts(): Promise<Product[]> {
-        throw new Error("Method not implemented.");
+        let result: Product[] = new Array<Product>()
+        let products = await ProductModel.find({})
+        for(var product of products) {
+            result.push(ProductMap.toDomain(product))
+        }
+        return result
     }
 
     async exists(id: string): Promise<boolean> {

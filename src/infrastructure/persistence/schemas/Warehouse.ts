@@ -24,7 +24,6 @@ export const warehouseSchema = new Schema<IWarehouseProps>({
             type: String,
             required: true,
             minlength: 2,
-            lowercase: true,
             maxlength: 255,
             trim: true,
         },

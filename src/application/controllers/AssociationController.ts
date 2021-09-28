@@ -8,6 +8,9 @@ import autoBind from "auto-bind"
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
 import { getAllAssociationUseCase } from "../useCases/association/GetAllAssociationsUseCase";
+import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
+import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
+import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
 
 @injectable()
 export class AssociationController{
