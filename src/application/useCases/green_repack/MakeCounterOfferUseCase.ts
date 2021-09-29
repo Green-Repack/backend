@@ -21,15 +21,18 @@ export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
-            let marchand = await userRepository.getUserById(product.merchantId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
-            productDTO.sellingStatus = EPurchasePromiseStatus.WaitingForCounterOfferApproval
-            productDTO.priceSeller = counterOffer
-            productDTO.warehouseId = warehouse.id
+            if (productDTO.sellingStatus == EPurchasePromiseStatus.WaitingForApproval) {
+                productDTO.sellingStatus = EPurchasePromiseStatus.WaitingForCounterOfferApproval
+                productDTO.priceSeller = counterOffer
+                productDTO.warehouseId = warehouse.id
 
-            await productRepository.save(ProductMap.toDomain(productDTO))
+                await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
+                await productRepository.save(ProductMap.toDomain(productDTO))
+            }
         } catch (error) {
             throw(error)
         }

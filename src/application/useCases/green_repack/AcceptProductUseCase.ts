@@ -1,11 +1,9 @@
-import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
-import { UserMap } from "../../mappers/UserMap";
 import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
@@ -22,30 +20,24 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
             
-            let marchand = await userRepository.getUserById(product.merchantId)
-            if (marchand == undefined) throw new NotFoundError("Merchant not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Merchant not found")
             
             let productDTO = ProductMap.toDTO(product)
-            let marchandDTO = UserMap.toDTO(marchand)
 
-            if (productDTO.sellingStatus != EPurchasePromiseStatus.EstimationDeclined) {
+            if (productDTO.sellingStatus == EPurchasePromiseStatus.WaitingForApproval) {
                 productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
                 productDTO.warehouseId = warehouse.id
 
-                if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
+                await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
+                await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)
+                await userRepository.updateProductSoldDate(merchant.email, productId, new Date())
 
-                marchandDTO.productSold.push({
-                    productId: product.productId,
-                    priceReceived: product.priceSeller,
-                    sellDate: new Date()
-                })
-
+                await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)
                 await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), false)
                 await productRepository.save(ProductMap.toDomain(productDTO))
-                await userRepository.save(UserMap.toDomain(marchandDTO))
+                //paymentHanlder.emitPayment(product.priceSeller, marchand.id) emission du virement à l'utilisateur
             }
-
-            //paymentHanlder.emitPayment(product.priceSeller, marchand.id) emission du virement à l'utilisateur
         } catch(error) {
             throw(error)
         }

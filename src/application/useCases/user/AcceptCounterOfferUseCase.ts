@@ -19,28 +19,27 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
             let product = await productRepository.getProductById(productId)
             if (product == undefined) throw new NotFoundError("Product not found")
 
-            let marchand = await userRepository.getUserById(product.merchantId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
+            let merchant = await userRepository.getUserById(product.merchantId)
+            if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
-            let marchandDTO = UserMap.toDTO(marchand)
+            let marchandDTO = UserMap.toDTO(merchant)
 
-            productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
+            if (productDTO.sellingStatus == EPurchasePromiseStatus.WaitingForCounterOfferApproval) {
+                productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
 
-            if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
+                if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
 
-            marchandDTO.productSold.push({
-                productId: product.productId,
-                priceReceived: product.priceSeller,
-                sellDate: new Date()
-            })
+                await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
+                await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)
+                await userRepository.updateProductSoldDate(merchant.email, productId, new Date())
 
-            let updatedProduct = ProductMap.toDomain(productDTO)
-            await productRepository.save(updatedProduct)
-            await userRepository.save(UserMap.toDomain(marchandDTO))
-            await warehouseRepository.updateStockProduct(updatedProduct, true)
+                let updatedProduct = ProductMap.toDomain(productDTO)
+                await productRepository.save(updatedProduct)
+                await warehouseRepository.updateStockProduct(updatedProduct, true)
 
-            //await paymentHandler.emitPayment(product.priceSeller, marchand.id) faire le virement au vendeur
+                //await paymentHandler.emitPayment(product.priceSeller, marchand.id) faire le virement au vendeur
+            }
         } catch(error) {
             throw(error)
         }

@@ -70,7 +70,7 @@ export class GreenRepackController{
     public async getInfo(req: any, res: any) {
         try {
             let memberInfo = await this._getInfoUseCase.execute(req.userId, this._greenRepackRepository)
-            res.status(201).json(memberInfo);
+            res.status(200).json(memberInfo);
         } catch(error) {
             console.log(error)
             res.status(400).json(error);

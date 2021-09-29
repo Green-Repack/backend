@@ -15,6 +15,8 @@ export class LoginUseCase  implements ILoginUseCase {
         let user = await userRepository.getUserByEmail(credentials.login)
         let greenRepMember = await greenRepRepository.getMemberByUsername(credentials.login)
         let association = await assoRepository.getAssociationByEmail(credentials.login)
+
+        let currentDate = new Date()
         if (user != undefined) {
             let passwordVerification = await passwordHandler.checkPassword(user.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
@@ -22,6 +24,11 @@ export class LoginUseCase  implements ILoginUseCase {
             let userToken = await jwtHandler.generateToken(user.id)
             
             let userDTO = UserMap.toDTO(user)
+            if (userDTO.greenCoins.expireDate != undefined) {
+                if (currentDate.toISOString() === userDTO.greenCoins.expireDate.toISOString()) {
+                    userDTO.greenCoins.amount = 0
+                }
+            }
             userDTO.token = userToken
             
             await userRepository.save(UserMap.toDomain(userDTO))

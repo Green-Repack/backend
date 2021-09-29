@@ -3,9 +3,34 @@ import { User } from "../../../domain/entity/User";
 import { IUserRepository } from "../../../application/interfaces/repository/IUserRepository";
 import { UserModel } from "../schemas/User";
 import { injectable } from "inversify";
+import { IShippingLabel } from "../../../domain/entityProperties/IShippingLabel";
 
 @injectable()
 export class UserRepository implements IUserRepository {
+    async updateProductSoldPriceReceived(email: string, productId: string, priceReceived: number): Promise<void> {
+        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+            {$set: {"productSold.$.priceReceived": priceReceived}})
+    }
+
+    async updateProductSoldAddShippingLabel(email: string, productId: string, shippingLabel: IShippingLabel): Promise<void> {
+        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+            {$set: {"productSold.$.shippigLabel": shippingLabel}})
+    }
+    async updateProductSoldStatus(email: string, productId: string, sellStatus: string): Promise<void> {
+        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+            {$set: {"productSold.$.sellStatus": sellStatus}})
+    }
+
+    async updateProductSoldDate(email: string, productId: string, sellDate: Date): Promise<void> {
+        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+        {$set: {"productSold.$.sellDate": sellDate}})
+    }
+
+    async updateShippingLabelExpirationStatus(email: string, productId: string, expired: boolean): Promise<void> {
+        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+        {$set: {"productSold.$.shippingLabel.expired": expired}})
+    }
+  
     async exists(idOrEmail: string): Promise<boolean> {
         let emailResult = await UserModel.findOne({email: idOrEmail.toLowerCase()})
         if (emailResult == null) {

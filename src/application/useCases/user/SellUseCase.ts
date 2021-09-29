@@ -7,6 +7,8 @@ import { ISellUseCase } from "./ISellUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { IGeneratorIdHandler } from "../../interfaces/services/IGeneratorIdHandler";
+import { UserMap } from "../../mappers/UserMap";
+import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 
 export class SellUseCase implements ISellUseCase {
     async execute(userId: string, productInfo: any, idGenerator: IGeneratorIdHandler, 
@@ -26,6 +28,7 @@ export class SellUseCase implements ISellUseCase {
             let user = await userRepository.getUserById(userId)
             if (user == undefined) throw new NotFoundError("User not found")
 
+            let merchantDTO = UserMap.toDTO(user)
             let estimatePrice = 1233 //TODO estimer du produit en fonction du produit
 
             let productId = idGenerator.generate()
@@ -47,7 +50,15 @@ export class SellUseCase implements ISellUseCase {
                 year: productInfo.year
             }
 
+            if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
+            
+            merchantDTO.productSold.push({
+                productId: productDTO.productId,
+                sellStatus: productDTO.sellingStatus
+            })
+
             await productRepository.save(ProductMap.toDomain(productDTO))
+            await userRepository.save(UserMap.toDomain(merchantDTO))
             
             return {estimation: estimatePrice.toString(), id: productId} // retourner le prix estimé au marchand
         } catch(error) {

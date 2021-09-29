@@ -90,8 +90,8 @@ export const userSchema = new Schema<IUserProps>({
         paymentDate: {
             type: Date
         },
-        itemsId: {
-            type: Array
+        productId: {
+            type: String
         }
     }],
     productSold: [{
@@ -99,11 +99,15 @@ export const userSchema = new Schema<IUserProps>({
         productId: {
             type: String,
         },
-        priceReceived: {
-            type: Number
+        priceReceived: Number,
+        sellDate: Date,
+        sellStatus: {
+            type: String
         },
-        sellDate: {
-            type: Date
+        shippingLabel: {
+            url: String,
+            expirationDate: Date,
+            expired: Boolean
         }
     }],
     stripeCustomerId: String,

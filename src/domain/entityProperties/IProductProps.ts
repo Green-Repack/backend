@@ -1,7 +1,6 @@
 import { EProductCategory } from "./EProductCategory";
 import { EProductState } from "./EProductState";
 import { EPurchasePromiseStatus } from "./EPurchasePromiseStatus";
-import { IProductSpecs } from "./IProductSpecs";
 
 export interface IProductProps {
     productId: string

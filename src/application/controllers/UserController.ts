@@ -75,9 +75,9 @@ export class UserController {
 
     public async buyProducts(req: any, res: any) {
         try {
-            const {itemsBucket} = req.body
-            let secretKey = await this._buyUseCase.execute(req.userId, itemsBucket, this._paymentHandler, this._IdGeneratorHandler,
-                this._userRepository, this._productRepository, this._warehouseRepository, this._promoRepository)
+            const {productId} = req.body
+            let secretKey = await this._buyUseCase.execute(req.userId, productId, this._paymentHandler,
+                this._userRepository, this._productRepository)
             res.status(200).json(secretKey)
         } catch(error) {
             console.log(error)
@@ -121,7 +121,7 @@ export class UserController {
     public async refuseEstimation(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._refuseEsitmationUseCase.execute(productId, this._productRepository)
+            await this._refuseEsitmationUseCase.execute(productId, this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)
@@ -144,7 +144,8 @@ export class UserController {
     public async refuseCounterOffer(req: any, res: any) {
         try {
             const {productId, deliveryFee} = req.body
-            await this._refuseCounterOfferUseCase.execute(productId, deliveryFee, this._paymentHandler, this._productRepository)
+            await this._refuseCounterOfferUseCase.execute(productId, deliveryFee, this._paymentHandler,
+                this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)

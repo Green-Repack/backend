@@ -1,5 +1,5 @@
 export class IShippingLabel {
     url: string
-    creationDate: Date
-    orderId: string
+    expirationDate: Date
+    expired: boolean
 }
