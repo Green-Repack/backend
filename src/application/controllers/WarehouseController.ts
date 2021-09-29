@@ -36,7 +36,7 @@ export class WarehouseController {
         try {
             const {warehouseName} = req.body
             let warehouseDTO = await this._getWarehouseInfoUseCase.execute(warehouseName, this._warehouseRepository)
-            res.status(201).json(warehouseDTO);
+            res.status(200).json(warehouseDTO);
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
