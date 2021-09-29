@@ -4,6 +4,7 @@ import { EPurchasePromiseStatus } from "./EPurchasePromiseStatus";
 import { IProductSpecs } from "./IProductSpecs";
 
 export interface IProductProps {
+    productId: string
     name: string
     category: EProductCategory
     brand: string

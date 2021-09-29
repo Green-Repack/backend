@@ -1,8 +1,11 @@
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
+import { ProductMap } from "../../mappers/ProductMap";
 import { IAcceptEstimationUseCase } from "./IAcceptEstimationUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
     async execute(productId: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
@@ -16,9 +19,13 @@ export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
             let marchand = await userRepository.getUserById(product.merchantId)
             if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
-            await deliveryHandler.generate(marchand)
+            let productDTO = ProductMap.toDTO(product)
+            productDTO.sellingStatus = EPurchasePromiseStatus.WaitingForApproval
+
+            await productRepository.save(ProductMap.toDomain(productDTO))
+            //await deliveryHandler.generate(marchand) génération du ticket colissimo
         } catch(error) {
-            throw error
+            throw(error)
         }
     }
 }

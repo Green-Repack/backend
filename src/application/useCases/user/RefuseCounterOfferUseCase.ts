@@ -4,6 +4,7 @@ import { IProductRepository } from "../../interfaces/repository/IProductReposito
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IRefuseCounerOfferUseCase } from "./IRefuseCounterOfferUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class RefuseCounterOfferUseCase implements IRefuseCounerOfferUseCase {
     async execute(productId: string, deliveryFee: number, paymentHandler: IPaymentHandler, productRepository: IProductRepository): Promise<void> {
@@ -15,13 +16,12 @@ export class RefuseCounterOfferUseCase implements IRefuseCounerOfferUseCase {
 
             let productDTO = ProductMap.toDTO(product)
 
-            productDTO.sellingStatus = EPurchasePromiseStatus.Cancelled
-            productDTO.priceSeller = 0
+            productDTO.sellingStatus = EPurchasePromiseStatus.CounterOfferDeclined
             
             await productRepository.save(ProductMap.toDomain(productDTO))
-            await paymentHandler.acceptPayment(deliveryFee)
+            //await paymentHandler.acceptPayment(deliveryFee) déclenché le paiement des frais de livraison
         } catch(error) {
-            throw error
+            throw(error)
         }
     }
 }

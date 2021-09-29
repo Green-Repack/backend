@@ -10,6 +10,7 @@ import { IAssociationHandler } from "../interfaces/services/IAssociationHandler"
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
 import { AddProductUseCase } from "../useCases/green_repack/AddProductUseCase";
 import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
@@ -49,6 +50,8 @@ export class GreenRepackController{
     private _passwordHandler: IPasswordHandler;
     @inject(TYPES.IAssociationHandler)
     private _associationHandler: IAssociationHandler;
+    @inject(TYPES.IGenertorIdHandler)
+    private _iDGeneratorHandler: IGeneratorIdHandler;
 
     public constructor() {
         autoBind(this)
@@ -77,7 +80,8 @@ export class GreenRepackController{
     public async addProduct(req: any, res: any) {
         try {
             const {warehouseName, productInfo} = req.body
-            await this._addProductUseCase.execute(warehouseName, productInfo, this._productRepository, this._warehouseRepository)
+            await this._addProductUseCase.execute(warehouseName, productInfo, this._iDGeneratorHandler, 
+                this._productRepository, this._warehouseRepository)
             res.sendStatus(200);
         } catch(error) {
             console.log(error)
@@ -90,7 +94,7 @@ export class GreenRepackController{
             const {productId, warehouseName} = req.body
             await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
                 this._userReposiory, this._productRepository, this._warehouseRepository)
-            res.sendStatus(201)
+            res.sendStatus(200)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
@@ -103,7 +107,7 @@ export class GreenRepackController{
             const {productId, warehouseName, counterOffer} = req.body
             await this._makeCounterOfferUseCase.execute(productId, warehouseName, counterOffer, 
                 this._warehouseRepository, this._productRepository, this._userReposiory)
-            res.sendStatus(201)
+            res.sendStatus(200)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
@@ -115,7 +119,7 @@ export class GreenRepackController{
             const {productId, deliveryFee} = req.body
             await this._refuseProductUseCase.execute(productId, deliveryFee, this._paymentHandler, 
                 this._deliveryTicketHandler, this._userReposiory, this._productRepository)
-            res.ssendStatus(201)
+            res.sendStatus(200)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);

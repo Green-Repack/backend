@@ -8,6 +8,7 @@ import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IAcceptCounterOfferUseCase } from "./IAcceptCounterOfferUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
     async execute(productId: string, paymentHandler: IPaymentHandler, userRepository: IUserRepository, productRepository: IProductRepository, 
@@ -29,17 +30,19 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
             if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
 
             marchandDTO.productSold.push({
-                productId: product.id,
+                productId: product.productId,
                 priceReceived: product.priceSeller,
                 sellDate: new Date()
             })
 
-            await productRepository.save(ProductMap.toDomain(productDTO))
+            let updatedProduct = ProductMap.toDomain(productDTO)
+            await productRepository.save(updatedProduct)
             await userRepository.save(UserMap.toDomain(marchandDTO))
+            await warehouseRepository.updateStockProduct(updatedProduct, true)
 
-            await paymentHandler.emitPayment(product.priceSeller, marchand.id)
+            //await paymentHandler.emitPayment(product.priceSeller, marchand.id) faire le virement au vendeur
         } catch(error) {
-            throw error
+            throw(error)
         }
     } 
 }

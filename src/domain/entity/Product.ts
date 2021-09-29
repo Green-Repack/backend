@@ -1,4 +1,3 @@
-import { IProductSpecs } from "../entityProperties/IProductSpecs";
 import { IProductProps } from "../entityProperties/IProductProps";
 import { Entity } from "./BaseEntity";
 import { EProductState } from "../entityProperties/EProductState";
@@ -6,8 +5,8 @@ import { EPurchasePromiseStatus } from "../entityProperties/EPurchasePromiseStat
 import { EProductCategory } from "../entityProperties/EProductCategory";
 
 export class Product extends Entity<IProductProps> {
-    get id(): string {
-        return this._id!
+    get productId(): string {
+        return this.props.productId
     }
 
     get name(): string {

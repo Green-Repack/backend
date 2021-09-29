@@ -4,7 +4,7 @@ import { EPurchasePromiseStatus } from "../../domain/entityProperties/EPurchaseP
 import { IProductSpecs } from "../../domain/entityProperties/IProductSpecs";
 
 export interface IProductDTO {
-    id?: string
+    productId: string
     name: string
     category: EProductCategory
     brand: string

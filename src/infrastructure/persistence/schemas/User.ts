@@ -97,10 +97,10 @@ export const userSchema = new Schema<IUserProps>({
     productSold: [{
         _id:false,
         productId: {
-            type: Number,
+            type: String,
         },
         priceReceived: {
-            type: Date
+            type: Number
         },
         sellDate: {
             type: Date

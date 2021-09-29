@@ -14,8 +14,8 @@ greenRepackRouter.post("/association/verify", AuthorizationHandler.userAuth, Aut
 greenRepackRouter.post("/association/project/verify", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociationProject)
 greenRepackRouter.post("/product/add", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.addProduct)
 
-greenRepackRouter.post("/product/accept", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.acceptProduct)
-greenRepackRouter.post("/product/couter-offer", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.makeCounterOffer)
-greenRepackRouter.post("/product/decline", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.refuseProduct)
+greenRepackRouter.put("/product/accept", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.acceptProduct)
+greenRepackRouter.put("/product/counter-offer", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.makeCounterOffer)
+greenRepackRouter.put("/product/decline", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.refuseProduct)
 
 export default greenRepackRouter

@@ -23,29 +23,31 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
             
             let marchand = await userRepository.getUserById(product.merchantId)
-            if (marchand == undefined) throw new NotFoundError("Marchand not found")
-
+            if (marchand == undefined) throw new NotFoundError("Merchant not found")
+            
             let productDTO = ProductMap.toDTO(product)
             let marchandDTO = UserMap.toDTO(marchand)
-            
-            productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
-            productDTO.warehouseId = warehouse.id
 
-            if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
+            if (productDTO.sellingStatus != EPurchasePromiseStatus.EstimationDeclined) {
+                productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
+                productDTO.warehouseId = warehouse.id
 
-            marchandDTO.productSold.push({
-                productId: product.id,
-                priceReceived: product.priceSeller,
-                sellDate: new Date()
-            })
+                if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
 
-            await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), false)
-            await productRepository.save(ProductMap.toDomain(productDTO))
-            await userRepository.save(UserMap.toDomain(marchandDTO))
+                marchandDTO.productSold.push({
+                    productId: product.productId,
+                    priceReceived: product.priceSeller,
+                    sellDate: new Date()
+                })
 
-            paymentHanlder.emitPayment(product.priceSeller, marchand.id)
+                await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), false)
+                await productRepository.save(ProductMap.toDomain(productDTO))
+                await userRepository.save(UserMap.toDomain(marchandDTO))
+            }
+
+            //paymentHanlder.emitPayment(product.priceSeller, marchand.id) emission du virement à l'utilisateur
         } catch(error) {
-            throw error
+            throw(error)
         }
     }
     

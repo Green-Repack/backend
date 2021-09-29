@@ -9,9 +9,13 @@ import { IWarehouseRepository } from "../interfaces/repository/IWarehouseReposit
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { AcceptCounterOfferUseCase } from "../useCases/user/AcceptCounterOfferUseCase";
+import { AcceptEstimationUseCase } from "../useCases/user/AcceptEstimationUseCase";
 import { BuyUseCase } from "../useCases/user/BuyUseCase";
 import { GetUserInfoUseCase } from "../useCases/user/GetUserInfoUseCase";
 import { GiveGreenCoinsUseCase } from "../useCases/user/GiveGreenCoinsUseCase";
+import { RefuseCounterOfferUseCase } from "../useCases/user/RefuseCounterOfferUseCase";
+import { RefuseEstimationUseCase } from "../useCases/user/RefuseEstimationUseCase";
 import { SellUseCase } from "../useCases/user/SellUseCase";
 import { UpdateUserInfoUseCase } from "../useCases/user/UpdateUserInfoUseCase";
 
@@ -22,6 +26,10 @@ export class UserController {
     private readonly _buyUseCase = new BuyUseCase;
     private readonly _sellUseCase = new SellUseCase;
     private readonly _giveGreenCoinsUseCase = new GiveGreenCoinsUseCase;
+    private readonly _acceptEsitmationUseCase = new AcceptEstimationUseCase;
+    private readonly _acceptCounterOfferUseCase = new AcceptCounterOfferUseCase;
+    private readonly _refuseEsitmationUseCase = new RefuseEstimationUseCase;
+    private readonly _refuseCounterOfferUseCase = new RefuseCounterOfferUseCase;
 
     @inject(TYPES.IUserRepository)
     private _userRepository: IUserRepository;
@@ -77,9 +85,19 @@ export class UserController {
         }
     }
 
+    public async giveGreenCoins(req: any, res: any) {
+        try {
+            await this._giveGreenCoinsUseCase.execute(req.body, req.userId, this._associationRepository, this._userRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
     public async sellProduct(req: any, res: any) {
         try {
-            let estimatePrice = await this._sellUseCase.execute(req.userId, req.body,
+            let estimatePrice = await this._sellUseCase.execute(req.userId, req.body, this._IdGeneratorHandler,
                 this._userRepository, this._productRepository)
             res.status(200).json(estimatePrice)
         } catch(error) {
@@ -88,9 +106,45 @@ export class UserController {
         }
     }
 
-    public async giveGreenCoins(req: any, res: any) {
+    public async acceptEstimation(req: any, res: any) {
         try {
-            await this._giveGreenCoinsUseCase.execute(req.body, req.userId, this._associationRepository, this._userRepository)
+            const {productId} = req.body
+            await this._acceptEsitmationUseCase.execute(productId, this._deliveryHandler,
+                this._userRepository, this._productRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async refuseEstimation(req: any, res: any) {
+        try {
+            const {productId} = req.body
+            await this._refuseEsitmationUseCase.execute(productId, this._productRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async accaptCounterOffer(req: any, res: any) {
+        try {
+            const {productId} = req.body
+            await this._acceptCounterOfferUseCase.execute(productId, this._paymentHandler,
+                this._userRepository, this._productRepository, this._warehouseRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async refuseCounterOffer(req: any, res: any) {
+        try {
+            const {productId, deliveryFee} = req.body
+            await this._refuseCounterOfferUseCase.execute(productId, deliveryFee, this._paymentHandler, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)

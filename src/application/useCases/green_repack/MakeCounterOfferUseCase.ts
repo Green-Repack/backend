@@ -1,6 +1,5 @@
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
-import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
@@ -10,7 +9,7 @@ import { NotFoundError } from "../../errors/NotFoundError";
 
 export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
     async execute(productId: string, warehouseName: string, counterOffer: number, warehouseRepository: IWarehouseRepository, 
-        productRepository: IProductRepository, userRepository: IUserRepository): Promise<IProductDTO> {
+        productRepository: IProductRepository, userRepository: IUserRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
             Guard.AgainstNullOrUndefined(warehouseName, "Warehouse's name is required")
@@ -30,11 +29,9 @@ export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
             productDTO.priceSeller = counterOffer
             productDTO.warehouseId = warehouse.id
 
-            await productRepository.save(ProductMap.toDomain(product))
-
-            return productDTO
+            await productRepository.save(ProductMap.toDomain(productDTO))
         } catch (error) {
-            throw error
+            throw(error)
         }
     }
 }

@@ -4,7 +4,7 @@ import { IProductDTO } from "../DTOs/IProductDTO"
 export class ProductMap {
     public static toDTO(product: Product): IProductDTO {
         return {
-            id: product.id,
+            productId: product.productId,
             name: product.name,
             category: product.category,
             brand: product.brand,
@@ -26,6 +26,7 @@ export class ProductMap {
 
     public static toDomain(product: any): Product {
         return Product.createProduct({
+            productId: product.productId,
             name: product.name,
             category: product.category,
             brand: product.brand,
@@ -42,11 +43,12 @@ export class ProductMap {
             creationDate: product.creationDate,
             weight: product.weight,
             year: product.year
-        }, product.id)
+        }, product.productId)
     }
 
     public static toPersistence(product: Product): any {
         return {
+            productId: product.productId,
             name: product.name,
             category: product.category,
             brand: product.brand,

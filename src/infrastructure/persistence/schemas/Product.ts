@@ -2,6 +2,12 @@ import { Schema, model } from "mongoose";
 import { IProductProps } from "../../../domain/entityProperties/IProductProps";
 
 export const productSchema = new Schema<IProductProps>({
+    productId: {
+        type: String,
+        required: true,
+        unique: true,
+        trim:true
+    },
     name: {
         type: String,
         required: true,

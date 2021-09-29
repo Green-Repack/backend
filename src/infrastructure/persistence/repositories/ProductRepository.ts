@@ -26,7 +26,7 @@ export class ProductRepository implements IProductRepository {
     }
 
     async getProductById(id: string): Promise<Product | undefined> {
-        let product = await ProductModel.findById(id)
+        let product = await ProductModel.findOne({productId: id})
         if (product) return ProductMap.toDomain(product)
         else return undefined
     }
@@ -48,7 +48,7 @@ export class ProductRepository implements IProductRepository {
 
     async exists(id: string): Promise<boolean> {
         try {
-            let idResult = await ProductModel.findById(id)
+            let idResult = await ProductModel.findOne({productId: id})
             if (idResult == null)  return false
             else return true
         } catch(error) {
@@ -57,15 +57,15 @@ export class ProductRepository implements IProductRepository {
     }
 
     async delete(product: Product): Promise<void> {
-        await ProductModel.findByIdAndDelete(product.id)
+        await ProductModel.findOneAndDelete({productId: product.productId})
     }
 
     async save(product: Product): Promise<void> {
-        let exists = await this.exists(product.id)
+        let exists = await this.exists(product.productId)
         const rawUserData = ProductMap.toPersistence(product)
 
         if (exists) {
-            const mongooseUser = await ProductModel.findById(product.id)
+            const mongooseUser = await ProductModel.findOne({productId: product.productId})
             if (mongooseUser) await mongooseUser.updateOne(rawUserData)
         } else {
             await ProductModel.create(rawUserData)

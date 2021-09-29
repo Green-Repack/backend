@@ -23,12 +23,11 @@ export class RefuseProductUseCase implements IRefuseProductUseCase {
             let productDTO = ProductMap.toDTO(product)
 
             productDTO.sellingStatus = EPurchasePromiseStatus.Declined
-            productDTO.priceSeller = 0
             
             await productRepository.save(ProductMap.toDomain(productDTO))
-            await paymentHandler.acceptPayment(deliveryFee)
+            //await paymentHandler.acceptPayment(deliveryFee) accepté le paiement pour les frais de livraison du produit
         } catch(error) {
-            throw error
+            throw(error)
         }
     }
     

@@ -41,7 +41,7 @@ export class WarehouseRepository implements IWarehouseRepository {
                 quantityAvailable: quantityAvailable
             }
         } else {
-            let stock = await WarehouseModel.findOne({ name: warehouseName })
+            let stock = await WarehouseModel.findOne({ name: warehouseName.toLowerCase() })
             .select({ stock: { $elemMatch : { category: category, brand: brand, model: model, year: year}}})
             let stockInfo = WarehouseMap.toDomain(stock).stock.pop()
             if (stockInfo != undefined) quantityAvailable = stockInfo.quantityAvailable
@@ -57,21 +57,21 @@ export class WarehouseRepository implements IWarehouseRepository {
 
     async updateStockProduct(product: Product, sell?: boolean): Promise<void> {
         let warehouse = await WarehouseModel.findById(product.warehouseId)
-        let productInStock = await WarehouseModel.findOne({name: warehouse.name, 
+        let productInStock = await WarehouseModel.findOne({name: warehouse.name.toLowerCase(), 
             "stock.category": product.category,
             "stock.brand": product.brand,
             "stock.model": product.model})
         if (productInStock) {
             if (sell!) {
                 await WarehouseModel.updateOne(
-                    {name: warehouse.name, 
+                    {name: warehouse.name.toLowerCase(), 
                     "stock.category": product.category,
                     "stock.brand": product.brand,
                     "stock.model": product.model},
                 {$inc: {"stock.$.quantityAvailable": -1}})
             } else {
                 await WarehouseModel.updateOne(
-                    {name: warehouse.name, 
+                    {name: warehouse.name.toLowerCase(), 
                     "stock.category": product.category,
                     "stock.brand": product.brand,
                     "stock.model": product.model},
@@ -85,25 +85,25 @@ export class WarehouseRepository implements IWarehouseRepository {
                 year: product.year,
                 quantityAvailable: 1
             }
-            await WarehouseModel.updateOne({name: warehouse.name},
+            await WarehouseModel.updateOne({name: warehouse.name.toLowerCase()},
                 {$push : {"stock": stockInfo}})
         }
     }
 
     async getWarehouseByName(name: string): Promise<Warehouse | undefined> {
-        let Warehouse = await WarehouseModel.findOne({name: name.toString()})
+        let Warehouse = await WarehouseModel.findOne({name: name.toLowerCase()})
         if (Warehouse != null) return WarehouseMap.toDomain(Warehouse)
         else return undefined
     }
 
     async getWarehouseByLocation(location: string): Promise<Warehouse | undefined> {
-        let Warehouse = await WarehouseModel.findOne({locaton: location.toString()})
+        let Warehouse = await WarehouseModel.findOne({locaton: location.toLowerCase()})
         if (Warehouse != null) return WarehouseMap.toDomain(Warehouse)
         else return undefined
     }
 
     async exists(idOrName: string): Promise<boolean> {
-        let nameResult = await WarehouseModel.findOne({name: idOrName})
+        let nameResult = await WarehouseModel.findOne({name: idOrName.toLowerCase()})
         if (nameResult == null) {
             try {
                 let idResult = await WarehouseModel.findById(idOrName)
@@ -118,11 +118,11 @@ export class WarehouseRepository implements IWarehouseRepository {
     }
 
     async delete(Warehouse: Warehouse): Promise<void> {
-        await WarehouseModel.deleteOne({name: Warehouse.name})
+        await WarehouseModel.deleteOne({name: Warehouse.name.toLowerCase()})
     }
 
     async save(Warehouse: Warehouse): Promise<void> {
-        let exists = await this.exists(Warehouse.name)
+        let exists = await this.exists(Warehouse.name.toLowerCase())
         const rawWarehouseData = WarehouseMap.toPersistence(Warehouse)
 
         if (exists) {

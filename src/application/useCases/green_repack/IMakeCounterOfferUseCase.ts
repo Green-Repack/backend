@@ -5,5 +5,5 @@ import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepo
 
 export interface IMakeCounterOfferUseCase {
     execute(productId: string, warehouseName: string, counterOffer: number, warehouseRepository: IWarehouseRepository, 
-        productRepository: IProductRepository, userRepository: IUserRepository): Promise<IProductDTO>
+        productRepository: IProductRepository, userRepository: IUserRepository): Promise<void>
 }

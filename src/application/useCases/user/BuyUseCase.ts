@@ -67,7 +67,7 @@ export class BuyUseCase implements IBuyUseCase {
         for(var id of itemsBucket) {
             let product = await productRepository.getProductById(id)
             if (product != undefined) {
-                itemsId.push(product.id)
+                itemsId.push(product.productId)
                 let productDTO = ProductMap.toDTO(product)
                 productDTO.sold = true
                 this._totalPrice += productDTO.price

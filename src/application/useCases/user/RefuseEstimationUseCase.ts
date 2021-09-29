@@ -1,7 +1,9 @@
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IRefuseEstimationUseCase } from "./IRefuseEstimationUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class RefuseEstimationUseCase implements IRefuseEstimationUseCase {
     async execute(productId: string, productRepository: IProductRepository): Promise<void> {
@@ -13,13 +15,11 @@ export class RefuseEstimationUseCase implements IRefuseEstimationUseCase {
 
             let productDTO = ProductMap.toDTO(product)
 
-            productDTO.accepted = false
-            productDTO.acceptationDate = new Date()
-            productDTO.priceSeller = 0
+            productDTO.sellingStatus = EPurchasePromiseStatus.EstimationDeclined
             
             await productRepository.save(ProductMap.toDomain(productDTO))
         } catch(error) {
-            throw error
+            throw(error)
         }
     }   
 }

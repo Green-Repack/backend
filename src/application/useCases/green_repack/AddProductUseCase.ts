@@ -6,9 +6,10 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { IAddProductUseCase } from "./IAddProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
+import { IGeneratorIdHandler } from "../../interfaces/services/IGeneratorIdHandler";
 
 export class AddProductUseCase implements IAddProductUseCase {
-    async execute(warehouseName: string, productInfo: any, productRepository: IProductRepository, 
+    async execute(warehouseName: string, productInfo: any, idGenerator: IGeneratorIdHandler, productRepository: IProductRepository, 
         warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(warehouseName, "WarehouseName is required")
@@ -20,7 +21,9 @@ export class AddProductUseCase implements IAddProductUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
+            let productId = idGenerator.generate()
             let productDTO: IProductDTO = {
+                productId: productId,
                 name: productInfo.name,
                 category: productInfo.category,
                 brand: productInfo.brand,
