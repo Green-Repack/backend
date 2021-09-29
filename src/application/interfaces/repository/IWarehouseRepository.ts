@@ -10,5 +10,5 @@ export interface IWarehouseRepository extends IBaseRepository<Warehouse> {
     getWarehouseByLocation(location: string): Promise<Warehouse | undefined>
     getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo>
     saveProduct(product: Product, wharehouseId?: string, warehouseName?: string): Promise<void>
-    updateStockProduct(product: Product, wharehouseId: string, quantity?: number): Promise<void>
+    updateStockProduct(product: Product, warehouse: Warehouse, quantity?: number): Promise<void>
 }

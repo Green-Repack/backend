@@ -3,10 +3,12 @@ import {ShippingLabel} from "../../../domain/entity/ShippingLabel";
 import {IShippingLabelProps} from "../../../domain/entityProperties/IShippingLabelProps";
 import {IShippingLabelRepository} from "../../../application/interfaces/repository/IShippingLabelRepository";
 import { ShippingLabelModel } from "../schemas/ShippingLabel";
+import { injectable } from "inversify";
 
+@injectable()
 export class ShippingLabelRepository implements IShippingLabelRepository{
-    async delete(id: string): Promise<void> {
-        await ShippingLabelModel.findByIdAndDelete(id);
+    async delete(t: ShippingLabel): Promise<void> {
+        await ShippingLabelModel.findByIdAndDelete(t.id);
     }
 
     async exists(id: string): Promise<boolean> {

@@ -81,8 +81,18 @@ export class WarehouseRepository implements IWarehouseRepository {
         }
     }
 
-    async updateStockProduct(product: Product, wharehouseId: string, quantity: number): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateStockProduct(product: Product, warehouse: Warehouse, quantity: number): Promise<void> {
+        let stockInfo: IStockInfo = {
+            brand: product.brand,
+            category: product.category,
+            model: product.model,
+            quantityAvaible: 0
+        }
+        if(quantity) stockInfo.quantityAvaible=quantity
+        else stockInfo.quantityAvaible=1
+        warehouse.stock.push(stockInfo)
+        
+        this.save(warehouse)
     }
 
     async saveProduct(product: Product, warehouseName: string): Promise<void> {

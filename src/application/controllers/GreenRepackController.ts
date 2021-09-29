@@ -6,6 +6,7 @@ import { IAssociationRepository } from "../interfaces/repository/IAssociationRep
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
 import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepository";
+import { IShippingLabelRepository } from "../interfaces/repository/IShippingLabelRepository";
 import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
@@ -52,6 +53,8 @@ export class GreenRepackController{
     private _productRepository: IProductRepository;
     @inject(TYPES.IUserRepository)
     private _userReposiory: IUserRepository;
+    @inject(TYPES.IShippingLabelRepository)
+    private _shippingLabelRepository: IShippingLabelRepository
 
     @inject(TYPES.IPasswordHandler)
     private _passwordHandler: IPasswordHandler;
@@ -99,9 +102,9 @@ export class GreenRepackController{
 
     public async acceptProduct(req: any, res: any) {
         try {
-            const {productId, warehouseName} = req.body
-            await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
-                this._userReposiory, this._productRepository, this._warehouseRepository)
+            const warehouseName = req.body.warehouseName
+            await this._acceptProductUseCase.execute(req.params.id, warehouseName, this._paymentHandler, 
+                this._userReposiory, this._productRepository, this._warehouseRepository, this._shippingLabelRepository)
             res.sendStatus(201)
         } catch(error) {
             console.log(error)

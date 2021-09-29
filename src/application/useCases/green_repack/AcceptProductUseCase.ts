@@ -8,10 +8,14 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { ShippingLabelMap } from "../../mappers/ShippingLabelMap";
+import { ShippingLabelService } from "../../user/services/ShippingLabelService";
+import { ShippingLabel } from "../../../domain/entity/ShippingLabel";
+import { IShippingLabelRepository } from "../../interfaces/repository/IShippingLabelRepository";
 
 export class AcceptProductUseCase implements IAcceptProductUseCase {
     async execute(productId: string, warehouseName: string, paymentHanlder: IPaymentHandler, userRepository: IUserRepository,
-         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
+         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository, shippingLabelRepository: IShippingLabelRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
 
@@ -30,16 +34,12 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             productDTO.accepted = true
             productDTO.acceptationDate = new Date()
             productDTO.warehouseId = warehouse.id
+            
+            let shippingLabel: ShippingLabel = await ShippingLabelService.generateLabel(productId, product.weight, warehouse, merchant)
 
-            if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
+            await shippingLabelRepository.save(shippingLabel);
 
-            merchantDTO.productSold.push({
-                productId: product.id,
-                priceReceived: product.priceSeller,
-                sellDate: new Date()
-            })
-
-            await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), warehouse.id)
+            await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), warehouse)
             await productRepository.save(ProductMap.toDomain(productDTO))
             await userRepository.save(UserMap.toDomain(merchantDTO))
 

@@ -24,6 +24,8 @@ import { AssociaionHandler } from "./src/infrastructure/services/AssociationHand
 import { DeliveryTicketHanlder } from "./src/infrastructure/services/DeliveryTicketHandler";
 import { ProductPriceRepository } from "./src/infrastructure/persistence/repositories/ProductPriceRepository";
 import { IProductPriceRepository } from "./src/application/interfaces/repository/IProductPriceRepository";
+import { IShippingLabelRepository } from "./src/application/interfaces/repository/IShippingLabelRepository";
+import { ShippingLabelRepository } from "./src/infrastructure/persistence/repositories/ShippingLabelRepository";
 
 const DIcontainer = new Container()
 DIcontainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository)
@@ -33,6 +35,7 @@ DIcontainer.bind<IProductRepository>(TYPES.IProductRepository).to(ProductReposit
 DIcontainer.bind<IPromoCoinsRepository>(TYPES.IPromoCoinsRepository).to(PromoCoinsRepository)
 DIcontainer.bind<IWarehouseRepository>(TYPES.IWarehouseRepository).to(WarehouseRepository)
 DIcontainer.bind<IProductPriceRepository>(TYPES.IProductPriceRepository).to(ProductPriceRepository)
+DIcontainer.bind<IShippingLabelRepository>(TYPES.IShippingLabelRepository).to(ShippingLabelRepository)
 
 DIcontainer.bind<IPaymentHandler>(TYPES.IPaymentHandler).to(PaymentHandler)
 DIcontainer.bind<IPasswordHandler>(TYPES.IPasswordHandler).to(PasswordHandler)

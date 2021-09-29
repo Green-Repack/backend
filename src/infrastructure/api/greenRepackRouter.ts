@@ -15,5 +15,6 @@ greenRepackRouter.post("/warehouse/", AuthorizationHandler.userAuth, Authorizati
 greenRepackRouter.delete("/warehouse/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.deleteWarehouse)
 greenRepackRouter.patch("/warehouse/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.updateWarehouse)
 greenRepackRouter.get("/warehouse/:id", greenRepackController.getWarehouse)
+greenRepackRouter.post("/product/:id/accept", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.acceptProduct)
 
 export default greenRepackRouter

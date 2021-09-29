@@ -10,7 +10,8 @@ const TYPES = {
     IJwtHandler: Symbol.for("IJwtHandler"),
     IPasswordHandler: Symbol.for("IPasswordHandler"),
     IPaymentHandler: Symbol.for("IPaymentHandler"),
-    IProductPriceRepository: Symbol.for("IProductPriceRepository")
+    IProductPriceRepository: Symbol.for("IProductPriceRepository"),
+    IShippingLabelRepository: Symbol.for("IShippingLabelRepository")
 }
 
 export {TYPES}

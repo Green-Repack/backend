@@ -8,23 +8,23 @@ export class ShippingLabel extends Entity<IShippingLabelProps>{
     }
 
     get url(): string{
-        return this.url!
+        return this.props.url
     }
 
     get creationDate(): Date{
-        return this.creationDate!
+        return this.props.creationDate
     }
 
     get productId(): string{
-        return this.productId!
+        return this.props.productId
     }
 
     get userId(): string{
-        return this.userId!
+        return this.props.userId
     }
 
     get wareHouseId(): string{
-        return this.wareHouseId!
+        return this.props.wareHouseId
     }
 
     constructor(props: IShippingLabelProps, id: string) {

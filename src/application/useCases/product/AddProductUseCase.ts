@@ -5,7 +5,6 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { IAddProductUseCase } from "./IAddProductUseCase";
 import { IProductPriceRepository } from "../../interfaces/repository/IProductPriceRepository";
 import { Product } from "../../../domain/entity/Product";
-import { UserRepository } from "../../../infrastructure/persistence/repositories/UserRepository";
 import { PurchasePromiseStatus } from "../../user/enum/PurchasePromiseStatus";
 import { ProductState } from "../../user/enum/ProductState";
 import { ProductCategory } from "../../user/enum/ProductCategory";
@@ -27,8 +26,8 @@ export class AddProductUseCase implements IAddProductUseCase {
             let productDTO: IProductDTO = {
                 name: productInfo.name,
                 category: ProductCategory[productInfo.category],
-                brand: productInfo.brand,
-                model: productInfo.model,
+                brand: productInfo.brand.toLowerCase(),
+                model: productInfo.model.toLowerCase(),
                 specificities: productInfo.specificities,
                 images: productInfo.images,
                 state: ProductState[productInfo.state],
@@ -48,5 +47,4 @@ export class AddProductUseCase implements IAddProductUseCase {
             throw new Error("Cant't create the product.")
         }
     }
-    
 }
