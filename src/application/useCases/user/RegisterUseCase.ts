@@ -7,6 +7,7 @@ import { AlreadyExistsError } from "../../errors/AlreadyExistsError";
 import { IUserDTO } from "../../DTOs/IUserDTO";
 import { IUserOrders } from "../../../domain/entityProperties/IUserOrders";
 import { IProductSold } from "../../../domain/entityProperties/IProductSold";
+import axios,{AxiosResponse} from "axios";
 
 export class RegisterUseCase  implements IRegisterUseCase {
     public async execute(userInfo: any, passwordHandler: IPasswordHandler, repository: IUserRepository): Promise<void> {
@@ -26,7 +27,7 @@ export class RegisterUseCase  implements IRegisterUseCase {
                 password: "",
                 orders: new Array<IUserOrders>(),
                 greenCoins: {amount: 0, expireDate: new Date()},
-                merchant: this.isMerchant(userInfo.siren, userInfo.siret),
+                merchant: await this.isMerchant(userInfo.siren, userInfo.siret),
                 creationDate: new Date()
             }
 
@@ -45,9 +46,14 @@ export class RegisterUseCase  implements IRegisterUseCase {
         }
     }
 
-    private isMerchant(siren?: string, siret?: string): boolean {
-        if ((siren! != null || siren! != undefined) || (siret! != null || siren! != undefined)) {
-            return true
+    private async isMerchant(siren?: string, siret?: string): Promise<boolean> {
+        if(siret){
+            let response: AxiosResponse = await axios.get("https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/"+siret)
+            return response.status == 200;
+        }
+        else if(siren){
+            let response: AxiosResponse = await axios.get("https://entreprise.data.gouv.fr/api/sirene/v1/siren/"+siret)
+            return response.status == 200;
         }
         return false
     }
