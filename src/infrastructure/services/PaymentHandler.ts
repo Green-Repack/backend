@@ -11,6 +11,7 @@ import { IUserOrders } from "../../domain/entityProperties/IUserOrders";
 import { IGeneratorIdHandler } from "../../application/interfaces/services/IGeneratorIdHandler";
 import { IWarehouseRepository } from "../../application/interfaces/repository/IWarehouseRepository";
 import { IPromoCoinsRepository } from "../../application/interfaces/repository/IPromoCoinsRepository";
+import { NotFoundError } from "../../application/errors/NotFoundError";
 
 @injectable()
 export class PaymentHandler implements IPaymentHandler {

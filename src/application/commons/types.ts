@@ -11,6 +11,7 @@ const TYPES = {
     IPasswordHandler: Symbol.for("IPasswordHandler"),
     IPaymentHandler: Symbol.for("IPaymentHandler"),
     IGenertorIdHandler: Symbol.for("IGenertorIdHandler"),
+    IMerchantHandler: Symbol.for("IMerchantHandler")
 }
 
 export {TYPES}

@@ -24,6 +24,8 @@ import { AssociaionHandler } from "./src/infrastructure/services/AssociationHand
 import { DeliveryTicketHanlder } from "./src/infrastructure/services/DeliveryTicketHandler";
 import { IGeneratorIdHandler } from "./src/application/interfaces/services/IGeneratorIdHandler";
 import { IdGeneratorHandler } from "./src/infrastructure/services/IdGeneratorHandler";
+import { IMerchantHandler } from "./src/application/interfaces/services/IMerchandHandler";
+import { MerchantHandler } from "./src/infrastructure/services/MerchantHandler";
 
 const DIcontainer = new Container()
 DIcontainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository)
@@ -39,6 +41,7 @@ DIcontainer.bind<IJwtHandler>(TYPES.IJwtHandler).to(JwtHandler)
 DIcontainer.bind<IAssociationHandler>(TYPES.IAssociationHandler).to(AssociaionHandler)
 DIcontainer.bind<IDeliveryTicketHandler>(TYPES.IDeliveryTicketHandler).to(DeliveryTicketHanlder)
 DIcontainer.bind<IGeneratorIdHandler>(TYPES.IGenertorIdHandler).to(IdGeneratorHandler)
+DIcontainer.bind<IMerchantHandler>(TYPES.IMerchantHandler).to(MerchantHandler)
 
 
 export default DIcontainer

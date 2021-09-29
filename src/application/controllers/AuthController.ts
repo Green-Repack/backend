@@ -8,6 +8,7 @@ import { IJwtHandler } from "../interfaces/services/IJwtHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { LoginUseCase } from "../useCases/user/LoginUseCase";
 import { RegisterUseCase } from "../useCases/user/RegisterUseCase";
+import { IMerchantHandler } from "../interfaces/services/IMerchandHandler";
 
 @injectable()
 export class AuthController{
@@ -26,6 +27,8 @@ export class AuthController{
     private _jwtHandler!: IJwtHandler;
     @inject(TYPES.IPasswordHandler)
     private _passwordHandler!: IPasswordHandler;
+    @inject(TYPES.IMerchantHandler)
+    private _merchantHandler!: IMerchantHandler;
 
     constructor() {
         autoBind(this)
@@ -33,7 +36,7 @@ export class AuthController{
 
     public async register(req: any, res: any) {
         try {
-            await AuthController._registerUseCase.execute(req.body, this._passwordHandler, this._userRepository)
+            await AuthController._registerUseCase.execute(req.body, this._passwordHandler, this._merchantHandler,  this._userRepository)
             res.sendStatus(201);
         } catch(error) {
             console.log(error)
