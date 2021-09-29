@@ -8,9 +8,10 @@ let associationController: AssociationController = DIcontainer.resolve<Associati
 
 const associationRouter = Router();
 
-associationRouter.post('/register', associationController.createAssociation);
+associationRouter.post('/create', associationController.createAssociation);
 associationRouter.post('/create/project/action', AuthorizationHandler.userAuth, AuthorizationHandler.associationAuthorization ,associationController.createAction);
 associationRouter.post('/create/project', AuthorizationHandler.userAuth, AuthorizationHandler.associationAuthorization, associationController.createProject);
-associationRouter.get("/getInfo", AuthorizationHandler.userAuth, AuthorizationHandler.associationAuthorization, associationController.getInfo)
+associationRouter.get("/info", AuthorizationHandler.userAuth, associationController.getInfo)
+associationRouter.get("/", AuthorizationHandler.userAuth, associationController.getAllAssociations)
 
 export default associationRouter

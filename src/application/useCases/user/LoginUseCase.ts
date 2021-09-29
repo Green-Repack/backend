@@ -11,7 +11,7 @@ import { AssociationMap } from "../../mappers/AssociationMap";
 
 export class LoginUseCase  implements ILoginUseCase {
     async execute(credentials: any, passwordHandler: IPasswordHandler, jwtHandler: IJwtHandler, userRepository: IUserRepository,
-        greenRepRepository: IGreenRepackRepository, assoRepository: IAssociationRepository): Promise<string> {
+        greenRepRepository: IGreenRepackRepository, assoRepository: IAssociationRepository): Promise<{[name: string]: string}> {
         let user = await userRepository.getUserByEmail(credentials.login)
         let greenRepMember = await greenRepRepository.getMemberByUsername(credentials.login)
         let association = await assoRepository.getAssociationByEmail(credentials.login)
@@ -25,7 +25,7 @@ export class LoginUseCase  implements ILoginUseCase {
             userDTO.token = userToken
             
             await userRepository.save(UserMap.toDomain(userDTO))
-            return userToken
+            return {token: userToken, type: "user"}
         } else if (greenRepMember != undefined) {
             let passwordVerification = await passwordHandler.checkPassword(greenRepMember.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
@@ -36,7 +36,7 @@ export class LoginUseCase  implements ILoginUseCase {
             greenRepDTO.token = greenRepToken
             
             await greenRepRepository.save(GreenRepackMap.toDomain(greenRepDTO))
-            return greenRepToken
+            return {token: greenRepToken, type: "greenrepack"}
         } else if (association != undefined) {
             let passwordVerification = await passwordHandler.checkPassword(association.password, credentials.password)
             if(!passwordVerification) throw new InvalidCredentialsError()
@@ -47,7 +47,7 @@ export class LoginUseCase  implements ILoginUseCase {
             associationDTO.token = associationToken
             
             await assoRepository.save(AssociationMap.toDomain(associationDTO))
-            return associationToken
+            return {token: associationToken, type: "association"}
         } else {
             throw new InvalidCredentialsError()
         }

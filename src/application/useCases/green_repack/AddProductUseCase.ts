@@ -5,6 +5,7 @@ import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepo
 import { ProductMap } from "../../mappers/ProductMap";
 import { IAddProductUseCase } from "./IAddProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 
 export class AddProductUseCase implements IAddProductUseCase {
     async execute(warehouseName: string, productInfo: any, productRepository: IProductRepository, 
@@ -24,16 +25,21 @@ export class AddProductUseCase implements IAddProductUseCase {
                 category: productInfo.category,
                 brand: productInfo.brand,
                 model: productInfo.model,
+                sellingStatus: EPurchasePromiseStatus.Accepted,
+                state: productInfo.state,
                 specificities: productInfo.specificities,
                 images: productInfo.images,
+                warehouseId: warehouse.id,
                 price: productInfo.price,
                 sold: false,
-                creationDate: new Date()
+                creationDate: new Date(),
+                weight: productInfo.weight,
+                year: productInfo.year
             }
 
             let product = ProductMap.toDomain(productDTO)
             await productRepository.save(product)
-            await warehouseRepository.updateStockProduct(product, warehouse.id)
+            await warehouseRepository.updateStockProduct(product, false)
         } catch(error) {
             throw error
         }

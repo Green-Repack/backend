@@ -1,3 +1,4 @@
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
@@ -14,8 +15,7 @@ export class RefuseCounterOfferUseCase implements IRefuseCounerOfferUseCase {
 
             let productDTO = ProductMap.toDTO(product)
 
-            productDTO.accepted = false
-            productDTO.acceptationDate = new Date()
+            productDTO.sellingStatus = EPurchasePromiseStatus.Cancelled
             productDTO.priceSeller = 0
             
             await productRepository.save(ProductMap.toDomain(productDTO))

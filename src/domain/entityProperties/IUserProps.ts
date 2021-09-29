@@ -1,7 +1,8 @@
 import { IAddress } from "./IAddress";
 import { IGreenCoins } from "./IGreenCoins"
 import { IProductSold } from "./IProductSold";
-import { IUserAchat } from "./IUserAchat";
+import { IShippingLabel } from "./IShippingLabel";
+import { IUserOrders } from "./IUserOrders";
 
 export interface IUserProps {
     firstName: string
@@ -11,7 +12,9 @@ export interface IUserProps {
     address: IAddress
     greenCoins: IGreenCoins
     merchant: boolean
-    achats: IUserAchat[]
+    stripeCustomerId?: string
+    shippingLabels?: IShippingLabel[]
+    orders: IUserOrders[]
     productSold?: IProductSold[]
     token?: string
     siret?: string

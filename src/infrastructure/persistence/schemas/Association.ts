@@ -111,6 +111,7 @@ export const associationSchema = new Schema<IAssociationProps>({
             required: true,
         },
     }],
+    stripeCustomerId: String, 
     token: String,
     creationDate : {
         type: Date,

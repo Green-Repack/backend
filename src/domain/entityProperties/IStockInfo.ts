@@ -1,6 +1,9 @@
+import { EProductCategory } from "./EProductCategory";
+
 export interface IStockInfo {
-    category: string
+    category: EProductCategory
     brand: string
     model: string
-    quantityAvaible: number
+    year: number
+    quantityAvailable: number
 }

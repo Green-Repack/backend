@@ -38,7 +38,7 @@ export class AuthorizationHandler {
     public static async merchantAuthorization(req: any, res: any, next: any) {
         try {
             let user = await AuthorizationHandler.userRepository.getUserById(req.userId)
-            if (user == undefined || !user.isMarchand()) return res.status(401).json("Unauthorized")
+            if (user == undefined || !user.isMerchant()) return res.status(401).json("Unauthorized")
 
             next();
         } catch(error) {

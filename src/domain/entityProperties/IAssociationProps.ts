@@ -8,6 +8,7 @@ export interface IAssociationProps {
     numRNA?: string
     siret?: string
     verified: boolean
+    stripeCustomerId?: string
     email: string
     password: string
     projects: IProjectAssociation[]

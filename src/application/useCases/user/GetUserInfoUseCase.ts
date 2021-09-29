@@ -3,6 +3,7 @@ import { IUserDTO } from "../../DTOs/IUserDTO";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { UserMap } from "../../mappers/UserMap";
 import { IGetUserInfoUseCase } from "./IGetUserInfoUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class GetUserInfoUseCase implements IGetUserInfoUseCase {
     async execute(userId: string, userRepository: IUserRepository): Promise<IUserDTO> {

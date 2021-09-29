@@ -5,14 +5,17 @@ import { WarehouseModel } from "../schemas/Warehouse";
 import { Product } from "../../../domain/entity/Product";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { injectable } from "inversify";
+import { EProductCategory } from "../../../domain/entityProperties/EProductCategory";
 
 @injectable()
 export class WarehouseRepository implements IWarehouseRepository {
     async getWarehouseById(id: string): Promise<Warehouse | undefined> {
         let warehouse = await WarehouseModel.findById(id)
-        if(warehouse) return WarehouseMap.toDomain(warehouse)
+        if (warehouse) return WarehouseMap.toDomain(warehouse)
+        else return undefined
     }
-    async getWarehouses(): Promise<Warehouse[]> {
+
+    async getAllWarehouses(): Promise<Warehouse[]> {
         let result = new Array<Warehouse>()
         let warehouses = await WarehouseModel.find({})
         for (var warehouse of warehouses) {
@@ -21,76 +24,70 @@ export class WarehouseRepository implements IWarehouseRepository {
         return result
     }
 
-    async getStockProduct(category: string, brand: string, model: string, warehouseName?: string): Promise<IStockInfo> {
+    async getStockProduct(category: EProductCategory, brand: string, model: string, year: number, warehouseName?: string): Promise<IStockInfo> {
         let quantityAvailable: number = 0
         if (warehouseName == undefined) {
-            let warehouses = await WarehouseModel.aggregate([
-                {
-                    "$match" : {
-                        "stock": {
-                            "$elemMatch": {
-                                "$and" : [
-                                    { "category": category},
-                                    { "brand": brand},
-                                    { "model": model}
-                                ]
-                            }
-                        }
-                    }
-                },
-                {
-                    "$project" : {
-                        "name": 1,
-                        "stock": {
-                            "$filter": {
-                                "input": "$stock",
-                                "as": "stock",
-                                "cond": {
-                                    "and" : [
-                                        {"$eq": ["$stock.category", category]},
-                                        {"$eq": ["$stock.brand", brand]},
-                                        {"$eq": ["$stock.model", model]}
-                                    ]
-                                } 
-                            }
-                        }
-                    }
-                }
-            ])
+            let warehouses = await WarehouseModel.find({})
+            .select({ stock: { $elemMatch : { category: category, brand: brand, model: model, year: year}}})
             for (var warehouse of warehouses) {
                 let stockInfo =  WarehouseMap.toDomain(warehouse).stock.pop()
-                if (stockInfo != undefined) quantityAvailable += stockInfo.quantityAvaible
+                if (stockInfo != undefined) quantityAvailable += stockInfo.quantityAvailable
             }
             return {
                 category: category,
                 brand: brand,
                 model: model,
-                quantityAvaible: quantityAvailable
+                year: year,
+                quantityAvailable: quantityAvailable
             }
         } else {
             let stock = await WarehouseModel.findOne({ name: warehouseName })
-            .select({ stock: { $elemMatch : { category: category, brand: brand, model: model }}})
-            console.log(stock)
-            let warehouse = WarehouseMap.toDomain(stock)
+            .select({ stock: { $elemMatch : { category: category, brand: brand, model: model, year: year}}})
+            let stockInfo = WarehouseMap.toDomain(stock).stock.pop()
+            if (stockInfo != undefined) quantityAvailable = stockInfo.quantityAvailable
             return {
                 category: category,
                 brand: brand,
                 model: model,
-                quantityAvaible: warehouse.stock.pop()?.quantityAvaible!
+                year: year,
+                quantityAvailable: quantityAvailable
             }
         }
     }
 
-    async updateStockProduct(product: Product, wharehouseId: string, quantity: number): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-
-    async saveProduct(product: Product, warehouseName: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
-
-    async deleteProduct(product: Product, warehouseName: string): Promise<void> {
-        throw new Error("Method not implemented.");
+    async updateStockProduct(product: Product, sell?: boolean): Promise<void> {
+        let warehouse = await WarehouseModel.findById(product.warehouseId)
+        let productInStock = await WarehouseModel.findOne({name: warehouse.name, 
+            "stock.category": product.category,
+            "stock.brand": product.brand,
+            "stock.model": product.model})
+        if (productInStock) {
+            if (sell!) {
+                await WarehouseModel.updateOne(
+                    {name: warehouse.name, 
+                    "stock.category": product.category,
+                    "stock.brand": product.brand,
+                    "stock.model": product.model},
+                {$inc: {"stock.$.quantityAvailable": -1}})
+            } else {
+                await WarehouseModel.updateOne(
+                    {name: warehouse.name, 
+                    "stock.category": product.category,
+                    "stock.brand": product.brand,
+                    "stock.model": product.model},
+                {$inc: {"stock.$.quantityAvailable": 1}})
+            }
+        } else {
+            let stockInfo: IStockInfo = {
+                category: product.category,
+                brand: product.brand,
+                model: product.model,
+                year: product.year,
+                quantityAvailable: 1
+            }
+            await WarehouseModel.updateOne({name: warehouse.name},
+                {$push : {"stock": stockInfo}})
+        }
     }
 
     async getWarehouseByName(name: string): Promise<Warehouse | undefined> {
@@ -103,51 +100,6 @@ export class WarehouseRepository implements IWarehouseRepository {
         let Warehouse = await WarehouseModel.findOne({locaton: location.toString()})
         if (Warehouse != null) return WarehouseMap.toDomain(Warehouse)
         else return undefined
-    }
-
-    async getStockByProductCategory(category: string, WarehouseName?: string): Promise<Warehouse[]> {
-        let result: Warehouse[] = new Array<Warehouse>()
-        let Warehouses
-
-        if (WarehouseName! != undefined) {
-            Warehouses = await WarehouseModel.find({name: WarehouseName!, 'stock.category': category})
-        } else {
-            Warehouses = await WarehouseModel.find({'stock.category': category})
-        }
-        for(var Warehouse of Warehouses) {
-            result.push(WarehouseMap.toDomain(Warehouse))
-        }
-        return result
-    }
-
-    async getStockByProductModel(model: string, brand: string, WarehouseName?: string): Promise<Warehouse[]> {
-        let result: Warehouse[] = new Array<Warehouse>()
-        let Warehouses
-
-        if (WarehouseName! != undefined) {
-            Warehouses = await WarehouseModel.find({name: WarehouseName!, 'stock.brand': brand, 'stock.model': model})
-        } else {
-            Warehouses = await WarehouseModel.find({'stock.brand': brand, 'stock.model': model})
-        }
-        for(var Warehouse of Warehouses) {
-            result.push(WarehouseMap.toDomain(Warehouse))
-        }
-        return result
-    }
-
-    async getStockByProductBrand(brand: string, WarehouseName?: string): Promise<Warehouse[]> {
-        let result: Warehouse[] = new Array<Warehouse>()
-        let Warehouses
-
-        if (WarehouseName! != undefined) {
-            Warehouses = await WarehouseModel.find({name: WarehouseName!, 'stock.brand': brand})
-        } else {
-            Warehouses = await WarehouseModel.find({'stock.brand': brand})
-        }
-        for(var Warehouse of Warehouses) {
-            result.push(WarehouseMap.toDomain(Warehouse))
-        }
-        return result
     }
 
     async exists(idOrName: string): Promise<boolean> {

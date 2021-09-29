@@ -48,6 +48,10 @@ export class Association extends Entity<IAssociationProps> {
         return this.props.projects
     }
 
+    get stripeCustomerId(): string {
+        return this.props.stripeCustomerId!
+    }
+
     public isVerified(): boolean {
         return this.props.verified
     }

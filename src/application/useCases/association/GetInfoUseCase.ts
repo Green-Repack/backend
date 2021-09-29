@@ -6,13 +6,15 @@ import { IGetInfoUseCase } from "./IGetInfoUseCase";
 import { NotFoundError } from "../../errors/NotFoundError"
 
 export class GetInfoUseCase implements IGetInfoUseCase {
-    async execute(name: string, associationRepository: IAssociationRepository): Promise<IAssociationDTO> {
-        Guard.AgainstNullOrUndefined(name, "The organisation's name is required")
+    async execute(associationId: string, associationRepository: IAssociationRepository): Promise<IAssociationDTO> {
+        try {
+            let association = await associationRepository.getAssociationById(associationId)
+            if (association == undefined) throw new NotFoundError("Association not found")
 
-        let association = await associationRepository.getAssociationByName(name)
-        if (association == undefined) throw new NotFoundError("Association not found")
-
-        let associationDTO = AssociationMap.toDTO(association)
-        return associationDTO
+            let associationDTO = AssociationMap.toDTO(association)
+            return associationDTO
+        } catch(error) {
+            throw error
+        }
     }
 }

@@ -1,4 +1,3 @@
-import { IProductProps } from "../../../domain/entityProperties/IProductProps";
 import { IStockInfo } from "../../../domain/entityProperties/IStockInfo";
 import { Guard } from "../../commons/Guard";
 import { IWarehouseDTO } from "../../DTOs/IWarehouseDTO";

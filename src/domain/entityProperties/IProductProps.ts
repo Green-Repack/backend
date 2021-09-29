@@ -1,23 +1,23 @@
-import {ProductCategory} from "../../application/user/enum/ProductCategory";
-import {ProductState} from "../../application/user/enum/ProductState";
-import {PurchasePromiseStatus} from "../../application/user/enum/PurchasePromiseStatus";
-import { IProduitSpecs } from "./IProduitSpecs";
+import { EProductCategory } from "./EProductCategory";
+import { EProductState } from "./EProductState";
+import { EPurchasePromiseStatus } from "./EPurchasePromiseStatus";
+import { IProductSpecs } from "./IProductSpecs";
 
 export interface IProductProps {
     name: string
-    category: ProductCategory
+    category: EProductCategory
     brand: string
     model: string
-    specificities: IProduitSpecs
-    status: PurchasePromiseStatus
-    state: ProductState
+    sellingStatus: EPurchasePromiseStatus
+    state: EProductState
+    specificities: [{[name: string]: string}]
     price?: number
     priceSeller?: number
     images: string[]
     merchantId?: string
     warehouseId?: string
-    accepted?: boolean
     sold: boolean
     creationDate: Date
-    acceptationDate?: Date
+    weight: number
+    year: number
 }

@@ -1,78 +1,73 @@
 import { Schema, model } from "mongoose";
-import {IProductProps} from "../../../domain/interface/product/IProductProps";
+import { IProductProps } from "../../../domain/entityProperties/IProductProps";
 
+<<<<<<<< HEAD:src/infrastructure/persistence/schemas/Product.ts
 export const productSchema = new Schema<IProductProps>({
+========
+export const produitSchema = new Schema<IProductProps>({
+>>>>>>>> origin/app_logic:src/infrastructure/persistence/schemas/Produit.ts
     name: {
         type: String,
         required: true,
+        lowercase: true,
         minlength: 2,
         maxlength: 255,
-        trim: true,
-    },
-    creatorId: {
-        type: String,
-        required: true,
         trim: true,
     },
     category: {
         type: String,
         required: true,
-    },
-    specificities: {
-        _id:false,
-        brand: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        description:{
-            type: String,
-            required: true,
-            trim: true,
-        },
-        technicalSpec: [{
-            type: String,
-            required: true,
-            trim: true,
-        }],
-        productionYear: {
-            type: Number,
-            required: true
-        }
-    },
-    initialPrice: {
-        type: Number,
-        default: 0,
-    },
-    displayPrice: {
-        type: Number,
-        default: 0,
-    },
-    images: [{
-        type: String,
-        minlength: 2,
+        minlength: 5,
         maxlength: 255,
-        trim: true,
-    }],
-    status: {
+    },
+    brand: {
         type: String,
         required: true,
+        lowercase: true,
+        minlength: 5,
+        maxlength: 255,
     },
-    weight: {
-        type: Number,
-        default: 0,
-        required: true
+    model: {
+        type: String,
+        required: true,
+        lowercase: true,
+        minlength: 5,
+        maxlength: 255,
+    },
+    sellingStatus: {
+        type: String,
+        required: true,
     },
     state: {
         type: String,
         required: true,
     },
-    accepted: {
+    specificities: [Schema.Types.Mixed],
+    price: Number,
+    priceSeller: Number,
+    images: [{
+        type: String,
+        required: true
+    }],
+    merchantId: String,
+    warehouseId: String,
+    sold: {
         type: Boolean,
-        required: true,
-        default: false
+        required: true
     },
+    creationDate: {
+        type: Date,
+        required: true
+    },
+    weight : Number,
+    year: {
+        type: Number,
+        required: true
+    }
 });
 
-
-export const ProductModel = model<IProductProps>("Product", productSchema);
+<<<<<<<< HEAD:src/infrastructure/persistence/schemas/Product.ts
+export const ProductModel = model<IProductProps>("Product", productSchema)
+========
+export const ProduitModel = model<IProductProps>("Produit", produitSchema)
+>>>>>>>> origin/app_logic:src/infrastructure/persistence/schemas/Produit.ts

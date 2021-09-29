@@ -2,6 +2,7 @@ import { Guard } from "../../commons/Guard";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { UserMap } from "../../mappers/UserMap";
 import { IUpdateUserInfoUseCase } from "./IUpdateUserInfoUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class UpdateUserInfoUseCase implements IUpdateUserInfoUseCase {
     async execute(userId: string, userInfo: any, userRepository: IUserRepository): Promise<void> {

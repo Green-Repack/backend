@@ -1,11 +1,11 @@
 import { Product } from "../../../domain/entity/Product";
+import { EProductCategory } from "../../../domain/entityProperties/EProductCategory";
 import { IBaseRepository } from "./IBaseRepositoty";
 
 export interface IProductRepository extends IBaseRepository<Product> {
-    getProductById(productId: string): Promise<Product | null>
-    getProductByCategory(category: string): Promise<Product[]>
-    getProductByFilter(filter: any): Promise<Product[]>
-    getProductByMerchant(merchantId: string): Promise<Product[]>
+    getProductById(clientId: string): Promise<Product | undefined>
+    getProductSellsNumber(category: EProductCategory, brand: string, model: string, year: number): Promise<number>
     getAllProducts(): Promise<Product[]>
-    getProductSellsNumber(category: string, brand: string, model: string): Promise<number>
+    getProductByCategory(category: EProductCategory): Promise<Product[]>
+    getProductByBrand(category: EProductCategory, brand: string): Promise<Product[]>
 }

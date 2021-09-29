@@ -1,3 +1,4 @@
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
 import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
@@ -5,6 +6,7 @@ import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IMakeCounterOfferUseCase } from "./IMakeCounterOfferUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
 
 export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
     async execute(productId: string, warehouseName: string, counterOffer: number, warehouseRepository: IWarehouseRepository, 
@@ -20,10 +22,11 @@ export class MakeCounterOfferUseCase implements IMakeCounterOfferUseCase {
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
-            let merchant = await userRepository.getUserById(product.merchantId)
-            if (merchant == undefined) throw new NotFoundError("Marchand not found")
+            let marchand = await userRepository.getUserById(product.merchantId)
+            if (marchand == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
+            productDTO.sellingStatus = EPurchasePromiseStatus.WaitingForCounterOfferApproval
             productDTO.priceSeller = counterOffer
             productDTO.warehouseId = warehouse.id
 

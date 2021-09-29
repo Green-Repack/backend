@@ -1,3 +1,3 @@
-export interface IProduitSpecs {
+export interface IProductSpecs {
     specList: [{[name: string]: string}]
 }

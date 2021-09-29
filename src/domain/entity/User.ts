@@ -2,7 +2,7 @@ import { IUserProps } from "../entityProperties/IUserProps";
 import { IAddress } from "../entityProperties/IAddress";
 import { IGreenCoins } from "../entityProperties/IGreenCoins";
 import { Entity } from "./BaseEntity";
-import { IUserAchat } from "../entityProperties/IUserAchat";
+import { IUserOrders } from "../entityProperties/IUserOrders";
 import { IProductSold } from "../entityProperties/IProductSold";
 
 export class User extends Entity<IUserProps> {
@@ -50,8 +50,12 @@ export class User extends Entity<IUserProps> {
         return this.props.creationDate
     }
 
-    get achats(): IUserAchat[] {
-        return this.props.achats
+    get orders(): IUserOrders[] {
+        return this.props.orders
+    }
+
+    get stripeCustomerId(): string {
+        return this.props.stripeCustomerId!
     }
 
     get productSold(): IProductSold[] {
@@ -67,7 +71,7 @@ export class User extends Entity<IUserProps> {
         return instance
     }
 
-    public isMarchand(): boolean {
+    public isMerchant(): boolean {
         return this.props.merchant
     }
 }

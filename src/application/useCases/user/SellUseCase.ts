@@ -2,9 +2,10 @@ import { Guard } from "../../commons/Guard";
 import { IProductDTO } from "../../DTOs/IProductDTO";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
-import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { ISellUseCase } from "./ISellUseCase";
+import { NotFoundError } from "../../errors/NotFoundError";
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 
 export class SellUseCase implements ISellUseCase {
     async execute(userId: string, productInfo: any, userRepository: IUserRepository, productRepository: IProductRepository): Promise<number> {
@@ -24,12 +25,16 @@ export class SellUseCase implements ISellUseCase {
                 category: productInfo.category,
                 brand: productInfo.brand,
                 model: productInfo.model,
+                sellingStatus: EPurchasePromiseStatus.WaitingForApproval,
+                state: productInfo.state,
                 specificities: productInfo.specificities,
                 images: productInfo.images,
                 merchantId: user.id,
                 priceSeller: estimatePrice,
                 sold: false,
-                creationDate: new Date()
+                creationDate: new Date(),
+                weight: productInfo.weight,
+                year: productInfo.year
             }
 
             await productRepository.save(ProductMap.toDomain(productDTO))
