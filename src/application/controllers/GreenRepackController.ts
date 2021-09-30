@@ -1,6 +1,5 @@
 import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
-import {ProductPriceRepository} from "../../infrastructure/persistence/repositories/ProductPriceRepository";
 import { TYPES } from "../commons/types";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
@@ -8,7 +7,6 @@ import { IProductRepository } from "../interfaces/repository/IProductRepository"
 import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
-import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { IStripeHandler } from "../interfaces/services/IStripeHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
@@ -21,6 +19,7 @@ import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseC
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
 import { IPushNotifHandler } from "../interfaces/services/IPushNotifHandler";
+import { IProductPriceRepository } from "../interfaces/repository/IProductPriceRepository";
 
 @injectable()
 export class GreenRepackController{
@@ -38,7 +37,7 @@ export class GreenRepackController{
     @inject(TYPES.IWarehouseRepository)
     private _warehouseRepository: IWarehouseRepository;
     @inject(TYPES.IProductPriceRepository)
-    private readonly _productPriceRepository = new ProductPriceRepository;
+    private _productPriceRepository: IProductPriceRepository
     @inject(TYPES.IUserRepository)
     private _userRepository: IUserRepository;
     @inject(TYPES.IProductRepository)
@@ -85,7 +84,7 @@ export class GreenRepackController{
         try {
             const {warehouseName, productInfo} = req.body
             await this._addProductUseCase.execute(warehouseName, productInfo, this._iDGeneratorHandler, 
-                this._productRepository, this._warehouseRepository, this._productPriceRepository)
+                this._productRepository, this._warehouseRepository)
             res.sendStatus(200);
         } catch(error) {
             console.log(error)

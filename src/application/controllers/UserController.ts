@@ -1,8 +1,8 @@
 import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
-import {ProductPriceRepository} from "../../infrastructure/persistence/repositories/ProductPriceRepository";
 import { TYPES } from "../commons/types";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
+import { IProductPriceRepository } from "../interfaces/repository/IProductPriceRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
 import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepository";
 import { IUserRepository } from "../interfaces/repository/IUserRepository";
@@ -46,7 +46,7 @@ export class UserController {
     @inject(TYPES.IPromoCoinsRepository)
     private _promoRepository: IPromoCoinsRepository;
     @inject(TYPES.IProductPriceRepository)
-    private readonly _productPriceRepository = new ProductPriceRepository;
+    private _productPriceRepository: IProductPriceRepository
 
     @inject(TYPES.IStripeHandler)
     private _stripeHandler: IStripeHandler;
