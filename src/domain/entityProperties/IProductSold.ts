@@ -5,5 +5,6 @@ export interface IProductSold {
     priceReceived?: number
     sellDate?: Date
     sellStatus: string,
+    deliveryFeePaid?: boolean
     shippingLabel?: IShippingLabel
 }

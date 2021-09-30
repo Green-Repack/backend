@@ -101,6 +101,7 @@ export const userSchema = new Schema<IUserProps>({
         },
         priceReceived: Number,
         sellDate: Date,
+        deliveryFeePaid: Boolean,
         sellStatus: {
             type: String
         },

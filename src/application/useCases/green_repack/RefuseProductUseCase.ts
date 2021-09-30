@@ -10,7 +10,7 @@ import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurcha
 import { UserMap } from "../../mappers/UserMap";
 
 export class RefuseProductUseCase implements IRefuseProductUseCase {
-    async execute(productId: string, deliveryFee: number, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler, 
+    async execute(productId: string, paymentHandler: IPaymentHandler, deliveryHandler: IDeliveryTicketHandler, 
         userRepository: IUserRepository, productRepository: IProductRepository): Promise<{[token: string]: string}> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
@@ -32,7 +32,8 @@ export class RefuseProductUseCase implements IRefuseProductUseCase {
                 await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
                 await productRepository.save(ProductMap.toDomain(productDTO))
 
-                let secretKey = await await paymentHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", deliveryFee)
+                let secretKey = await await paymentHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", 
+                deliveryHandler.getPriceFromWeight(product.weight))
                 intentKey = {client_secret: secretKey}
             }
             return intentKey

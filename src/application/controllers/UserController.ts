@@ -110,7 +110,7 @@ export class UserController {
         try {
             const {productId} = req.body
             await this._acceptEsitmationUseCase.execute(productId, this._deliveryHandler,
-                this._userRepository, this._productRepository)
+                this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)
@@ -143,8 +143,8 @@ export class UserController {
 
     public async refuseCounterOffer(req: any, res: any) {
         try {
-            const {productId, deliveryFee} = req.body
-            await this._refuseCounterOfferUseCase.execute(productId, deliveryFee, this._paymentHandler,
+            const {productId} = req.body
+            await this._refuseCounterOfferUseCase.execute(productId, this._paymentHandler, this._deliveryHandler,
                 this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {

@@ -7,8 +7,8 @@ import { IGeneratorIdHandler } from "./IGeneratorIdHandler";
 
 export interface IPaymentHandler {
     createStripeCustomer(user: IUserDTO): Promise<IUserDTO>
+    createWebhookEvent(reqBody: any, sig: any): any
     emitPayment(amount: number, customerId: string): Promise<unknown>
-    generateBill(customerId: string): Promise<void>
     generatePaymentIntentBuy(user: IUserDTO, reason: string, productId: string, amount: number): Promise<string>
     generatePaymentIntentDeliveryFee(user: IUserDTO, reason: string, amount: number): Promise<string>
     handlePaymentIntentSucceeded(paymentIntent: unknown, idGenerator: IGeneratorIdHandler, promoRepository: IPromoCoinsRepository,

@@ -8,9 +8,10 @@ import { IUserDTO } from "../../DTOs/IUserDTO";
 import { IUserOrders } from "../../../domain/entityProperties/IUserOrders";
 import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 import { IMerchantHandler } from "../../interfaces/services/IMerchandHandler";
+import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
 
 export class RegisterUseCase  implements IRegisterUseCase {
-    public async execute(userInfo: any, passwordHandler: IPasswordHandler, merchantHandler: IMerchantHandler,
+    public async execute(userInfo: any, paymentHandler: IPaymentHandler, passwordHandler: IPasswordHandler, merchantHandler: IMerchantHandler,
          repository: IUserRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(userInfo.firstName, "first name required")

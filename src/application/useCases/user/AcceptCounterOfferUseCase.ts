@@ -27,7 +27,8 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
 
             if (productDTO.sellingStatus == EPurchasePromiseStatus.WaitingForCounterOfferApproval) {
                 productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
-
+                productDTO.price = productDTO.priceSeller + (productDTO.priceSeller * 0.3)
+                
                 if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
 
                 await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)

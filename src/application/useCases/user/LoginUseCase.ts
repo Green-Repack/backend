@@ -29,6 +29,9 @@ export class LoginUseCase  implements ILoginUseCase {
                     userDTO.greenCoins.amount = 0
                 }
             }
+
+            if (userDTO.merchant) await userRepository.updateShippingLabelExpirationStatus(userDTO.email, currentDate, true)
+            
             userDTO.token = userToken
             
             await userRepository.save(UserMap.toDomain(userDTO))

@@ -3,11 +3,39 @@ import { IWarehouseProps } from "../../../domain/entityProperties/IWarehouseProp
 
 export const warehouseSchema = new Schema<IWarehouseProps>({
     location: {
-        type: String,
-        required: true,
-        lowercase: true,
-        minlength: 5,
-        maxlength: 255,
+        _id:false,
+        streetNumber: {
+            type: Number,
+            required: true,
+        },
+        streetName: {
+            type: String,
+            required: true,
+            minlength: 2,
+            maxlength: 255,
+            trim: true,
+        },
+        zipCode:{
+            type: String,
+            required: true,
+            minlength: 2,
+            maxlength: 9,
+            trim: true,
+        },
+        city: {
+            type: String,
+            required: true,
+            minlength: 2,
+            maxlength: 255,
+            trim: true,
+        },
+        country: {
+            type: String,
+            required: true,
+            minlength: 2,
+            maxlength: 255,
+            trim: true,
+        }
     },
     name: {
         type: String,

@@ -12,13 +12,15 @@ import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
-import { AddProductUseCase } from "../useCases/green_repack/AddProductUseCase";
+import { AddProductUseCase } from "../useCases/product/AddProductUseCase";
 import { CreateNewMemberUseCase } from "../useCases/green_repack/CreateNewMemberUseCase";
 import { GetMemberInfoUseCase } from "../useCases/green_repack/GetMemberInfoUseCase";
 import { MakeCounterOfferUseCase } from "../useCases/green_repack/MakeCounterOfferUseCase";
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
+import { DeleteWarehouseUseCase } from "../useCases/green_repack/DeleteWarehouseUseCase";
+import { UpdateWarehouseUseCase } from "../useCases/green_repack/UpdateWarehouseUseCase";
 
 @injectable()
 export class GreenRepackController{
@@ -116,8 +118,8 @@ export class GreenRepackController{
 
     public async refuseProduct(req: any, res: any) {
         try {
-            const {productId, deliveryFee} = req.body
-            await this._refuseProductUseCase.execute(productId, deliveryFee, this._paymentHandler, 
+            const {productId} = req.body
+            await this._refuseProductUseCase.execute(productId,this._paymentHandler, 
                 this._deliveryTicketHandler, this._userReposiory, this._productRepository)
             res.sendStatus(200)
         } catch(error) {

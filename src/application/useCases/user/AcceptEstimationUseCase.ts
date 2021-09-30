@@ -6,13 +6,12 @@ import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicke
 import { ProductMap } from "../../mappers/ProductMap";
 import { IAcceptEstimationUseCase } from "./IAcceptEstimationUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
-import { UserMap } from "../../mappers/UserMap";
-import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 import { IShippingLabel } from "../../../domain/entityProperties/IShippingLabel";
+import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 
 export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
     async execute(productId: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
-        productRepository: IProductRepository): Promise<void> {
+        productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
             let expirationDate = new Date()
@@ -20,20 +19,24 @@ export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
             if (product == undefined) throw new NotFoundError("Product not found")
             
             let merchant = await userRepository.getUserById(product.merchantId)
-            if (merchant == undefined) throw new NotFoundError("Marchand not found")
+            if (merchant == undefined) throw new NotFoundError("Merchant not found")
+
+            let warehouse = await warehouseRepository.getWarehouseById(product.warehouseId)
+            if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
             let productDTO = ProductMap.toDTO(product)
             if (productDTO.sellingStatus == EPurchasePromiseStatus.Estimtated) {
                 productDTO.sellingStatus = EPurchasePromiseStatus.WaitingForApproval
 
-                let labelUrl = null // await deliveryHandler.generate(marchand) génération du ticket colissimo
+                let labelUrl = await deliveryHandler.generate(merchant.lastName, merchant.firstName, 
+                    merchant.address, warehouse.name, "", warehouse.location, product.weight, product.productId)
                 expirationDate.setDate(expirationDate.getDate() + 15)
                 let shippingLabel: IShippingLabel = {
                     url: labelUrl,
                     expirationDate: expirationDate,
                     expired: false
                 }
-
+                
                 await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
                 await userRepository.updateProductSoldAddShippingLabel(merchant.email, productId, shippingLabel)
                 await productRepository.save(ProductMap.toDomain(productDTO))

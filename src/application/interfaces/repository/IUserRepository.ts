@@ -9,6 +9,7 @@ export interface IUserRepository extends IBaseRepository<User> {
     updateProductSoldStatus(email: string, productId: string, sellStatus: string): Promise<void>
     updateProductSoldDate(email: string, productId: string, sellDate: Date): Promise<void>
     updateProductSoldPriceReceived(email: string, productId: string, priceReceived: number): Promise<void>
-    updateShippingLabelExpirationStatus(email: string, productId: string, expired: boolean): Promise<void>
+    updateProductSoldDeliveryFeeStatut(email: string, productId: string, paid: boolean): Promise<void>
+    updateShippingLabelExpirationStatus(email: string, currentDate: Date, expired: boolean): Promise<void>
     updateProductSoldAddShippingLabel(email: string, productId: string, shippingLabel: IShippingLabel): Promise<void>
 }

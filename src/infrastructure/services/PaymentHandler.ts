@@ -19,11 +19,22 @@ export class PaymentHandler implements IPaymentHandler {
         {apiVersion: '2020-08-27',
         typescript: true})
 
+    createWebhookEvent(reqBody: any, sig: any): any {
+        let event;
+        try {
+            event = PaymentHandler.stripe.webhooks.constructEvent(reqBody, sig, config.STRIPE_ENDPOINT_SECRET);
+            return event
+        } catch (err) {
+            throw new Error(`Webhook Error: ${err.message}`)
+        }
+    }
+    
     async generatePaymentIntentBuy(user: IUserDTO, reason: string, productId: string, amount: number): Promise<string> {
         try {
             let paymentIntent = await PaymentHandler.stripe.paymentIntents.create({
                 amount: amount * 100,
                 currency: "eur",
+                receipt_email: user.email,
                 description: `id product : ${productId}`,
                 statement_descriptor: "greenRepack",
                 metadata: {
@@ -43,6 +54,7 @@ export class PaymentHandler implements IPaymentHandler {
             let paymentIntent = await PaymentHandler.stripe.paymentIntents.create({
                 amount: amount * 100,
                 currency: "eur",
+                receipt_email: user.email,
                 description: `Frais de récupération`,
                 statement_descriptor: "greenRepack",
                 metadata: {
@@ -61,7 +73,7 @@ export class PaymentHandler implements IPaymentHandler {
             let params = {
                 description: `green repack customer`,
                 email: user.email,
-                name: user.firstName,
+                name: user.lastName,
             }
             let customer = await PaymentHandler.stripe.customers.create(params)
             if (customer) user.stripeCustomerId = customer.id
@@ -110,16 +122,10 @@ export class PaymentHandler implements IPaymentHandler {
                 await userRepository.save(UserMap.toDomain(userDTO))
                 await productRepository.save(ProductMap.toDomain(productDTO))
                 await warehouseRepository.updateStockProduct(product, true)
-            } else if(metadata.reason == "frais de récupération") {
-                // générer la facture et c'est tout
             }
         } catch(error) {
             throw error
         }
-    }
-
-    generateBill(customerId: string): Promise<void> {
-        throw new Error("Method not implemented.");
     }
 
     emitPayment(amount: number, customerId: string): Promise<unknown> {

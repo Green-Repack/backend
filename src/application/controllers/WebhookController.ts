@@ -9,7 +9,7 @@ import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler"
 import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 
 @injectable()
-export class PromoController{
+export class WebhookController{
     
     @inject(TYPES.IWarehouseRepository)
     private _warehouseRepository: IWarehouseRepository;
@@ -31,7 +31,9 @@ export class PromoController{
 
     public async updateInfo(req: any, res: any) {
         try {
-            const event = req.body;
+            const sig = res.headers['stripe-signature'];
+            const event = this._paymentHandler.createWebhookEvent(req.body, sig)
+
             switch (event.type) {
                 case 'payment_intent.succeeded':
                     const paymentIntent = event.data.object;

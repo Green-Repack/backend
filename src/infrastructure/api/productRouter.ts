@@ -11,5 +11,7 @@ productRouter.get("/", productController.getAllProduct)
 productRouter.get("/category", productController.getProductByCategory)
 productRouter.get("/category/brand", productController.getProductByBrand)
 productRouter.get("/info/sold", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.getSellsNumber)
+productRouter.delete("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.deleteProduct)
+productRouter.get("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.getProduct)
 
 export default productRouter

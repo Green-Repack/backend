@@ -11,5 +11,7 @@ warehouseRouter.post("/create", AuthorizationHandler.userAuth, AuthorizationHand
 warehouseRouter.get("/info/stock", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getStockInfo)
 warehouseRouter.get("/info", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getInfo)
 warehouseRouter.get("/", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getAllWarehouses)
+warehouseRouter.delete("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, warehouseController.deleteWarehouse)
+warehouseRouter.put("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, warehouseController.updateWarehouse)
 
 export default warehouseRouter

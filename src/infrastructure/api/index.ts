@@ -6,6 +6,7 @@ import warehouseRouter from './warehouseRouter';
 import userRouter from './userRouter';
 import productRouter from './productRouter';
 import promoRouter from './promoRouter';
+import webhookRouter from './webhookRouter';
 
 const routes = Router();
 
@@ -16,6 +17,6 @@ routes.use('/promotion', promoRouter)
 routes.use('/greenrepack', greenRepackRouter);
 routes.use('/warehouse', warehouseRouter);
 routes.use('/user', userRouter)
-//routes.use('/webhook')
+routes.use('/webhook', webhookRouter)
 
 export default routes;

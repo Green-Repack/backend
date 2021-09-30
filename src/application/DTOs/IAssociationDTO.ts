@@ -1,4 +1,3 @@
-import { IActionProjecAssociation } from "../../domain/entityProperties/IActionProjetAssociation";
 import { IAddress } from "../../domain/entityProperties/IAddress";
 import { IProjectAssociation } from "../../domain/entityProperties/IProjectAssociation";
 

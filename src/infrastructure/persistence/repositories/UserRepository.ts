@@ -7,6 +7,10 @@ import { IShippingLabel } from "../../../domain/entityProperties/IShippingLabel"
 
 @injectable()
 export class UserRepository implements IUserRepository {
+    async updateProductSoldDeliveryFeeStatut(email: string, productId: string, paid: boolean): Promise<void> {
+        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+            {$set: {"productSold.$.deliveryFeePaid": paid}})
+    }
     async updateProductSoldPriceReceived(email: string, productId: string, priceReceived: number): Promise<void> {
         await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
             {$set: {"productSold.$.priceReceived": priceReceived}})
@@ -26,8 +30,8 @@ export class UserRepository implements IUserRepository {
         {$set: {"productSold.$.sellDate": sellDate}})
     }
 
-    async updateShippingLabelExpirationStatus(email: string, productId: string, expired: boolean): Promise<void> {
-        await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
+    async updateShippingLabelExpirationStatus(email: string, currentDate: Date, expired: boolean): Promise<void> {
+        await UserModel.updateMany({email: email.toLowerCase(), "productSold.shippingLabel.expirationDate" : {"$gt": currentDate}},
         {$set: {"productSold.$.shippingLabel.expired": expired}})
     }
   

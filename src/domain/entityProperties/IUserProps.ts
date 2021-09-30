@@ -13,7 +13,6 @@ export interface IUserProps {
     greenCoins: IGreenCoins
     merchant: boolean
     stripeCustomerId?: string
-    shippingLabels?: IShippingLabel[]
     orders: IUserOrders[]
     productSold?: IProductSold[]
     token?: string
