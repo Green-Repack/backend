@@ -37,8 +37,7 @@ export class ProductController {
 
     public async getProductByCategory(req: any, res: any) {
         try {
-            const {category} = req.body
-            let productsInfo = await this._getPrductByCategoryUseCase.execute(category, this._productRepository)
+            let productsInfo = await this._getPrductByCategoryUseCase.execute(req.params.name, this._productRepository)
             res.status(200).json(productsInfo)
         } catch(error) {
             console.log(error)
@@ -48,8 +47,7 @@ export class ProductController {
 
     public async getProductByBrand(req: any, res: any) {
         try {
-            const {category, brand} = req.body
-            let productsInfo = await this._getPrductByBrandUseCase.execute(category, brand, this._productRepository)
+            let productsInfo = await this._getPrductByBrandUseCase.execute(req.params.category, req.params.brand, this._productRepository)
             res.status(200).json(productsInfo)
         } catch(error) {
             console.log(error)

@@ -18,7 +18,7 @@ export class UserRepository implements IUserRepository {
 
     async updateProductSoldAddShippingLabel(email: string, productId: string, shippingLabel: IShippingLabel): Promise<void> {
         await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},
-            {$set: {"productSold.$.shippigLabel": shippingLabel}})
+            {$set: {"productSold.$.shippingLabel": shippingLabel}})
     }
     async updateProductSoldStatus(email: string, productId: string, sellStatus: string): Promise<void> {
         await UserModel.updateOne({email: email.toLowerCase(), "productSold.productId": productId},

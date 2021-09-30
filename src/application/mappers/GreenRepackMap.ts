@@ -34,7 +34,7 @@ export class GreenRepackMap {
             lastName: member.lastName,
             username: member.username,
             password: member.password,
-            admn: member.isAdmin(),
+            admin: member.isAdmin(),
             token: member.token,
             creationDate: member.creationDate
         }

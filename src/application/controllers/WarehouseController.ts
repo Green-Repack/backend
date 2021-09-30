@@ -67,8 +67,7 @@ export class WarehouseController {
 
     public async getInfo(req: any, res: any) {
         try {
-            const {warehouseName} = req.body
-            let warehouseDTO = await this._getWarehouseInfoUseCase.execute(warehouseName, this._warehouseRepository)
+            let warehouseDTO = await this._getWarehouseInfoUseCase.execute(req.params.name, this._warehouseRepository)
             res.status(200).json(warehouseDTO);
         } catch(error) {
             console.log(error)
@@ -78,7 +77,7 @@ export class WarehouseController {
 
     public async getStockInfo(req: any, res: any) {
         try {
-            let stockInfo = await this._getStockInfoUseCase.execute(req.body, this._warehouseRepository)
+            let stockInfo = await this._getStockInfoUseCase.execute(req.params.name, this._warehouseRepository)
             res.status(200).json(stockInfo);
         } catch(error) {
             console.log(error)

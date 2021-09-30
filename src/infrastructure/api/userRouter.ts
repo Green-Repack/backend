@@ -15,7 +15,7 @@ userRouter.post("/buy", AuthorizationHandler.userAuth, userController.buyProduct
 
 userRouter.post("/sell", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.sellProduct)
 userRouter.put("/accept/estimation", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.acceptEstimation)
-userRouter.put("/accept/counter-offer", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.accaptCounterOffer)
+userRouter.put("/accept/counter-offer", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.acceptCounterOffer)
 userRouter.put("/decline/estimation", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.refuseEstimation)
 userRouter.put("/decline/counter-offer", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.refuseCounterOffer)
 

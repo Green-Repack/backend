@@ -1,8 +1,8 @@
 export enum EProductCategory {
-    Phone = "Téléphone",
-    GameConsole = "Consoles de jeux",
-    ConnectedObject = "Objets connectés",
-    BigAppliances = "Gros électroménagers",
-    Handiwork = "Bricolage",
-    Computer = "Ordinateurs"
+    Phone = "Phone",
+    GameConsole = "GameConsole",
+    ConnectedObject = "ConnectedObject",
+    BigAppliances = "BigAppliances",
+    Handiwork = "Handiwork",
+    Computer = "Computer"
 }

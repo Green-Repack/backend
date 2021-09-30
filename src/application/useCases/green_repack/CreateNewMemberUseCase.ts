@@ -20,7 +20,7 @@ export class CreateNewMemberUseCase  implements ICreateNewMemberUseCase {
                 admin: memberInfo.admin,
                 creationDate: new Date()
             }
-
+            
             let count = await greenRepackRepository.getExistingMemberCount(memberInfo.firstName, memberInfo.lastName);
             if (count > 0) {
                 newGreenRepackDTO.username = memberInfo.firstName[0] + memberInfo.lastName + count
@@ -29,7 +29,7 @@ export class CreateNewMemberUseCase  implements ICreateNewMemberUseCase {
             }
             
             newGreenRepackDTO.password = await passwordHandler.generatePasswordHash(memberInfo.password)
-
+            
             let greenRepackMember = GreenRepackMap.toDomain(newGreenRepackDTO)
             await greenRepackRepository.save(greenRepackMember)
             return newGreenRepackDTO.username!

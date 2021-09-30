@@ -2,7 +2,7 @@ import express from 'express';
 import routes from './infrastructure/api';
 import { DbConnect } from './infrastructure/persistence/DbConnect';
 import { config } from 'dotenv';
-import { cors } from "cors"
+import cors from "cors"
 
 const app = express();
 config()

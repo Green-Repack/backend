@@ -49,7 +49,7 @@ export class SellUseCase implements ISellUseCase {
                 weight: productInfo.weight,
                 year: productInfo.year
             }
-
+            
             if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
             
             merchantDTO.productSold.push({
