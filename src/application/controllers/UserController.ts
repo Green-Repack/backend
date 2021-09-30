@@ -9,10 +9,12 @@ import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
-import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { IPushNotifHandler } from "../interfaces/services/IPushNotifHandler";
+import { IStripeHandler } from "../interfaces/services/IStripeHandler";
 import { AcceptCounterOfferUseCase } from "../useCases/user/AcceptCounterOfferUseCase";
 import { AcceptEstimationUseCase } from "../useCases/user/AcceptEstimationUseCase";
 import { BuyUseCase } from "../useCases/user/BuyUseCase";
+import { GetProductBackUseCase } from "../useCases/user/GetProductBackUseCase";
 import { GetUserInfoUseCase } from "../useCases/user/GetUserInfoUseCase";
 import { GiveGreenCoinsUseCase } from "../useCases/user/GiveGreenCoinsUseCase";
 import { RefuseCounterOfferUseCase } from "../useCases/user/RefuseCounterOfferUseCase";
@@ -31,6 +33,7 @@ export class UserController {
     private readonly _acceptCounterOfferUseCase = new AcceptCounterOfferUseCase;
     private readonly _refuseEsitmationUseCase = new RefuseEstimationUseCase;
     private readonly _refuseCounterOfferUseCase = new RefuseCounterOfferUseCase;
+    private readonly _getProductBackUseCase = new GetProductBackUseCase;
 
     @inject(TYPES.IUserRepository)
     private _userRepository: IUserRepository;
@@ -45,12 +48,14 @@ export class UserController {
     @inject(TYPES.IProductPriceRepository)
     private readonly _productPriceRepository = new ProductPriceRepository;
 
-    @inject(TYPES.IPaymentHandler)
-    private _paymentHandler: IPaymentHandler;
+    @inject(TYPES.IStripeHandler)
+    private _stripeHandler: IStripeHandler;
     @inject(TYPES.IDeliveryTicketHandler)
     private _deliveryHandler: IDeliveryTicketHandler;
     @inject(TYPES.IGenertorIdHandler)
     private _IdGeneratorHandler: IGeneratorIdHandler;
+    @inject(TYPES.IPushNotifHandler)
+    private _notifHandler: IPushNotifHandler;
 
     public constructor() {
         autoBind(this);
@@ -79,7 +84,7 @@ export class UserController {
     public async buyProducts(req: any, res: any) {
         try {
             const {productId} = req.body
-            let secretKey = await this._buyUseCase.execute(req.userId, productId, this._paymentHandler,
+            let secretKey = await this._buyUseCase.execute(req.userId, productId, this._stripeHandler,
                 this._userRepository, this._productRepository)
             res.status(200).json(secretKey)
         } catch(error) {
@@ -135,7 +140,7 @@ export class UserController {
     public async acceptCounterOffer(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._acceptCounterOfferUseCase.execute(productId, this._paymentHandler,
+            await this._acceptCounterOfferUseCase.execute(productId, this._stripeHandler, this._notifHandler,
                 this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
@@ -147,7 +152,19 @@ export class UserController {
     public async refuseCounterOffer(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._refuseCounterOfferUseCase.execute(productId, this._paymentHandler, this._deliveryHandler,
+            await this._refuseCounterOfferUseCase.execute(productId, this._stripeHandler, this._deliveryHandler,
+                this._userRepository, this._productRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async getBackProduct(req: any, res: any) {
+        try {
+            const {productId} = req.body
+            await this._getProductBackUseCase.execute(productId, this._stripeHandler, this._deliveryHandler,
                 this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {

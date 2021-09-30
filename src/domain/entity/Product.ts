@@ -25,7 +25,7 @@ export class Product extends Entity<IProductProps> {
         return this.props.model
     }
 
-    get specificities(): [{[name: string]: string}] {
+    get specificities(): string[] {
         return this.props.specificities
     }
 
@@ -37,6 +37,9 @@ export class Product extends Entity<IProductProps> {
         return this.props.images
     }
 
+    get stripeProductId(): string {
+        return this.props.stripeProductId!
+    }
 
     get merchantId(): string {
         

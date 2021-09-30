@@ -6,7 +6,7 @@ import { IPromoCoinsRepository } from "../interfaces/repository/IPromoCoinsRepos
 import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
-import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../interfaces/services/IStripeHandler";
 
 @injectable()
 export class WebhookController{
@@ -20,8 +20,8 @@ export class WebhookController{
     @inject(TYPES.IPromoCoinsRepository)
     private _promoCoinsRepository: IPromoCoinsRepository;
 
-    @inject(TYPES.IPaymentHandler)
-    private _paymentHandler: IPaymentHandler
+    @inject(TYPES.IStripeHandler)
+    private _stripeHandler: IStripeHandler
     @inject(TYPES.IGenertorIdHandler)
     private _iDGeneratorHandler: IGeneratorIdHandler;
     
@@ -32,12 +32,12 @@ export class WebhookController{
     public async updateInfo(req: any, res: any) {
         try {
             const sig = res.headers['stripe-signature'];
-            const event = this._paymentHandler.createWebhookEvent(req.body, sig)
+            const event = this._stripeHandler.createWebhookEvent(req.body, sig)
 
             switch (event.type) {
                 case 'payment_intent.succeeded':
                     const paymentIntent = event.data.object;
-                    this._paymentHandler.handlePaymentIntentSucceeded(paymentIntent, this._iDGeneratorHandler, this._promoCoinsRepository,
+                    this._stripeHandler.handlePaymentIntentSucceeded(paymentIntent, this._iDGeneratorHandler, this._promoCoinsRepository,
                         this._userReposiory, this._productRepository, this._warehouseRepository)
                     break;
                 default:

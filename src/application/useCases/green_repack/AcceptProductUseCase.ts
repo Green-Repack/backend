@@ -2,15 +2,16 @@ import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
+import { IPushNotifHandler } from "../../interfaces/services/IPushNotifHandler";
 
 export class AcceptProductUseCase implements IAcceptProductUseCase {
-    async execute(productId: string, warehouseName: string, paymentHanlder: IPaymentHandler, userRepository: IUserRepository,
-         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
+    async execute(productId: string, warehouseName: string, stripeHandler: IStripeHandler, pushNotifHandler: IPushNotifHandler,
+        userRepository: IUserRepository,productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
 
@@ -34,9 +35,12 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
                 await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)
                 await userRepository.updateProductSoldDate(merchant.email, productId, new Date())
 
+                let updatedProduct = ProductMap.toDomain(productDTO)
                 await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)
-                await warehouseRepository.updateStockProduct(ProductMap.toDomain(productDTO), false)
+                await warehouseRepository.updateStockProduct(updatedProduct, false)
                 await productRepository.save(ProductMap.toDomain(productDTO))
+
+                pushNotifHandler.sendNotification(updatedProduct)
                 //paymentHanlder.emitPayment(product.priceSeller, marchand.id) emission du virement à l'utilisateur
             }
         } catch(error) {

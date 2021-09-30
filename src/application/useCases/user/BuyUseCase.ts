@@ -1,13 +1,13 @@
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 import { UserMap } from "../../mappers/UserMap";
 import { IBuyUseCase } from "./IBuyUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 
 export class BuyUseCase implements IBuyUseCase {
-    async execute(userId: string, productId: string, paymentHandler: IPaymentHandler, userRepository: IUserRepository, 
+    async execute(userId: string, productId: string, stripeHandler: IStripeHandler, userRepository: IUserRepository, 
         productRepository: IProductRepository): Promise<{[token: string]: string}> {
         try {
             Guard.AgainstNullOrUndefined(userId, "User id is required")
@@ -20,7 +20,7 @@ export class BuyUseCase implements IBuyUseCase {
             if (product == undefined) throw new NotFoundError("Product not found")
 
             let userDTO = UserMap.toDTO(user)
-            let secretKey = await paymentHandler.generatePaymentIntentBuy(userDTO, "achat",product.productId, product.price)
+            let secretKey = await stripeHandler.generatePaymentIntentBuy(userDTO, "achat",product.productId, product.price)
 
             return {client_secret: secretKey}
         } catch(error) {

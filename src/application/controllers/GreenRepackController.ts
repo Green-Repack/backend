@@ -10,7 +10,7 @@ import { IWarehouseRepository } from "../interfaces/repository/IWarehouseReposit
 import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
-import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../interfaces/services/IStripeHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
 import { AddProductUseCase } from "../useCases/product/AddProductUseCase";
@@ -20,8 +20,7 @@ import { MakeCounterOfferUseCase } from "../useCases/green_repack/MakeCounterOff
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
-import { DeleteWarehouseUseCase } from "../useCases/green_repack/DeleteWarehouseUseCase";
-import { UpdateWarehouseUseCase } from "../useCases/green_repack/UpdateWarehouseUseCase";
+import { IPushNotifHandler } from "../interfaces/services/IPushNotifHandler";
 
 @injectable()
 export class GreenRepackController{
@@ -47,16 +46,16 @@ export class GreenRepackController{
     @inject(TYPES.IAssociationRepository)
     private _associationRepository!: IAssociationRepository;
     
-    @inject(TYPES.IDeliveryTicketHandler)
-    private _deliveryTicketHandler: IDeliveryTicketHandler;
-    @inject(TYPES.IPaymentHandler)
-    private _paymentHandler: IPaymentHandler
+    @inject(TYPES.IStripeHandler)
+    private _stripeHandler: IStripeHandler
     @inject(TYPES.IPasswordHandler)
     private _passwordHandler: IPasswordHandler;
     @inject(TYPES.IAssociationHandler)
     private _associationHandler: IAssociationHandler;
     @inject(TYPES.IGenertorIdHandler)
     private _iDGeneratorHandler: IGeneratorIdHandler;
+    @inject(TYPES.IPushNotifHandler)
+    private _notifHandler: IPushNotifHandler;
 
     public constructor() {
         autoBind(this)
@@ -97,7 +96,7 @@ export class GreenRepackController{
     public async acceptProduct(req: any, res: any) {
         try {
             const {productId, warehouseName} = req.body
-            await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
+            await this._acceptProductUseCase.execute(productId, warehouseName, this._stripeHandler, this._notifHandler,
                 this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
@@ -122,8 +121,7 @@ export class GreenRepackController{
     public async refuseProduct(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._refuseProductUseCase.execute(productId,this._paymentHandler, 
-                this._deliveryTicketHandler, this._userRepository, this._productRepository)
+            await this._refuseProductUseCase.execute(productId, this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)

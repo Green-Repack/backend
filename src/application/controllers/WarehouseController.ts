@@ -2,12 +2,12 @@ import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
-import { CreateWarehouseUseCase } from "../useCases/green_repack/CreateWarehouseUseCase";
-import { DeleteWarehouseUseCase } from "../useCases/green_repack/DeleteWarehouseUseCase";
-import { GetAllWarehouseUseCase } from "../useCases/green_repack/GetAllWarehouseUseCase";
-import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
-import { GetWarehouseInfoUseCase } from "../useCases/green_repack/GetWarehouseInfoUseCase";
-import { UpdateWarehouseUseCase } from "../useCases/green_repack/UpdateWarehouseUseCase";
+import { CreateWarehouseUseCase } from "../useCases/warehouse/CreateWarehouseUseCase";
+import { DeleteWarehouseUseCase } from "../useCases/warehouse/DeleteWarehouseUseCase";
+import { GetAllWarehouseUseCase } from "../useCases/warehouse/GetAllWarehouseUseCase";
+import { GetStockInfoUseCase } from "../useCases/warehouse/GetStockInfoUseCase";
+import { GetWarehouseInfoUseCase } from "../useCases/warehouse/GetWarehouseInfoUseCase";
+import { UpdateWarehouseUseCase } from "../useCases/warehouse/UpdateWarehouseUseCase";
 import { NotFoundError } from "../errors/NotFoundError";
 
 @injectable()

@@ -10,9 +10,10 @@ const TYPES = {
     IDeliveryTicketHandler: Symbol.for("IDeliveryTicketHandler"),
     IJwtHandler: Symbol.for("IJwtHandler"),
     IPasswordHandler: Symbol.for("IPasswordHandler"),
-    IPaymentHandler: Symbol.for("IPaymentHandler"),
+    IStripeHandler: Symbol.for("IStripeHandler"),
     IGenertorIdHandler: Symbol.for("IGenertorIdHandler"),
-    IMerchantHandler: Symbol.for("IMerchantHandler")
+    IMerchantHandler: Symbol.for("IMerchantHandler"),
+    IPushNotifHandler: Symbol.for("IPushNotifHandler")
 }
 
 export {TYPES}

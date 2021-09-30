@@ -51,6 +51,7 @@ export class SellUseCase implements ISellUseCase {
                 weight: productInfo.weight,
                 year: productInfo.year
             }
+            productDTO.specificities.push(productDTO.weight.toString())
             
             if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
             
