@@ -84,7 +84,7 @@ export class GreenRepackController{
         try {
             const {warehouseName, productInfo} = req.body
             await this._addProductUseCase.execute(warehouseName, productInfo, this._iDGeneratorHandler, 
-                this._productRepository, this._warehouseRepository)
+                this._productRepository, this._warehouseRepository, this._productPriceRepository)
             res.sendStatus(200);
         } catch(error) {
             console.log(error)
