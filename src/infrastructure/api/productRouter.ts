@@ -11,6 +11,7 @@ productRouter.get("/", productController.getAllProduct)
 productRouter.get("/category/:name", productController.getProductByCategory)
 productRouter.get("/category/:category/:brand", productController.getProductByBrand)
 productRouter.get("/:category/:brand/:model/:year/sold", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, productController.getSellsNumber)
+productRouter.get("/products/validation", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, productController.getProductForValidation)
 productRouter.delete("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.deleteProduct)
 productRouter.get("/:id", productController.getProduct)
 
