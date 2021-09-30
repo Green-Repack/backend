@@ -10,8 +10,8 @@ const productRouter = Router();
 productRouter.get("/", productController.getAllProduct)
 productRouter.get("/category", productController.getProductByCategory)
 productRouter.get("/category/brand", productController.getProductByBrand)
-productRouter.get("/info/sold", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.getSellsNumber)
+productRouter.get("/info/sold", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, productController.getSellsNumber)
 productRouter.delete("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.deleteProduct)
-productRouter.get("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, productController.getProduct)
+productRouter.get("/:id", productController.getProduct)
 
 export default productRouter
