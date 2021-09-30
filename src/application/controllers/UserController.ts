@@ -12,6 +12,7 @@ import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
 import { AcceptCounterOfferUseCase } from "../useCases/user/AcceptCounterOfferUseCase";
 import { AcceptEstimationUseCase } from "../useCases/user/AcceptEstimationUseCase";
 import { BuyUseCase } from "../useCases/user/BuyUseCase";
+import { GetProductBackUseCase } from "../useCases/user/GetProductBackUseCase";
 import { GetUserInfoUseCase } from "../useCases/user/GetUserInfoUseCase";
 import { GiveGreenCoinsUseCase } from "../useCases/user/GiveGreenCoinsUseCase";
 import { RefuseCounterOfferUseCase } from "../useCases/user/RefuseCounterOfferUseCase";
@@ -30,6 +31,7 @@ export class UserController {
     private readonly _acceptCounterOfferUseCase = new AcceptCounterOfferUseCase;
     private readonly _refuseEsitmationUseCase = new RefuseEstimationUseCase;
     private readonly _refuseCounterOfferUseCase = new RefuseCounterOfferUseCase;
+    private readonly _getProductBackUseCase = new GetProductBackUseCase;
 
     @inject(TYPES.IUserRepository)
     private _userRepository: IUserRepository;
@@ -145,6 +147,18 @@ export class UserController {
         try {
             const {productId} = req.body
             await this._refuseCounterOfferUseCase.execute(productId, this._paymentHandler, this._deliveryHandler,
+                this._userRepository, this._productRepository)
+            res.sendStatus(200)
+        } catch(error) {
+            console.log(error)
+            res.status(400).json(error);
+        }
+    }
+
+    public async getBackProduct(req: any, res: any) {
+        try {
+            const {productId} = req.body
+            await this._getProductBackUseCase.execute(productId, this._paymentHandler, this._deliveryHandler,
                 this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {

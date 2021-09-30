@@ -8,5 +8,6 @@ let promoController: PromoController = DIcontainer.resolve<PromoController>(Prom
 const promoRouter = Router();
 
 promoRouter.post("/create", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, promoController.createPromo)
+promoRouter.delete("/:name", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, promoController.deletePromo)
 
 export default promoRouter

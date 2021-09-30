@@ -89,14 +89,16 @@ export class PaymentHandler implements IPaymentHandler {
         try {
             let currentDate = new Date()
             let metadata = paymentIntent.metadata
+            let user = await userRepository.getUserById(metadata.userId)
+            if (user == undefined) throw new NotFoundError("User not found")
+
+            let product = await productRepository.getProductById(metadata.productId)
+            if (product == undefined) throw new NotFoundError("Product not found")
+
             if (metadata.reason == "achat") {
                 let amount = paymentIntent.amount
                 let promoMultiplier = 1
-                let user = await userRepository.getUserById(metadata.userId)
-                if (user == undefined) throw new NotFoundError("User not found")
 
-                let product = await productRepository.getProductById(metadata.productId)
-                if (product == undefined) throw new NotFoundError("Product not found")
 
                 let promo = await promoRepository.getActivePromo(currentDate)
                 if (promo != undefined) promoMultiplier = promo.multiplicateur
@@ -122,6 +124,8 @@ export class PaymentHandler implements IPaymentHandler {
                 await userRepository.save(UserMap.toDomain(userDTO))
                 await productRepository.save(ProductMap.toDomain(productDTO))
                 await warehouseRepository.updateStockProduct(product, true)
+            } else if (metadata.reason == "Frais de récupération") {
+                await userRepository.updateProductSoldDeliveryFeeStatut(user.email, product.productId, true)
             }
         } catch(error) {
             throw error

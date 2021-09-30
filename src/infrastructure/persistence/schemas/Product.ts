@@ -46,7 +46,9 @@ export const productSchema = new Schema<IProductProps>({
         type: String,
         required: true,
     },
-    specificities: [Schema.Types.Mixed],
+    specificities: [{
+        type: String
+    }],
     price: Number,
     priceSeller: Number,
     images: [{

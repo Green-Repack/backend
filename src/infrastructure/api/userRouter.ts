@@ -19,4 +19,7 @@ userRouter.put("/accept/counter-offer", AuthorizationHandler.userAuth, Authoriza
 userRouter.put("/decline/estimation", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.refuseEstimation)
 userRouter.put("/decline/counter-offer", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.refuseCounterOffer)
 
+userRouter.post("/paid/delivery", AuthorizationHandler.userAuth, AuthorizationHandler.marchandAuthorization, userController.getBackProduct)
+
+
 export default userRouter

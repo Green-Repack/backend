@@ -19,8 +19,8 @@ import { MakeCounterOfferUseCase } from "../useCases/green_repack/MakeCounterOff
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
-import { DeleteWarehouseUseCase } from "../useCases/green_repack/DeleteWarehouseUseCase";
-import { UpdateWarehouseUseCase } from "../useCases/green_repack/UpdateWarehouseUseCase";
+import { DeleteWarehouseUseCase } from "../useCases/warehouse/DeleteWarehouseUseCase";
+import { UpdateWarehouseUseCase } from "../useCases/warehouse/UpdateWarehouseUseCase";
 
 @injectable()
 export class GreenRepackController{
@@ -119,8 +119,7 @@ export class GreenRepackController{
     public async refuseProduct(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._refuseProductUseCase.execute(productId,this._paymentHandler, 
-                this._deliveryTicketHandler, this._userReposiory, this._productRepository)
+            await this._refuseProductUseCase.execute(productId, this._userReposiory, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)

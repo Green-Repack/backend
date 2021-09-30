@@ -6,6 +6,27 @@ import { PromoCoinsModel } from "../schemas/PromoCoins";
 
 @injectable()
 export class PromoCoinsRepository implements IPromoCoinsRepository {
+    async getPromoById(id: string): Promise<PromoCoins | undefined> {
+        let promo = await PromoCoinsModel.findById(id)
+        if (promo != null) return PromoCoinsMap.toDomain(promo)
+        else return undefined
+    }
+
+    async getPromoByName(name: string): Promise<PromoCoins | undefined> {
+        let promo = await PromoCoinsModel.findOne({name: name})
+        if (promo != null) return PromoCoinsMap.toDomain(promo)
+        else return undefined
+    }
+
+    async getAllPromo(): Promise<PromoCoins[]> {
+        let result: PromoCoins[] = new Array<PromoCoins>()
+        let promos = await PromoCoinsModel.find({})
+        for(var promo of promos) {
+            result.push(PromoCoinsMap.toDomain(promo))
+        }
+        return result
+    }
+
     async getActivePromo(currentDate: Date): Promise<PromoCoins | undefined> {
         let promo = await PromoCoinsModel.findOne({
             dateDebut: {$lte: currentDate},

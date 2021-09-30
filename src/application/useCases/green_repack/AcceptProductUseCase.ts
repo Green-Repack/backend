@@ -9,7 +9,7 @@ import { NotFoundError } from "../../errors/NotFoundError";
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 
 export class AcceptProductUseCase implements IAcceptProductUseCase {
-    async execute(productId: string, warehouseName: string, paymentHanlder: IPaymentHandler, userRepository: IUserRepository,
+    async execute(productId: string, warehouseName: string, paymentHandler: IPaymentHandler, userRepository: IUserRepository,
          productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")

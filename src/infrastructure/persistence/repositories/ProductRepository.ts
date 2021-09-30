@@ -3,13 +3,25 @@ import { IProductRepository } from "../../../application/interfaces/repository/I
 import { ProductMap } from "../../../application/mappers/ProductMap";
 import { Product } from "../../../domain/entity/Product";
 import { EProductCategory } from "../../../domain/entityProperties/EProductCategory";
+import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { ProductModel } from "../schemas/Product";
 
 @injectable()
 export class ProductRepository implements IProductRepository {
+    async getProductForValidation(): Promise<Product[]> {
+        let result: Product[] = new Array<Product>()
+        let products = await ProductModel.find({$or : [{sellingStatus: EPurchasePromiseStatus.Estimtated}, 
+                                            {sellingStatus: EPurchasePromiseStatus.WaitingForApproval},
+                                            {sellingStatus: EPurchasePromiseStatus.WaitingForCounterOfferApproval}]})
+        for(var product of products) {
+            result.push(ProductMap.toDomain(product))
+        }
+        return result
+    }
+
     async getProductByCategory(category: EProductCategory): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
-        let products = await ProductModel.find({category: category, sold: false})
+        let products = await ProductModel.find({category: category, sold: false, sellingStatus: EPurchasePromiseStatus.Accepted})
         for(var product of products) {
             result.push(ProductMap.toDomain(product))
         }
@@ -18,7 +30,8 @@ export class ProductRepository implements IProductRepository {
 
     async getProductByBrand(category: EProductCategory, brand: string): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
-        let products = await ProductModel.find({category: category, brand: brand, sold: false})
+        let products = await ProductModel.find({category: category, brand: brand.toLowerCase(), 
+            sold: false, sellingStatus: EPurchasePromiseStatus.Accepted})
         for(var product of products) {
             result.push(ProductMap.toDomain(product))
         }
@@ -33,13 +46,13 @@ export class ProductRepository implements IProductRepository {
 
     async getProductSellsNumber(category: EProductCategory, brand: string, model: string, year: number): Promise<number> {
         let productsSold = await ProductModel.find(
-            { category: category, brand: brand, model: model, year: year, sold: true}).count()
+            { category: category, brand: brand.toLowerCase(), model: model.toLowerCase(), year: year, sold: true}).count()
         return productsSold
     }
 
     async getAllProducts(): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
-        let products = await ProductModel.find({sold: false})
+        let products = await ProductModel.find({sold: false, sellingStatus: EPurchasePromiseStatus.Accepted})
         for(var product of products) {
             result.push(ProductMap.toDomain(product))
         }
