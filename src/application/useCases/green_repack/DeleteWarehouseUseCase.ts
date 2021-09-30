@@ -1,5 +1,6 @@
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository"
 import { IDeleteWarehouseUseCase } from "./IDeleWarehouseUseCase"
+import { NotFoundError } from "../../errors/NotFoundError"
 
 export class DeleteWarehouseUseCase implements IDeleteWarehouseUseCase {
     async execute(warehouseId: string, warehouseRepository: IWarehouseRepository): Promise<void> {

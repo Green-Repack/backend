@@ -3,6 +3,7 @@ import { IWarehouseDTO } from "../../DTOs/IWarehouseDTO"
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository"
 import { WarehouseMap } from "../../mappers/WarehouseMap"
 import { IUpdateWarehouseUseCase } from "./IUpdateWarehouseUseCase"
+import { NotFoundError } from "../../errors/NotFoundError"
 
 export class UpdateWarehouseUseCase implements IUpdateWarehouseUseCase{
     async execute(warehouseInfo: any, warehouseId: string,warehouseRepository: IWarehouseRepository): Promise<void> {

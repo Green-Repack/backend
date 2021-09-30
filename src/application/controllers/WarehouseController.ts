@@ -8,6 +8,7 @@ import { GetAllWarehouseUseCase } from "../useCases/green_repack/GetAllWarehouse
 import { GetStockInfoUseCase } from "../useCases/green_repack/GetStockInfoUseCase";
 import { GetWarehouseInfoUseCase } from "../useCases/green_repack/GetWarehouseInfoUseCase";
 import { UpdateWarehouseUseCase } from "../useCases/green_repack/UpdateWarehouseUseCase";
+import { NotFoundError } from "../errors/NotFoundError";
 
 @injectable()
 export class WarehouseController {
