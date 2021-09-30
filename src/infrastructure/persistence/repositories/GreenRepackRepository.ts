@@ -41,7 +41,7 @@ export class GreenRepackRepository implements IGreenRepackRepository {
     }
 
     async exists(idOrUsername: string): Promise<boolean> {
-        let usernameResult = await GreenRepackModel.findOne({userame: idOrUsername})
+        let usernameResult = await GreenRepackModel.findOne({username: idOrUsername})
         if (usernameResult == null) {
             try {
                 let idResult = await GreenRepackModel.findById(idOrUsername)
@@ -62,7 +62,6 @@ export class GreenRepackRepository implements IGreenRepackRepository {
     async save(member: GreenRepack): Promise<void> {
         let exists = await this.exists(member.username)
         const rawMemberData = GreenRepackMap.toPersistence(member)
-
         if (exists) {
             const mongooseMember = await GreenRepackModel.findOne({username: member.username})
             if (mongooseMember) await mongooseMember.updateOne(rawMemberData)

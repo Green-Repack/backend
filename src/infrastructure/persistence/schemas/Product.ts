@@ -28,6 +28,7 @@ export const productSchema = new Schema<IProductProps>({
         lowercase: true,
         minlength: 5,
         maxlength: 255,
+        trim: true,
     },
     model: {
         type: String,
@@ -35,6 +36,7 @@ export const productSchema = new Schema<IProductProps>({
         lowercase: true,
         minlength: 5,
         maxlength: 255,
+        trim: true,
     },
     sellingStatus: {
         type: String,

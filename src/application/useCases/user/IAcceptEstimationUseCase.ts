@@ -4,6 +4,6 @@ import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepo
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 
 export interface IAcceptEstimationUseCase {
-    execute(produitId: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
+    execute(produitId: string, warehouseName: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void>
 }

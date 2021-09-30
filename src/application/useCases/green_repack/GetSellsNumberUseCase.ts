@@ -10,8 +10,9 @@ export class GetSellsNumberUseCase implements IGetSellsNumberUseCase {
             Guard.AgainstNullOrUndefined(productInfo.brand, "brand required")
             Guard.AgainstNullOrUndefined(productInfo.model, "model required")
             Guard.AgainstNullOrUndefined(productInfo.year, "year required")
-
+            
             let category = productInfo.category as EProductCategory
+            
             let sellsNUmber = await productRepository.getProductSellsNumber(category, productInfo.brand, productInfo.model, productInfo.year)
             return sellsNUmber
         } catch(error) {

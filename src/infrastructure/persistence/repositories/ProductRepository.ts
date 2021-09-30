@@ -9,7 +9,7 @@ import { ProductModel } from "../schemas/Product";
 export class ProductRepository implements IProductRepository {
     async getProductByCategory(category: EProductCategory): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
-        let products = await ProductModel.find({category: category})
+        let products = await ProductModel.find({category: category, sold: false})
         for(var product of products) {
             result.push(ProductMap.toDomain(product))
         }
@@ -18,7 +18,7 @@ export class ProductRepository implements IProductRepository {
 
     async getProductByBrand(category: EProductCategory, brand: string): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
-        let products = await ProductModel.find({category: category, brand: brand})
+        let products = await ProductModel.find({category: category, brand: brand, sold: false})
         for(var product of products) {
             result.push(ProductMap.toDomain(product))
         }
@@ -39,7 +39,7 @@ export class ProductRepository implements IProductRepository {
 
     async getAllProducts(): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
-        let products = await ProductModel.find({})
+        let products = await ProductModel.find({sold: false})
         for(var product of products) {
             result.push(ProductMap.toDomain(product))
         }

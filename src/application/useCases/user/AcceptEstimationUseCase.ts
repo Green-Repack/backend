@@ -10,7 +10,7 @@ import { IShippingLabel } from "../../../domain/entityProperties/IShippingLabel"
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 
 export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
-    async execute(productId: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
+    async execute(productId: string, warehouseName: string, deliveryHandler: IDeliveryTicketHandler, userRepository: IUserRepository, 
         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
@@ -21,7 +21,7 @@ export class AcceptEstimationUseCase implements IAcceptEstimationUseCase {
             let merchant = await userRepository.getUserById(product.merchantId)
             if (merchant == undefined) throw new NotFoundError("Merchant not found")
 
-            let warehouse = await warehouseRepository.getWarehouseById(product.warehouseId)
+            let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
             let productDTO = ProductMap.toDTO(product)
