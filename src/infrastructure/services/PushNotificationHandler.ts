@@ -1,10 +1,11 @@
 import https from 'https';
+import { injectable } from 'inversify';
+import { IPushNotifHandler } from '../../application/interfaces/services/IPushNotifHandler';
 import {Product} from "../../domain/entity/Product";
 
-export class PushNotification{
-
-    static sendNotification(product: Product) {
-
+@injectable()
+export class PushNotificationHandler implements IPushNotifHandler{
+     sendNotification(product: Product) {
         let data = {
             app_id: process.env.ONE_SIGNAL_APP_ID,
             headings: {"en": "A new product is available !", "fr": "Un nouveau produit est disponible !"},

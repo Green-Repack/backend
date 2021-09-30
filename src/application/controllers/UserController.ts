@@ -8,6 +8,7 @@ import { IUserRepository } from "../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../interfaces/repository/IWarehouseRepository";
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
+import { IPushNotifHandler } from "../interfaces/services/IPushNotifHandler";
 import { IStripeHandler } from "../interfaces/services/IStripeHandler";
 import { AcceptCounterOfferUseCase } from "../useCases/user/AcceptCounterOfferUseCase";
 import { AcceptEstimationUseCase } from "../useCases/user/AcceptEstimationUseCase";
@@ -50,6 +51,8 @@ export class UserController {
     private _deliveryHandler: IDeliveryTicketHandler;
     @inject(TYPES.IGenertorIdHandler)
     private _IdGeneratorHandler: IGeneratorIdHandler;
+    @inject(TYPES.IPushNotifHandler)
+    private _notifHandler: IPushNotifHandler;
 
     public constructor() {
         autoBind(this);
@@ -134,7 +137,7 @@ export class UserController {
     public async acceptCounterOffer(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._acceptCounterOfferUseCase.execute(productId, this._stripeHandler,
+            await this._acceptCounterOfferUseCase.execute(productId, this._stripeHandler, this._notifHandler,
                 this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {

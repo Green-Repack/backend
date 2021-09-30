@@ -26,6 +26,8 @@ import { IGeneratorIdHandler } from "./src/application/interfaces/services/IGene
 import { IdGeneratorHandler } from "./src/infrastructure/services/IdGeneratorHandler";
 import { IMerchantHandler } from "./src/application/interfaces/services/IMerchandHandler";
 import { MerchantHandler } from "./src/infrastructure/services/MerchantHandler";
+import { IPushNotifHandler } from "./src/application/interfaces/services/IPushNotifHandler";
+import { PushNotificationHandler } from "./src/infrastructure/services/PushNotificationHandler";
 
 const DIcontainer = new Container()
 DIcontainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository)
@@ -42,6 +44,7 @@ DIcontainer.bind<IAssociationHandler>(TYPES.IAssociationHandler).to(AssociaionHa
 DIcontainer.bind<IDeliveryTicketHandler>(TYPES.IDeliveryTicketHandler).to(DeliveryTicketHanlder)
 DIcontainer.bind<IGeneratorIdHandler>(TYPES.IGenertorIdHandler).to(IdGeneratorHandler)
 DIcontainer.bind<IMerchantHandler>(TYPES.IMerchantHandler).to(MerchantHandler)
+DIcontainer.bind<IPushNotifHandler>(TYPES.IPushNotifHandler).to(PushNotificationHandler)
 
 
 export default DIcontainer

@@ -9,10 +9,11 @@ import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IAcceptCounterOfferUseCase } from "./IAcceptCounterOfferUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { IPushNotifHandler } from "../../interfaces/services/IPushNotifHandler";
 
 export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
-    async execute(productId: string, paymentHandler: IStripeHandler, userRepository: IUserRepository, productRepository: IProductRepository, 
-        warehouseRepository: IWarehouseRepository): Promise<void> {
+    async execute(productId: string, paymentHandler: IStripeHandler, pushNotifHandler: IPushNotifHandler,
+        userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
 
@@ -39,6 +40,7 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
                 await productRepository.save(updatedProduct)
                 await warehouseRepository.updateStockProduct(updatedProduct, true)
 
+                pushNotifHandler.sendNotification(updatedProduct)
                 //await paymentHandler.emitPayment(product.priceSeller, marchand.id) faire le virement au vendeur
             }
         } catch(error) {
