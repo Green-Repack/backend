@@ -2,6 +2,7 @@ import express from 'express';
 import routes from './infrastructure/api';
 import { DbConnect } from './infrastructure/persistence/DbConnect';
 import { config } from 'dotenv';
+import { cors } from "cors"
 
 const app = express();
 config()
@@ -17,6 +18,7 @@ app.use(function(req, res, next) {
 
 DbConnect.connect()
 
+app.use(cors({origin: "*"}))
 app.use(express.json());
 app.use(routes);
 
