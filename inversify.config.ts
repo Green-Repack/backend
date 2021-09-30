@@ -1,5 +1,6 @@
 import { Container } from "inversify";
 import { TYPES } from "./src/application/commons/types";
+import {IProductPriceRepository} from "./src/application/interfaces/repository/IProductPriceRepository";
 import { IUserRepository } from "./src/application/interfaces/repository/IUserRepository";
 import { IAssociationRepository } from "./src/application/interfaces/repository/IAssociationRepository";
 import { IGreenRepackRepository } from "./src/application/interfaces/repository/IGreenRepackRepository";
@@ -11,6 +12,7 @@ import { IPasswordHandler } from "./src/application/interfaces/services/IPasswor
 import { IJwtHandler } from "./src/application/interfaces/services/IJwtHandler";
 import { IAssociationHandler } from "./src/application/interfaces/services/IAssociationHandler";
 import { IDeliveryTicketHandler } from "./src/application/interfaces/services/IDeliveryTicketHandler";
+import {ProductPriceRepository} from "./src/infrastructure/persistence/repositories/ProductPriceRepository";
 import { UserRepository } from "./src/infrastructure/persistence/repositories/UserRepository";
 import { AssociationRepository } from "./src/infrastructure/persistence/repositories/AssociationRepository";
 import { GreenRepackRepository } from "./src/infrastructure/persistence/repositories/GreenRepackRepository";
@@ -29,11 +31,12 @@ import { MerchantHandler } from "./src/infrastructure/services/MerchantHandler";
 
 const DIcontainer = new Container()
 DIcontainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserRepository)
-DIcontainer.bind<IGreenRepackRepository>(TYPES.IGreeRepackRepository).to(GreenRepackRepository)
+DIcontainer.bind<IGreenRepackRepository>(TYPES.IGreenRepackRepository).to(GreenRepackRepository)
 DIcontainer.bind<IAssociationRepository>(TYPES.IAssociationRepository).to(AssociationRepository)
 DIcontainer.bind<IProductRepository>(TYPES.IProductRepository).to(ProductRepository)
 DIcontainer.bind<IPromoCoinsRepository>(TYPES.IPromoCoinsRepository).to(PromoCoinsRepository)
 DIcontainer.bind<IWarehouseRepository>(TYPES.IWarehouseRepository).to(WarehouseRepository)
+DIcontainer.bind<IProductPriceRepository>(TYPES.IProductPriceRepository).to(ProductPriceRepository)
 
 DIcontainer.bind<IPaymentHandler>(TYPES.IPaymentHandler).to(PaymentHandler)
 DIcontainer.bind<IPasswordHandler>(TYPES.IPasswordHandler).to(PasswordHandler)

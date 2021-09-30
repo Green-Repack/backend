@@ -1,5 +1,6 @@
 import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
+import {ProductPriceRepository} from "../../infrastructure/persistence/repositories/ProductPriceRepository";
 import { TYPES } from "../commons/types";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IProductRepository } from "../interfaces/repository/IProductRepository";
@@ -41,6 +42,8 @@ export class UserController {
     private _associationRepository: IAssociationRepository;
     @inject(TYPES.IPromoCoinsRepository)
     private _promoRepository: IPromoCoinsRepository;
+    @inject(TYPES.IProductPriceRepository)
+    private readonly _productPriceRepository = new ProductPriceRepository;
 
     @inject(TYPES.IPaymentHandler)
     private _paymentHandler: IPaymentHandler;
@@ -98,7 +101,7 @@ export class UserController {
     public async sellProduct(req: any, res: any) {
         try {
             let estimatePrice = await this._sellUseCase.execute(req.userId, req.body, this._IdGeneratorHandler,
-                this._userRepository, this._productRepository)
+                this._userRepository, this._productRepository, this._productPriceRepository)
             res.status(200).json(estimatePrice)
         } catch(error) {
             console.log(error)

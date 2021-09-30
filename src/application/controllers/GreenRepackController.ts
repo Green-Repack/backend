@@ -1,5 +1,6 @@
 import autoBind from "auto-bind";
 import { inject, injectable } from "inversify";
+import {ProductPriceRepository} from "../../infrastructure/persistence/repositories/ProductPriceRepository";
 import { TYPES } from "../commons/types";
 import { IAssociationRepository } from "../interfaces/repository/IAssociationRepository";
 import { IGreenRepackRepository } from "../interfaces/repository/IGreenRepackRepository";
@@ -33,12 +34,14 @@ export class GreenRepackController{
     private readonly _getInfoUseCase = new GetMemberInfoUseCase;
     private readonly _makeCounterOfferUseCase = new MakeCounterOfferUseCase;
     
-    @inject(TYPES.IGreeRepackRepository)
+    @inject(TYPES.IGreenRepackRepository)
     private _greenRepackRepository: IGreenRepackRepository;
     @inject(TYPES.IWarehouseRepository)
     private _warehouseRepository: IWarehouseRepository;
+    @inject(TYPES.IProductPriceRepository)
+    private readonly _productPriceRepository = new ProductPriceRepository;
     @inject(TYPES.IUserRepository)
-    private _userReposiory: IUserRepository;
+    private _userRepository: IUserRepository;
     @inject(TYPES.IProductRepository)
     private _productRepository: IProductRepository;
     @inject(TYPES.IAssociationRepository)
@@ -83,7 +86,7 @@ export class GreenRepackController{
         try {
             const {warehouseName, productInfo} = req.body
             await this._addProductUseCase.execute(warehouseName, productInfo, this._iDGeneratorHandler, 
-                this._productRepository, this._warehouseRepository)
+                this._productRepository, this._warehouseRepository, this._productPriceRepository)
             res.sendStatus(200);
         } catch(error) {
             console.log(error)
@@ -95,7 +98,7 @@ export class GreenRepackController{
         try {
             const {productId, warehouseName} = req.body
             await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
-                this._userReposiory, this._productRepository, this._warehouseRepository)
+                this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)
@@ -108,7 +111,7 @@ export class GreenRepackController{
         try {
             const {productId, warehouseName, counterOffer} = req.body
             await this._makeCounterOfferUseCase.execute(productId, warehouseName, counterOffer, 
-                this._warehouseRepository, this._productRepository, this._userReposiory)
+                this._warehouseRepository, this._productRepository, this._userRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)
@@ -120,7 +123,7 @@ export class GreenRepackController{
         try {
             const {productId} = req.body
             await this._refuseProductUseCase.execute(productId,this._paymentHandler, 
-                this._deliveryTicketHandler, this._userReposiory, this._productRepository)
+                this._deliveryTicketHandler, this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
             console.log(error)

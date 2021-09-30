@@ -1,5 +1,8 @@
+import {ProductPrice} from "../../../domain/entity/ProductPrice";
+import {ProductPriceService} from "../../../infrastructure/services/ProductPriceService";
 import { Guard } from "../../commons/Guard";
 import { IProductDTO } from "../../DTOs/IProductDTO";
+import {IProductPriceRepository} from "../../interfaces/repository/IProductPriceRepository";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
 import { ProductMap } from "../../mappers/ProductMap";
@@ -10,16 +13,22 @@ import { IGeneratorIdHandler } from "../../interfaces/services/IGeneratorIdHandl
 
 export class AddProductUseCase implements IAddProductUseCase {
     async execute(warehouseName: string, productInfo: any, idGenerator: IGeneratorIdHandler, productRepository: IProductRepository, 
-        warehouseRepository: IWarehouseRepository): Promise<void> {
+        warehouseRepository: IWarehouseRepository, productPriceRepository: IProductPriceRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(warehouseName, "WarehouseName is required")
             Guard.AgainstNullOrUndefined(productInfo.name, "Name is required")
-            Guard.AgainstNullOrUndefined(productInfo.category, "Mategory is required")
+            Guard.AgainstNullOrUndefined(productInfo.category, "Category is required")
             Guard.AgainstNullOrUndefined(productInfo.model, "Model is required")
-            Guard.AgainstNullOrUndefined(productInfo.price, "Price is required")
+            Guard.AgainstNullOrUndefined(productInfo.year, "Year is required")
 
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
             if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
+
+            let price: number = 0
+            if(productInfo.price) price=productInfo.price
+            else {
+                price = await ProductPriceService.getProductPrice(productInfo.category, productInfo.state, productInfo.year, productPriceRepository);
+            }
 
             let productId = idGenerator.generate()
             let productDTO: IProductDTO = {
@@ -33,7 +42,7 @@ export class AddProductUseCase implements IAddProductUseCase {
                 specificities: productInfo.specificities,
                 images: productInfo.images,
                 warehouseId: warehouse.id,
-                price: productInfo.price,
+                price: price,
                 sold: false,
                 creationDate: new Date(),
                 weight: productInfo.weight,
@@ -47,5 +56,5 @@ export class AddProductUseCase implements IAddProductUseCase {
             throw error
         }
     }
-    
+
 }

@@ -1,10 +1,11 @@
 const TYPES = {
     IAssociationRepository: Symbol.for("IAssociationRepository"),
-    IGreeRepackRepository: Symbol.for("IGreeRepackRepository"),
+    IGreenRepackRepository: Symbol.for("IGreenRepackRepository"),
     IProductRepository: Symbol.for("IProductRepository"),
     IPromoCoinsRepository: Symbol.for("IPromoCoinsRepository"),
     IUserRepository: Symbol.for("IUserRepository"),
     IWarehouseRepository: Symbol.for("IWarehouseRepository"),
+    IProductPriceRepository: Symbol.for("IProductPriceRepository"),
     IAssociationHandler: Symbol.for("IAssociationHandler"),
     IDeliveryTicketHandler: Symbol.for("IDeliveryTicketHandler"),
     IJwtHandler: Symbol.for("IJwtHandler"),

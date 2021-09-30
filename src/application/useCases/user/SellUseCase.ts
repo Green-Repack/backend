@@ -1,5 +1,7 @@
+import {ProductPriceService} from "../../../infrastructure/services/ProductPriceService";
 import { Guard } from "../../commons/Guard";
 import { IProductDTO } from "../../DTOs/IProductDTO";
+import {IProductPriceRepository} from "../../interfaces/repository/IProductPriceRepository";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { ProductMap } from "../../mappers/ProductMap";
@@ -12,7 +14,7 @@ import { IProductSold } from "../../../domain/entityProperties/IProductSold";
 
 export class SellUseCase implements ISellUseCase {
     async execute(userId: string, productInfo: any, idGenerator: IGeneratorIdHandler, 
-        userRepository: IUserRepository, productRepository: IProductRepository): Promise<{[token: string]: string}> {
+        userRepository: IUserRepository, productRepository: IProductRepository, productPriceRepository: IProductPriceRepository): Promise<{[token: string]: string}> {
         try{
             Guard.AgainstNullOrUndefined(userId, "User id is required")
             Guard.AgainstNullOrUndefined(productInfo.name, "Name is required")
@@ -29,7 +31,7 @@ export class SellUseCase implements ISellUseCase {
             if (user == undefined) throw new NotFoundError("User not found")
 
             let merchantDTO = UserMap.toDTO(user)
-            let estimatePrice = 1233 //TODO estimer du produit en fonction du produit
+            let estimatePrice = await ProductPriceService.getProductPrice(productInfo.category, productInfo.state, productInfo.year, productPriceRepository)
 
             let productId = idGenerator.generate()
             let productDTO: IProductDTO = {
@@ -43,7 +45,7 @@ export class SellUseCase implements ISellUseCase {
                 specificities: productInfo.specificities,
                 images: productInfo.images,
                 merchantId: user.id,
-                priceSeller: estimatePrice,
+                priceSeller: estimatePrice/1.3,
                 sold: false,
                 creationDate: new Date(),
                 weight: productInfo.weight,
