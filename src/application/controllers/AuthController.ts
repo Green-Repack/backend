@@ -19,7 +19,7 @@ export class AuthController{
     @inject(TYPES.IUserRepository)
     private _userRepository!: IUserRepository;
 
-    @inject(TYPES.IGreeRepackRepository)
+    @inject(TYPES.IGreenRepackRepository)
     private _greenRepRepository!: IGreenRepackRepository;
     @inject(TYPES.IAssociationRepository)
     private _associationRepository!: IAssociationRepository;
