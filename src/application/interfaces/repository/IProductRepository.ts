@@ -9,4 +9,5 @@ export interface IProductRepository extends IBaseRepository<Product> {
     getProductByCategory(category: EProductCategory): Promise<Product[]>
     getProductByBrand(category: EProductCategory, brand: string): Promise<Product[]>
     getProductForValidation(): Promise<Product[]>
+    getProductByStripId(id: string): Promise<Product | undefined>
 }

@@ -8,6 +8,12 @@ import { ProductModel } from "../schemas/Product";
 
 @injectable()
 export class ProductRepository implements IProductRepository {
+    async getProductByStripId(id: string): Promise<Product> {
+        let product = await ProductModel.findOne({stripeProductId: id})
+        if (product) return ProductMap.toDomain(product)
+        else return undefined
+    }
+
     async getProductForValidation(): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
         let products = await ProductModel.find({$or : [{sellingStatus: EPurchasePromiseStatus.Estimtated}, 

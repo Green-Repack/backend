@@ -57,6 +57,7 @@ export const productSchema = new Schema<IProductProps>({
     }],
     merchantId: String,
     warehouseId: String,
+    stripeProductId: String,
     sold: {
         type: Boolean,
         required: true

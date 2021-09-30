@@ -9,7 +9,7 @@ import { IWarehouseRepository } from "../interfaces/repository/IWarehouseReposit
 import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
 import { IDeliveryTicketHandler } from "../interfaces/services/IDeliveryTicketHandler";
 import { IPasswordHandler } from "../interfaces/services/IPasswordHandler";
-import { IPaymentHandler } from "../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../interfaces/services/IStripeHandler";
 import { IGeneratorIdHandler } from "../interfaces/services/IGeneratorIdHandler";
 import { AcceptProductUseCase } from "../useCases/green_repack/AcceptProductUseCase";
 import { AddProductUseCase } from "../useCases/product/AddProductUseCase";
@@ -19,8 +19,6 @@ import { MakeCounterOfferUseCase } from "../useCases/green_repack/MakeCounterOff
 import { RefuseProductUseCase } from "../useCases/green_repack/RefuseProductUseCase";
 import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
 import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
-import { DeleteWarehouseUseCase } from "../useCases/warehouse/DeleteWarehouseUseCase";
-import { UpdateWarehouseUseCase } from "../useCases/warehouse/UpdateWarehouseUseCase";
 
 @injectable()
 export class GreenRepackController{
@@ -44,10 +42,8 @@ export class GreenRepackController{
     @inject(TYPES.IAssociationRepository)
     private _associationRepository!: IAssociationRepository;
     
-    @inject(TYPES.IDeliveryTicketHandler)
-    private _deliveryTicketHandler: IDeliveryTicketHandler;
-    @inject(TYPES.IPaymentHandler)
-    private _paymentHandler: IPaymentHandler
+    @inject(TYPES.IStripeHandler)
+    private _stripeHandler: IStripeHandler
     @inject(TYPES.IPasswordHandler)
     private _passwordHandler: IPasswordHandler;
     @inject(TYPES.IAssociationHandler)
@@ -94,7 +90,7 @@ export class GreenRepackController{
     public async acceptProduct(req: any, res: any) {
         try {
             const {productId, warehouseName} = req.body
-            await this._acceptProductUseCase.execute(productId, warehouseName, this._paymentHandler, 
+            await this._acceptProductUseCase.execute(productId, warehouseName, this._stripeHandler, 
                 this._userReposiory, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {

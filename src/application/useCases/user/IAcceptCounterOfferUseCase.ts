@@ -1,9 +1,9 @@
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 
 export interface IAcceptCounterOfferUseCase {
-    execute(productId: string, paymentHandler: IPaymentHandler, userRepository: IUserRepository, 
+    execute(productId: string, stripeHandler: IStripeHandler, userRepository: IUserRepository, 
         productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void>
 }

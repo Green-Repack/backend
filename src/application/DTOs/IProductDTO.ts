@@ -16,6 +16,7 @@ export interface IProductDTO {
     images: string[]
     merchantId?: string
     warehouseId?: string
+    stripeProductId?: string
     sold: boolean
     creationDate: Date
     weight: number

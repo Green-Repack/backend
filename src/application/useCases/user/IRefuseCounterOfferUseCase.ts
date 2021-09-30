@@ -1,9 +1,9 @@
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 
 export interface IRefuseCounerOfferUseCase {
-    execute(productId: string, paymentHandler: IPaymentHandler, deliveryTicketHanlder: IDeliveryTicketHandler,
+    execute(productId: string, stripeHandler: IStripeHandler, deliveryTicketHanlder: IDeliveryTicketHandler,
         userRepository: IUserRepository, productRepository: IProductRepository): Promise<{[token: string]: string}>
 }

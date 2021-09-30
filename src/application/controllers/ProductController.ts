@@ -59,7 +59,8 @@ export class ProductController {
 
     public async getSellsNumber(req: any, res: any) {
         try {
-            let number = await this._getSellsNumberUseCase.execute(req.body, this._productRepository)
+            let number = await this._getSellsNumberUseCase.execute(req.params.category, req.params.brand,
+                req.params.model, req.params.year, this._productRepository)
             res.status(200).json(number)
         } catch(error) {
             console.log(error)

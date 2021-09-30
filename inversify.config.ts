@@ -6,7 +6,7 @@ import { IGreenRepackRepository } from "./src/application/interfaces/repository/
 import { IProductRepository } from "./src/application/interfaces/repository/IProductRepository";
 import { IWarehouseRepository } from "./src/application/interfaces/repository/IWarehouseRepository";
 import { IPromoCoinsRepository } from "./src/application/interfaces/repository/IPromoCoinsRepository";
-import { IPaymentHandler } from "./src/application/interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "./src/application/interfaces/services/IStripeHandler";
 import { IPasswordHandler } from "./src/application/interfaces/services/IPasswordHandler";
 import { IJwtHandler } from "./src/application/interfaces/services/IJwtHandler";
 import { IAssociationHandler } from "./src/application/interfaces/services/IAssociationHandler";
@@ -17,7 +17,7 @@ import { GreenRepackRepository } from "./src/infrastructure/persistence/reposito
 import { ProductRepository } from "./src/infrastructure/persistence/repositories/ProductRepository";
 import { WarehouseRepository } from "./src/infrastructure/persistence/repositories/WarehouseRepository";
 import { PromoCoinsRepository } from "./src/infrastructure/persistence/repositories/PromoCoinsRepository";
-import { PaymentHandler } from "./src/infrastructure/services/PaymentHandler";
+import { StripeHandler } from "./src/infrastructure/services/StripeHandler";
 import { PasswordHandler } from "./src/infrastructure/services/PasswordHandler";
 import { JwtHandler } from "./src/infrastructure/services/JwtHandler";
 import { AssociaionHandler } from "./src/infrastructure/services/AssociationHandler";
@@ -35,7 +35,7 @@ DIcontainer.bind<IProductRepository>(TYPES.IProductRepository).to(ProductReposit
 DIcontainer.bind<IPromoCoinsRepository>(TYPES.IPromoCoinsRepository).to(PromoCoinsRepository)
 DIcontainer.bind<IWarehouseRepository>(TYPES.IWarehouseRepository).to(WarehouseRepository)
 
-DIcontainer.bind<IPaymentHandler>(TYPES.IPaymentHandler).to(PaymentHandler)
+DIcontainer.bind<IStripeHandler>(TYPES.IStripeHandler).to(StripeHandler)
 DIcontainer.bind<IPasswordHandler>(TYPES.IPasswordHandler).to(PasswordHandler)
 DIcontainer.bind<IJwtHandler>(TYPES.IJwtHandler).to(JwtHandler)
 DIcontainer.bind<IAssociationHandler>(TYPES.IAssociationHandler).to(AssociaionHandler)

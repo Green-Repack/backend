@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 import { IUserDTO } from "../../application/DTOs/IUserDTO";
-import { IPaymentHandler } from "../../application/interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../application/interfaces/services/IStripeHandler";
 import Stripe from "stripe";
 import config from "../../../config";
 import { UserMap } from "../../application/mappers/UserMap";
@@ -12,9 +12,10 @@ import { IGeneratorIdHandler } from "../../application/interfaces/services/IGene
 import { IWarehouseRepository } from "../../application/interfaces/repository/IWarehouseRepository";
 import { IPromoCoinsRepository } from "../../application/interfaces/repository/IPromoCoinsRepository";
 import { NotFoundError } from "../../application/errors/NotFoundError";
+import { IProductDTO } from "../../application/DTOs/IProductDTO";
 
 @injectable()
-export class PaymentHandler implements IPaymentHandler {
+export class StripeHandler implements IStripeHandler {
     private static readonly stripe = new Stripe(config.STRIPE_SECRET_KEY, 
         {apiVersion: '2020-08-27',
         typescript: true})
@@ -22,16 +23,16 @@ export class PaymentHandler implements IPaymentHandler {
     createWebhookEvent(reqBody: any, sig: any): any {
         let event;
         try {
-            event = PaymentHandler.stripe.webhooks.constructEvent(reqBody, sig, config.STRIPE_ENDPOINT_SECRET);
+            event = StripeHandler.stripe.webhooks.constructEvent(reqBody, sig, config.STRIPE_ENDPOINT_SECRET);
             return event
         } catch (err) {
             throw new Error(`Webhook Error: ${err.message}`)
         }
     }
-    
+
     async generatePaymentIntentBuy(user: IUserDTO, reason: string, productId: string, amount: number): Promise<string> {
         try {
-            let paymentIntent = await PaymentHandler.stripe.paymentIntents.create({
+            let paymentIntent = await StripeHandler.stripe.paymentIntents.create({
                 amount: amount * 100,
                 currency: "eur",
                 receipt_email: user.email,
@@ -51,7 +52,7 @@ export class PaymentHandler implements IPaymentHandler {
 
     async generatePaymentIntentDeliveryFee(user: IUserDTO, reason: string, amount: number): Promise<string> {
         try {
-            let paymentIntent = await PaymentHandler.stripe.paymentIntents.create({
+            let paymentIntent = await StripeHandler.stripe.paymentIntents.create({
                 amount: amount * 100,
                 currency: "eur",
                 receipt_email: user.email,
@@ -75,13 +76,17 @@ export class PaymentHandler implements IPaymentHandler {
                 email: user.email,
                 name: user.lastName,
             }
-            let customer = await PaymentHandler.stripe.customers.create(params)
+            let customer = await StripeHandler.stripe.customers.create(params)
             if (customer) user.stripeCustomerId = customer.id
             else throw Error("Could not create stripe customer")
             return user
         } catch(error) {
             throw error
         }
+    }
+
+    async createStripeProduct(product: IProductDTO): Promise<IProductDTO> {
+        throw new Error("Method not implemented.");
     }
 
     async handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent, idGenerator: IGeneratorIdHandler, promoRepository: IPromoCoinsRepository,

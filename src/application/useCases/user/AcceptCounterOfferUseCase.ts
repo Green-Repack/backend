@@ -4,14 +4,14 @@ import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { UserMap } from "../../mappers/UserMap";
 import { IAcceptCounterOfferUseCase } from "./IAcceptCounterOfferUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 
 export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
-    async execute(productId: string, paymentHandler: IPaymentHandler, userRepository: IUserRepository, productRepository: IProductRepository, 
+    async execute(productId: string, paymentHandler: IStripeHandler, userRepository: IUserRepository, productRepository: IProductRepository, 
         warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")

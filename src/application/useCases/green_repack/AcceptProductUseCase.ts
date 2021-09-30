@@ -2,14 +2,14 @@ import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
 import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IWarehouseRepository } from "../../interfaces/repository/IWarehouseRepository";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IAcceptProductUseCase } from "./IAcceptProductUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 
 export class AcceptProductUseCase implements IAcceptProductUseCase {
-    async execute(productId: string, warehouseName: string, paymentHandler: IPaymentHandler, userRepository: IUserRepository,
+    async execute(productId: string, warehouseName: string, stripeHandler: IStripeHandler, userRepository: IUserRepository,
          productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")

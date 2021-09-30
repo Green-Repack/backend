@@ -1,7 +1,7 @@
 import { EPurchasePromiseStatus } from "../../../domain/entityProperties/EPurchasePromiseStatus";
 import { Guard } from "../../commons/Guard";
 import { IProductRepository } from "../../interfaces/repository/IProductRepository";
-import { IPaymentHandler } from "../../interfaces/services/IPaymentHandler";
+import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 import { ProductMap } from "../../mappers/ProductMap";
 import { IRefuseCounerOfferUseCase } from "./IRefuseCounterOfferUseCase";
 import { NotFoundError } from "../../errors/NotFoundError";
@@ -10,7 +10,7 @@ import { IUserRepository } from "../../interfaces/repository/IUserRepository";
 import { IDeliveryTicketHandler } from "../../interfaces/services/IDeliveryTicketHandler";
 
 export class RefuseCounterOfferUseCase implements IRefuseCounerOfferUseCase {
-    async execute(productId: string, paymentHandler: IPaymentHandler, deliveryTicketHanlder: IDeliveryTicketHandler,
+    async execute(productId: string, stripeHandler: IStripeHandler, deliveryTicketHanlder: IDeliveryTicketHandler,
         userRepository: IUserRepository, productRepository: IProductRepository): Promise<{[token: string]: string}> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
@@ -30,7 +30,7 @@ export class RefuseCounterOfferUseCase implements IRefuseCounerOfferUseCase {
                 
                 await userRepository.updateProductSoldStatus(merchantDTO.email, productDTO.productId, productDTO.sellingStatus)
                 await productRepository.save(ProductMap.toDomain(productDTO))
-                let secretKey = await await paymentHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", 
+                let secretKey = await stripeHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", 
                 deliveryTicketHanlder.getPriceFromWeight(product.weight))
                 intentKey = {client_secret: secretKey}
             }
