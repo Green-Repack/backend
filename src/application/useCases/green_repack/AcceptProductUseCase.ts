@@ -29,7 +29,7 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
             if (productDTO.sellingStatus == EPurchasePromiseStatus.WaitingForApproval) {
                 productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
                 productDTO.warehouseId = warehouse.id
-                productDTO.price = Number.parseFloat((productDTO.priceSeller + (productDTO.priceSeller * 0.3).toFixed(2)))
+                productDTO.price = Number.parseFloat((productDTO.priceSeller + (productDTO.priceSeller * 0.3)).toFixed(2))
 
                 await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
                 await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)

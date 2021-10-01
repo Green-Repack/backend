@@ -42,7 +42,7 @@ export class AddProductUseCase implements IAddProductUseCase {
                 specificities: productInfo.specificities,
                 images: productInfo.images,
                 warehouseId: warehouse.id,
-                price: price,
+                price: Number.parseFloat(price.toFixed(2)),
                 sold: false,
                 creationDate: new Date(),
                 weight: productInfo.weight,
