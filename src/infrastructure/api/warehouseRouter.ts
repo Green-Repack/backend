@@ -8,9 +8,10 @@ let warehouseController: WarehouseController = DIcontainer.resolve<WarehouseCont
 const warehouseRouter = Router();
 
 warehouseRouter.post("/create", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, warehouseController.createWarehouse)
-warehouseRouter.get("/:name/stock", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getStockInfo)
-warehouseRouter.get("/:name", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getInfo)
-warehouseRouter.get("/", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getAllWarehouses)
+warehouseRouter.get("/:id/stock", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getStockInfo)
+warehouseRouter.get("/stock", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, warehouseController.getStockInfo)
+warehouseRouter.get("/:name", AuthorizationHandler.userAuth, warehouseController.getInfo)
+warehouseRouter.get("/", AuthorizationHandler.userAuth, warehouseController.getAllWarehouses)
 warehouseRouter.delete("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, warehouseController.deleteWarehouse)
 warehouseRouter.put("/:id", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, warehouseController.updateWarehouse)
 

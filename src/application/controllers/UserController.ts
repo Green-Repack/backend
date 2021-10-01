@@ -152,9 +152,9 @@ export class UserController {
     public async refuseCounterOffer(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._refuseCounterOfferUseCase.execute(productId, this._stripeHandler, this._deliveryHandler,
+            let secretKey = await this._refuseCounterOfferUseCase.execute(productId, this._stripeHandler, this._deliveryHandler,
                 this._userRepository, this._productRepository)
-            res.sendStatus(200)
+            res.status(200).json(secretKey)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
@@ -164,9 +164,9 @@ export class UserController {
     public async getBackProduct(req: any, res: any) {
         try {
             const {productId} = req.body
-            await this._getProductBackUseCase.execute(productId, this._stripeHandler, this._deliveryHandler,
+            let secretKey = await this._getProductBackUseCase.execute(productId, this._stripeHandler, this._deliveryHandler,
                 this._userRepository, this._productRepository)
-            res.sendStatus(200)
+                res.status(200).json(secretKey)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);

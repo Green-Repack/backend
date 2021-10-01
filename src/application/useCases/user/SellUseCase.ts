@@ -31,7 +31,7 @@ export class SellUseCase implements ISellUseCase {
             if (user == undefined) throw new NotFoundError("User not found")
 
             let merchantDTO = UserMap.toDTO(user)
-            let estimatePrice = await ProductPriceService.getProductPrice(productInfo.category, productInfo.state, productInfo.year, productPriceRepository)
+            let estimatePrice =  123//await ProductPriceService.getProductPrice(productInfo.category, productInfo.state, productInfo.year, productPriceRepository)
 
             let productId = idGenerator.generate()
             let productDTO: IProductDTO = {
@@ -45,7 +45,7 @@ export class SellUseCase implements ISellUseCase {
                 specificities: productInfo.specificities,
                 images: productInfo.images,
                 merchantId: user.id,
-                priceSeller: estimatePrice/1.3,
+                priceSeller: estimatePrice,
                 sold: false,
                 creationDate: new Date(),
                 weight: productInfo.weight,
