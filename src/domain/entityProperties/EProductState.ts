@@ -1,6 +1,6 @@
 export enum EProductState {
-    NewWithPackaging = "Neuf",
-    NewWithoutPackaging = "Très bon état",
-    GoodState = "Bon état",
-    Satisfactory = "Satisfaisant"
+    NewWithPackaging = "NewWithPackaging",
+    NewWithoutPackaging = "NewWithoutPackaging",
+    GoodState = "GoodState",
+    Satisfactory = "Satisfactory"
 }
