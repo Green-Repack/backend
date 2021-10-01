@@ -12,7 +12,7 @@ import { NotFoundError } from "../../errors/NotFoundError";
 import { IPushNotifHandler } from "../../interfaces/services/IPushNotifHandler";
 
 export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
-    async execute(productId: string, paymentHandler: IStripeHandler, pushNotifHandler: IPushNotifHandler,
+    async execute(productId: string, stripeHandler: IStripeHandler, pushNotifHandler: IPushNotifHandler,
         userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void> {
         try {
             Guard.AgainstNullOrUndefined(productId, "Product id is required")
@@ -24,13 +24,13 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
             if (merchant == undefined) throw new NotFoundError("Marchand not found")
 
             let productDTO = ProductMap.toDTO(product)
-            let marchandDTO = UserMap.toDTO(merchant)
+            let merchantDTO = UserMap.toDTO(merchant)
 
             if (productDTO.sellingStatus == EPurchasePromiseStatus.WaitingForCounterOfferApproval) {
                 productDTO.sellingStatus = EPurchasePromiseStatus.Accepted
                 productDTO.price = productDTO.priceSeller + (productDTO.priceSeller * 0.3)
                 
-                if (marchandDTO.productSold == undefined) marchandDTO.productSold = new Array<IProductSold>()
+                if (merchantDTO.productSold == undefined) merchantDTO.productSold = new Array<IProductSold>()
 
                 await userRepository.updateProductSoldStatus(merchant.email, productId, productDTO.sellingStatus)
                 await userRepository.updateProductSoldPriceReceived(merchant.email, productId, productDTO.priceSeller)
@@ -40,8 +40,8 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
                 await productRepository.save(updatedProduct)
                 await warehouseRepository.updateStockProduct(updatedProduct, true)
 
+                await stripeHandler.emitPayment(product.priceSeller, merchant.stripeCustomerId)
                 pushNotifHandler.sendNotification(updatedProduct)
-                //await paymentHandler.emitPayment(product.priceSeller, marchand.id) faire le virement au vendeur
             }
         } catch(error) {
             throw(error)

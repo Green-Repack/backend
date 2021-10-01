@@ -40,8 +40,8 @@ export class AcceptProductUseCase implements IAcceptProductUseCase {
                 await warehouseRepository.updateStockProduct(updatedProduct, false)
                 await productRepository.save(ProductMap.toDomain(productDTO))
 
+                await stripeHandler.emitPayment(product.priceSeller, merchant.stripeCustomerId)
                 pushNotifHandler.sendNotification(updatedProduct)
-                //paymentHanlder.emitPayment(product.priceSeller, marchand.id) emission du virement à l'utilisateur
             }
         } catch(error) {
             throw(error)
