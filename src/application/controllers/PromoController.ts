@@ -30,7 +30,7 @@ export class PromoController{
     public async deletePromo(req: any, res: any) {
         try {
             await this._deletePromoUseCase.execute(req.params.name, this._promoCoinsRepository)
-            res.sendStatus(201)
+            res.sendStatus(200)
         } catch(error) {
             console.log(error)
             res.status(400).json(error);
