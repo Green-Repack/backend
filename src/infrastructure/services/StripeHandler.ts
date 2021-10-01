@@ -41,7 +41,8 @@ export class StripeHandler implements IStripeHandler {
                 metadata: {
                     productId: productId,
                     userId: user.id,
-                    reason: reason
+                    reason: reason,
+                    integration_check: 'accept_a_payment'
                 }
             })
             return paymentIntent.client_secret
@@ -60,7 +61,8 @@ export class StripeHandler implements IStripeHandler {
                 statement_descriptor: "greenRepack",
                 metadata: {
                     userId: user.id,
-                    reason: reason
+                    reason: reason,
+                    integration_check: 'accept_a_payment'
                 }
             })
             return paymentIntent.client_secret
