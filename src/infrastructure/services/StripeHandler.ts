@@ -41,8 +41,7 @@ export class StripeHandler implements IStripeHandler {
                 metadata: {
                     productId: productId,
                     userId: user.id,
-                    reason: reason,
-                    integration_check: 'accept_a_payment'
+                    reason: reason
                 }
             })
             return paymentIntent.client_secret
@@ -61,8 +60,7 @@ export class StripeHandler implements IStripeHandler {
                 statement_descriptor: "greenRepack",
                 metadata: {
                     userId: user.id,
-                    reason: reason,
-                    integration_check: 'accept_a_payment'
+                    reason: reason
                 }
             })
             return paymentIntent.client_secret
@@ -118,6 +116,9 @@ export class StripeHandler implements IStripeHandler {
         try {
             let currentDate = new Date()
             let metadata = paymentIntent.metadata
+            console.log("paymetIntent : ", paymentIntent)
+            console.log("user id ", metadata.userId)
+            console.log("product id ", metadata.productId)
             let user = await userRepository.getUserById(metadata.userId)
             if (user == undefined) throw new NotFoundError("User not found")
 
@@ -127,7 +128,6 @@ export class StripeHandler implements IStripeHandler {
             if (metadata.reason == "achat") {
                 let amount = paymentIntent.amount
                 let promoMultiplier = 1
-
 
                 let promo = await promoRepository.getActivePromo(currentDate)
                 if (promo != undefined) promoMultiplier = promo.multiplicateur

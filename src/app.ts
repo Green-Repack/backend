@@ -17,9 +17,16 @@ app.use(function(req, res, next) {
 })
 
 DbConnect.connect()
+app.use((req, res, next) => {
+    if (req.originalUrl.startsWith('/webhook')) {
+      next();
+    } else {
+      express.json()(req, res, next);
+    }
+});
 
 app.use(cors({origin: "*"}))
-app.use(express.json());
+
 app.use(routes);
 
 app.listen(port, () => {

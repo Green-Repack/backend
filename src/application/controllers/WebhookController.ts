@@ -32,7 +32,6 @@ export class WebhookController{
     public async updateInfo(req: any, res: any) {
         try {
             const sig = req.headers['stripe-signature'];
-            console.log("sig : " + sig)
             const event = this._stripeHandler.createWebhookEvent(req.body, sig)
 
             switch (event.type) {
