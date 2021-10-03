@@ -11,7 +11,7 @@ export class GetWarehouseInfoUseCase implements IGetWarehouseInfoUseCase {
             Guard.AgainstNullOrUndefined(warehouseName, "Warehouse's name is required")
 
             let warehouse = await warehouseRepository.getWarehouseByName(warehouseName)
-            if (warehouse != undefined) throw new NotFoundError("Warehouse not found")
+            if (warehouse == undefined) throw new NotFoundError("Warehouse not found")
 
             let warehouseDTO = WarehouseMap.toDTO(warehouse)
             return warehouseDTO

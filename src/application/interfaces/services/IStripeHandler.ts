@@ -8,12 +8,13 @@ import { IGeneratorIdHandler } from "./IGeneratorIdHandler";
 
 export interface IStripeHandler {
     createStripeAccount(user: IUserDTO): Promise<string>
+    createStripeCustomer(user: IUserDTO): Promise<string>
     createStripeAccountLink(user: IUserDTO): Promise<void> 
     createStripeProduct(product: IProductDTO): Promise<IProductDTO>
     createWebhookEvent(reqBody: any, sig: any): any
     emitPayment(amount: number, customerId: string): Promise<unknown>
     generatePaymentIntentBuy(user: IUserDTO, reason: string, productId: string, amount: number): Promise<string>
-    generatePaymentIntentDeliveryFee(user: IUserDTO, reason: string, amount: number): Promise<string>
+    generatePaymentIntentDeliveryFee(user: IUserDTO, reason: string, productId: string, amount: number): Promise<string>
     handlePaymentIntentSucceeded(paymentIntent: unknown, idGenerator: IGeneratorIdHandler, promoRepository: IPromoCoinsRepository,
         userRepository: IUserRepository, productRepository: IProductRepository, warehouseRepository: IWarehouseRepository): Promise<void>
 }

@@ -16,6 +16,7 @@ export const associationSchema = new Schema<IAssociationProps>({
         streetNumber: {
             type: Number,
             required: true,
+            trim: true,
         },
         streetName: {
             type: String,
@@ -51,12 +52,14 @@ export const associationSchema = new Schema<IAssociationProps>({
         unique: true,
         minlength: 5,
         maxlength: 255,
+        trim: true,
     },
     numRNA: {
         type: String,
         unique: true,
         minlength: 5,
         maxlength: 255,
+        trim: true,
     },
     verified: {
         type: Boolean,
@@ -83,6 +86,7 @@ export const associationSchema = new Schema<IAssociationProps>({
         name: {
             type: String,
             required: true,
+            trim: true,
         },
         description: {
             type: String,
@@ -96,19 +100,23 @@ export const associationSchema = new Schema<IAssociationProps>({
             name: {
                 type: String,
                 required: true,
+                trim: true,
             },
             greenCoins: {
                 type: Number,
                 required: true,
+                trim: true,
             },
             dateLimite: {
                 type: Date,
                 required: true,
+                trim: true,
             },
         }],
         verified: {
             type: Boolean,
             required: true,
+            trim: true,
         },
     }],
     stripeCustomerId: String, 

@@ -11,7 +11,7 @@ export class GetPromoUseCase implements IGetPromoUseCase {
             Guard.AgainstNullOrUndefined(name, "Promo's name is required")
 
             let promo = await promoRepository.getPromoByName(name.toLowerCase())
-            if (promo != undefined) throw new NotFoundError("Promo not found")
+            if (promo == undefined) throw new NotFoundError("Promo not found")
         
             return PromoCoinsMap.toDTO(promo)
         } catch(error) {

@@ -19,6 +19,7 @@ export const productSchema = new Schema<IProductProps>({
         type: String,
         required: true,
         maxlength: 255,
+        trim: true,
     },
     brand: {
         type: String,
@@ -37,10 +38,12 @@ export const productSchema = new Schema<IProductProps>({
     sellingStatus: {
         type: String,
         required: true,
+        trim: true,
     },
     state: {
         type: String,
         required: true,
+        trim: true,
     },
     specificities: [{
         type: String
@@ -65,7 +68,8 @@ export const productSchema = new Schema<IProductProps>({
     weight : Number,
     year: {
         type: Number,
-        required: true
+        required: true,
+        trim: true,
     }
 });
 

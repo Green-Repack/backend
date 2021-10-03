@@ -77,7 +77,14 @@ export class WarehouseController {
 
     public async getStockInfo(req: any, res: any) {
         try {
-            let stockInfo = await this._getStockInfoUseCase.execute(req.params.name, this._warehouseRepository)
+            const productInfo = {
+                category: req.params.category,
+                brand: req.params.brand,
+                model: req.params.model,
+                year: req.params.year,
+                warehouseName: req.params.warehouse,
+            }
+            let stockInfo = await this._getStockInfoUseCase.execute(productInfo, this._warehouseRepository)
             res.status(200).json(stockInfo);
         } catch(error) {
             console.log(error)

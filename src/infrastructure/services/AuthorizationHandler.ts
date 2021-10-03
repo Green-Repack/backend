@@ -38,48 +38,48 @@ export class AuthorizationHandler {
     public static async marchandAuthorization(req: any, res: any, next: any) {
         try {
             let user = await AuthorizationHandler.userRepository.getUserById(req.userId)
-            if (user == undefined || !user.isMerchant()) return res.status(401).json("Unauthorized")
+            if (user == undefined || !user.isMerchant()) return res.status(403).json("Unauthorized")
 
             next();
         } catch(error) {
             console.log(error)
-            res.status(401).json(error);
+            res.status(403).json(error);
         }
     }
 
     public static async associationAuthorization(req: any, res: any, next: any) {
         try {
             let association = await AuthorizationHandler.associationRepository.getAssociationById(req.userId)
-            if (association == undefined) return res.status(401).json("Unauthorized")
+            if (association == undefined) return res.status(403).json("Unauthorized")
 
             next();
         } catch(error) {
             console.log(error)
-            res.status(401).json(error);
+            res.status(403).json(error);
         }
     }    
 
     public static async greenRepackAuthorization(req: any, res: any, next: any) {
         try {
             let member = await AuthorizationHandler.greenRepackRepository.getGreenRepackMemberById(req.userId)
-            if (member == undefined) return res.status(401).json("Unauthorized")
+            if (member == undefined) return res.status(403).json("Unauthorized")
 
             next();
         } catch(error) {
             console.log(error)
-            res.status(401).json(error);
+            res.status(403).json(error);
         }
     }
 
     public static async greenRepackAdminAuthorization(req: any, res: any, next: any) {
         try {
             let member = await AuthorizationHandler.greenRepackRepository.getGreenRepackMemberById(req.userId)
-            if (member == undefined || !member.isAdmin()) return res.status(401).json("Unauthorized")
+            if (member == undefined || !member.isAdmin()) return res.status(403).json("Unauthorized")
 
             next();
         } catch(error) {
             console.log(error)
-            res.status(401).json(error);
+            res.status(403).json(error);
         }
     }
 }

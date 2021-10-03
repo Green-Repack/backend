@@ -23,6 +23,7 @@ export const userSchema = new Schema<IUserProps>({
         lowercase: true,
         minlength: 5,
         maxlength: 255,
+        trim: true,
     },
     address: {
         _id:false,
@@ -74,6 +75,7 @@ export const userSchema = new Schema<IUserProps>({
         required: true,
         minlength: 6,
         maxlength: 255,
+        trim: true,
     },
     merchant: {
         type: Boolean,

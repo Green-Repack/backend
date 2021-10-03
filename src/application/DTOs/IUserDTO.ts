@@ -13,6 +13,7 @@ export interface IUserDTO {
     orders: IUserOrders[]
     merchant: boolean
     stripeCustomerId?: string
+    stripeAccountId?: string
     productSold?: IProductSold[]
     token?: string
     address: IAddress

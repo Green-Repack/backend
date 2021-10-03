@@ -37,7 +37,8 @@ export class StripeHandler implements IStripeHandler {
                 currency: "eur",
                 receipt_email: user.email,
                 description: `id product : ${productId}`,
-                statement_descriptor: "greenRepack",
+                statement_descriptor: "green repack",
+                customer: user.stripeCustomerId,
                 metadata: {
                     productId: productId,
                     userId: user.id,
@@ -50,17 +51,19 @@ export class StripeHandler implements IStripeHandler {
         }
     }
 
-    async generatePaymentIntentDeliveryFee(user: IUserDTO, reason: string, amount: number): Promise<string> {
+    async generatePaymentIntentDeliveryFee(user: IUserDTO, reason: string, productId: string, amount: number): Promise<string> {
         try {
             let paymentIntent = await StripeHandler.stripe.paymentIntents.create({
                 amount: Math.round(amount * 100),
                 currency: "eur",
                 receipt_email: user.email,
-                description: `Frais de récupération`,
-                statement_descriptor: "greenRepack",
+                description: `Frais de récupération produit ${productId}`,
+                statement_descriptor: "green repack",
+                customer: user.stripeCustomerId,
                 metadata: {
                     userId: user.id,
-                    reason: reason
+                    reason: reason,
+                    productId: productId
                 }
             })
             return paymentIntent.client_secret
@@ -69,26 +72,30 @@ export class StripeHandler implements IStripeHandler {
         }
     }
 
+    async createStripeCustomer(user: IUserDTO): Promise<string> {
+        try {
+            let customer = await StripeHandler.stripe.customers.create({
+                description: `green repack customer`,
+                email: user.email,
+                name: user.lastName
+            })
+            if (customer) return customer.id
+            else throw Error("Could not create stripe customer")
+        } catch (error) {
+            throw error
+        }
+    }
+
     async createStripeAccount(user: IUserDTO): Promise<string> {
         try {
-            if (user.merchant) {
-                let account = await StripeHandler.stripe.accounts.create({
-                    type: "standard",
-                    email: user.email,
-                    country: "FR",
-                    business_type: "individual"
-                })
-                if (account != null) return account.id
-                else throw Error("Could not create stripe account")
-            } else {
-                let customer = await StripeHandler.stripe.customers.create({
-                    description: `green repack customer`,
-                    email: user.email,
-                    name: user.lastName
-                })
-                if (customer) return customer.id
-                else throw Error("Could not create stripe customer")
-            }
+            let account = await StripeHandler.stripe.accounts.create({
+                type: "standard",
+                email: user.email,
+                country: "FR",
+                business_type: "individual"
+            })
+            if (account != null) return account.id
+            else throw Error("Could not create stripe account")
         } catch(error) {
             throw error
         }

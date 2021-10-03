@@ -38,9 +38,10 @@ export class RegisterUseCase  implements IRegisterUseCase {
                 creationDate: new Date()
             }
 
-            userDTO.stripeCustomerId = await stripeHandler.createStripeAccount(userDTO)
+            userDTO.stripeCustomerId = await stripeHandler.createStripeCustomer(userDTO)
             if (userDTO.merchant) {
                 userDTO.productSold = new Array<IProductSold>()
+                userDTO.stripeAccountId = await stripeHandler.createStripeAccount(userDTO)
                 await stripeHandler.createStripeAccountLink(userDTO)
             }
 

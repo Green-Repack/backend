@@ -30,7 +30,7 @@ export class RefuseCounterOfferUseCase implements IRefuseCounerOfferUseCase {
                 
                 await userRepository.updateProductSoldStatus(merchantDTO.email, productDTO.productId, productDTO.sellingStatus)
                 await productRepository.save(ProductMap.toDomain(productDTO))
-                let secretKey = await stripeHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", 
+                let secretKey = await stripeHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", productId,
                 deliveryTicketHanlder.getPriceFromWeight(product.weight))
                 intentKey = {client_secret: secretKey}
             }

@@ -9,6 +9,7 @@ export const promoCoinsSchema = new Schema<IPromoCoins>({
         lowercase: true,
         minlength: 5,
         maxlength: 255,
+        trim: true,
     },
     dateDebut: {
         type: Date,

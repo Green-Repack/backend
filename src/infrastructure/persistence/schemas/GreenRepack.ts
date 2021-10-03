@@ -18,13 +18,15 @@ export const greenRepackSchema = new Schema<IGreenRepackProps>({
     },
     username: {
         type: String,
-        unique: true
+        unique: true,
+        trim: true,
     },
     password: {
         type: String,
         required: true,
         minlength: 6,
         maxlength: 255,
+        trim: true,
     },
     token: String,
     admin: {
