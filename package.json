@@ -1,10 +1,10 @@
 {
   "name": "green_repack",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "src/app.ts",
   "scripts": {
     "start": "ts-node ./src/app.ts",
-    "build": "tsc && node dist/app.js",
+    "build": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
