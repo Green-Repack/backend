@@ -27,6 +27,10 @@ app.use((req, res, next) => {
 
 app.use(cors({origin: "*"}))
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 app.use(routes);
 
 app.listen(port, () => {
