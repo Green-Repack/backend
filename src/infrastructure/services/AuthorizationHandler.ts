@@ -22,59 +22,59 @@ export class AuthorizationHandler {
             const bearer = splitAuthorizationHeader[0];
             const token = splitAuthorizationHeader[1];
 
-            if (bearer.toString() !== "Bearer") return res.status(401).json("The token is not a bearer")
-            if (!token) return res.status(401).json("The token is missing")
+            if (bearer.toString() !== "Bearer") return res.status(401).json({error: "The token is not a bearer"})
+            if (!token) return res.status(401).json({error : "The token is missing"})
 
             const iD = await AuthorizationHandler.jwtHandler.verifyToken(token)
             req.userId = iD
             
             next();
         } catch(error) {
-            res.status(401).json(error);
+            res.status(401).json({ error: error.message });
         }
     }
 
     public static async marchandAuthorization(req: any, res: any, next: any) {
         try {
             let user = await AuthorizationHandler.userRepository.getUserById(req.userId)
-            if (user == undefined || !user.isMerchant()) return res.status(403).json("Unauthorized")
+            if (user == undefined || !user.isMerchant()) return res.status(403).json({error: "Unauthorized"})
 
             next();
         } catch(error) {
-            res.status(403).json(error);
+            res.status(403).json({ error: error.message });
         }
     }
 
     public static async associationAuthorization(req: any, res: any, next: any) {
         try {
             let association = await AuthorizationHandler.associationRepository.getAssociationById(req.userId)
-            if (association == undefined) return res.status(403).json("Unauthorized")
+            if (association == undefined) return res.status(403).json({error: "Unauthorized"})
 
             next();
         } catch(error) {
-            res.status(403).json(error);
+            res.status(403).json({ error: error.message });
         }
     }    
 
     public static async greenRepackAuthorization(req: any, res: any, next: any) {
         try {
             let member = await AuthorizationHandler.greenRepackRepository.getGreenRepackMemberById(req.userId)
-            if (member == undefined) return res.status(403).json("Unauthorized")
+            if (member == undefined) return res.status(403).json({error: "Unauthorized"})
 
             next();
         } catch(error) {
-            res.status(403).json(error);
+            res.status(403).json({ error: error.message });
         }
     }
 
     public static async greenRepackAdminAuthorization(req: any, res: any, next: any) {
         try {
             let member = await AuthorizationHandler.greenRepackRepository.getGreenRepackMemberById(req.userId)
-            if (member == undefined || !member.isAdmin()) return res.status(403).json("Unauthorized")
+            if (member == undefined || !member.isAdmin()) return res.status(403).json({error: "Unauthorized"})
 
             next();
         } catch(error) {
-            res.status(403).json(error);
+            res.status(403).json({ error: error.message });
         }
     }
 }
