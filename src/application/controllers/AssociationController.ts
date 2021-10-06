@@ -8,9 +8,6 @@ import autoBind from "auto-bind"
 import { inject, injectable } from "inversify";
 import { TYPES } from "../commons/types";
 import { getAllAssociationUseCase } from "../useCases/association/GetAllAssociationsUseCase";
-import { VerifyAssociationProjectUseCase } from "../useCases/green_repack/VerifyAssociationProjectUseCase";
-import { VerifyAssociationUseCase } from "../useCases/green_repack/VerifyAssociationUseCase";
-import { IAssociationHandler } from "../interfaces/services/IAssociationHandler";
 
 @injectable()
 export class AssociationController{
@@ -35,29 +32,26 @@ export class AssociationController{
             await this._createAssociationUseCase.execute(req.body, this._passwordHandler, this._associationRepository)
             res.sendStatus(201);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
     public async createProject(req: any, res: any) {
         try {
-            await this._createProjectUseCase.execute(req.body, this._associationRepository)
+            await this._createProjectUseCase.execute(req.userId, req.body, this._associationRepository)
             res.sendStatus(201);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
     public async createAction(req: any, res: any) {
         try {
-            const {associationName, projectName, actionInfo} = req.body
-            await this._createActionUseCase.execute(associationName, projectName, actionInfo, this._associationRepository)
+            const {projectName, actionInfo} = req.body
+            await this._createActionUseCase.execute(req.userId, projectName, actionInfo, this._associationRepository)
             res.sendStatus(201);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -66,8 +60,7 @@ export class AssociationController{
             let associationDTO = await this._getInfoUseCase.execute(req.userId, this._associationRepository)
             res.status(200).json(associationDTO);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -76,8 +69,7 @@ export class AssociationController{
             let associationsDTO = await this._getAllAssocationsUseCase.execute(this._associationRepository)
             res.status(200).json(associationsDTO);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 }

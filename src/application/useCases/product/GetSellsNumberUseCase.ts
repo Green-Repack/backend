@@ -4,7 +4,7 @@ import { IProductRepository } from "../../interfaces/repository/IProductReposito
 import { IGetSellsNumberUseCase } from "./IGetSellsNumberUseCase";
 
 export class GetSellsNumberUseCase implements IGetSellsNumberUseCase {
-    async execute(category: string, brand: string, model: string, year: number, productRepository: IProductRepository): Promise<number> {
+    async execute(category: string, brand: string, model: string, year: number, productRepository: IProductRepository): Promise<{[token: string]: number}> {
         try {
             Guard.AgainstNullOrUndefined(category, "category required")
             Guard.AgainstNullOrUndefined(brand, "brand required")
@@ -13,8 +13,13 @@ export class GetSellsNumberUseCase implements IGetSellsNumberUseCase {
             
             let categoryEnum = category as EProductCategory
             
-            let sellsNUmber = await productRepository.getProductSellsNumber(categoryEnum, brand, model, year)
-            return sellsNUmber
+            let productSold = await productRepository.getProductSellsNumber(categoryEnum, brand, model, year)
+            let numberSold = productSold.length
+            let amountEuros = 0
+            for(var product of productSold) {
+                amountEuros += product.price
+            }
+            return {numberSold: numberSold, totalAmount: amountEuros}
         } catch(error) {
             throw error
         }

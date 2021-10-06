@@ -6,9 +6,13 @@ import { NotFoundError } from "../../errors/NotFoundError"
 
 export class GetProductUseCase implements IGetProductUseCase {
     async execute(productId: string, productRepository: IProductRepository): Promise<IProductDTO> {
-        let product = await productRepository.getProductById(productId)
-        if(!product) throw new NotFoundError("Product not found")
+        try {
+            let product = await productRepository.getProductById(productId)
+            if(!product) throw new NotFoundError("Product not found")
 
-        return ProductMap.toDTO(product)
+            return ProductMap.toDTO(product)
+        } catch(error) {
+            throw error
+        }
     }
 }

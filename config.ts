@@ -12,5 +12,7 @@ export default {
     AZURE_STORAGE_CONNECTION_STRING: process.env.AZURE_STORAGE_CONNECTION_STRING ?? "",
     REFESH_URL_EXPRESS: process.env.REFESH_URL_EXPRESS ?? "",
     REFESH_URL_STD: process.env.REFESH_URL_STD ?? "",
-    RETURN_URL: process.env.RETURN_URL ?? ""
+    RETURN_URL: process.env.RETURN_URL ?? "",
+    STATIC_DIR: process.env.STATIC_DIR ?? "",
+    DOMAIN: process.env.DOMAIN ?? ""
 }

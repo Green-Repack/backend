@@ -32,8 +32,7 @@ export class WarehouseController {
             let warehouseDTO = await this._createWarehouseUseCase.execute(req.body, this._warehouseRepository)
             res.status(201).json(warehouseDTO);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -42,11 +41,10 @@ export class WarehouseController {
             await this._deleteWarehouseUseCase.execute(req.params.id, this._warehouseRepository)
             res.status(200).json("Deleted");
         } catch(error) {
-            console.log(error)
             if(error instanceof NotFoundError){
-                res.status(404).json(error.message)
+                res.status(404).json({ error: error.message });
             }else{
-                res.status(400).json(error);
+                res.status(400).json({ error: error.message });
             }
         }
     }
@@ -58,9 +56,9 @@ export class WarehouseController {
         } catch(error) {
             console.log(error)
             if(error instanceof NotFoundError){
-                res.status(404).json(error.message)
+                res.status(404).json({ error: error.message });
             }else{
-                res.status(400).json(error);
+                res.status(400).json({ error: error.message });
             }
         }
     }
@@ -70,8 +68,7 @@ export class WarehouseController {
             let warehouseDTO = await this._getWarehouseInfoUseCase.execute(req.params.name, this._warehouseRepository)
             res.status(200).json(warehouseDTO);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -87,8 +84,7 @@ export class WarehouseController {
             let stockInfo = await this._getStockInfoUseCase.execute(productInfo, this._warehouseRepository)
             res.status(200).json(stockInfo);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -97,8 +93,7 @@ export class WarehouseController {
             let warehouses = await this._getAllWarehouseUseCase.execute(this._warehouseRepository)
             res.status(200).json(warehouses)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 }

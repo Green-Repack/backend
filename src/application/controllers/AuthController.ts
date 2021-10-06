@@ -44,7 +44,7 @@ export class AuthController{
             res.sendStatus(201);
         } catch(error) {
             console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -55,7 +55,7 @@ export class AuthController{
             res.status(200).json(token);
         } catch(error) {
             console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 }

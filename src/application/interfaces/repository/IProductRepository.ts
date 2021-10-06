@@ -4,7 +4,7 @@ import { IBaseRepository } from "./IBaseRepositoty";
 
 export interface IProductRepository extends IBaseRepository<Product> {
     getProductById(clientId: string): Promise<Product | undefined>
-    getProductSellsNumber(category: EProductCategory, brand: string, model: string, year: number): Promise<number>
+    getProductSellsNumber(category: EProductCategory, brand: string, model: string, year: number): Promise<Product[]>
     getAllProducts(): Promise<Product[]>
     getProductByCategory(category: EProductCategory): Promise<Product[]>
     getProductByBrand(category: EProductCategory, brand: string): Promise<Product[]>

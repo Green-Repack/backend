@@ -32,8 +32,7 @@ export class ProductController {
             let productsInfo = await this._getAllProductUseCase.execute(this._productRepository)
             res.status(200).json(productsInfo)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -42,8 +41,7 @@ export class ProductController {
             let productsInfo = await this._getPrductByCategoryUseCase.execute(req.params.name, this._productRepository)
             res.status(200).json(productsInfo)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -52,8 +50,7 @@ export class ProductController {
             let productsInfo = await this._getPrductByBrandUseCase.execute(req.params.category, req.params.brand, this._productRepository)
             res.status(200).json(productsInfo)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -63,8 +60,7 @@ export class ProductController {
                 req.params.model, req.params.year, this._productRepository)
             res.status(200).json(number)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -73,8 +69,7 @@ export class ProductController {
             await this._deleteProductUseCase.execute(req.params.id, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
     
@@ -83,8 +78,7 @@ export class ProductController {
             let product = await this._getProductUseCase.execute(req.params.id, this._productRepository)
             res.status(200).json(product);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -93,8 +87,7 @@ export class ProductController {
             let product = await this._getProductForValidationUseCase.execute(this._productRepository)
             res.status(200).json(product);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 }

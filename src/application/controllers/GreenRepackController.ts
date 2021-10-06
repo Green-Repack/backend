@@ -65,8 +65,7 @@ export class GreenRepackController{
             let username = await this._createNewMemberUseCase.execute(req.body, this._passwordHandler, this._greenRepackRepository)
             res.status(201).json(username);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -75,8 +74,7 @@ export class GreenRepackController{
             let memberInfo = await this._getInfoUseCase.execute(req.userId, this._greenRepackRepository)
             res.status(200).json(memberInfo);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -87,8 +85,7 @@ export class GreenRepackController{
                 this._productRepository, this._warehouseRepository, this._productPriceRepository)
             res.sendStatus(200);
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -99,8 +96,7 @@ export class GreenRepackController{
                 this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -112,8 +108,7 @@ export class GreenRepackController{
                 this._warehouseRepository, this._productRepository, this._userRepository)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -123,8 +118,7 @@ export class GreenRepackController{
             await this._refuseProductUseCase.execute(productId, this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -133,8 +127,7 @@ export class GreenRepackController{
             await this._verifyAssociationUseCase.execute(req.body.associationName, this._associationRepository, this._associationHandler)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -144,8 +137,7 @@ export class GreenRepackController{
             await this._verifyAssociationProjectUseCase.execute(associationName, projectName, this._associationRepository)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 }

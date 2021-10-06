@@ -39,6 +39,7 @@ export class StripeHandler implements IStripeHandler {
                 description: `id product : ${productId}`,
                 statement_descriptor: "green repack",
                 customer: user.stripeCustomerId,
+                payment_method_types: ['card'],
                 metadata: {
                     productId: productId,
                     userId: user.id,
@@ -60,6 +61,7 @@ export class StripeHandler implements IStripeHandler {
                 description: `Frais de récupération produit ${productId}`,
                 statement_descriptor: "green repack",
                 customer: user.stripeCustomerId,
+                payment_method_types: ['card'],
                 metadata: {
                     userId: user.id,
                     reason: reason,
@@ -104,7 +106,7 @@ export class StripeHandler implements IStripeHandler {
     async createStripeAccountLink(user: IUserDTO): Promise<void> {
         try {
             let accountLink = await StripeHandler.stripe.accountLinks.create({
-                account: user.stripeCustomerId!,
+                account: user.stripeAccountId!,
                 refresh_url: config.REFESH_URL_STD,
                 return_url: config.RETURN_URL,
                 type: 'account_onboarding'
@@ -170,7 +172,6 @@ export class StripeHandler implements IStripeHandler {
 
     async emitPayment(amount: number, accountId: string): Promise<void> {
         try {
-            console.log(accountId)
             const transfer = await StripeHandler.stripe.transfers.create({
                 amount: Math.round(amount * 100),
                 currency: "eur",

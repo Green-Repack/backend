@@ -4,8 +4,12 @@ import { NotFoundError } from "../../errors/NotFoundError"
 
 export class DeleteWarehouseUseCase implements IDeleteWarehouseUseCase {
     async execute(warehouseId: string, warehouseRepository: IWarehouseRepository): Promise<void> {
-        let warehouse = await warehouseRepository.getWarehouseById(warehouseId)
-        if(!warehouse) throw new NotFoundError("Warehouse not found")
-        await warehouseRepository.delete(warehouse)
+        try{
+            let warehouse = await warehouseRepository.getWarehouseById(warehouseId)
+            if(!warehouse) throw new NotFoundError("Warehouse not found")
+            await warehouseRepository.delete(warehouse)
+        } catch(error) {
+            throw error
+        }
     }
 }

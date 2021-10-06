@@ -26,8 +26,7 @@ export class PromoController{
             await this._createPromoCoinsUseCase.execute(req.body, this._promoCoinsRepository)
             res.sendStatus(201)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -36,8 +35,7 @@ export class PromoController{
             let promo = await this._getPromoUseCase.execute(req.params.name, this._promoCoinsRepository)
             res.status(200).json(promo)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -46,8 +44,7 @@ export class PromoController{
             let promos = await this._getAllPromoUseCase.execute( this._promoCoinsRepository)
             res.status(200).json(promos)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
 
@@ -56,8 +53,7 @@ export class PromoController{
             await this._deletePromoUseCase.execute(req.params.name, this._promoCoinsRepository)
             res.sendStatus(200)
         } catch(error) {
-            console.log(error)
-            res.status(400).json(error);
+            res.status(400).json({ error: error.message });
         }
     }
     

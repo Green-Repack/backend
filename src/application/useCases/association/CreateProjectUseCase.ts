@@ -8,13 +8,12 @@ import { NotFoundError } from "../../errors/NotFoundError"
 import { AssociationMap } from "../../mappers/AssociationMap";
 
 export class CreateProjectUseCase implements ICreateProjectUseCase {
-    async execute(projectInfo: any, associationRepository: IAssociationRepository): Promise<void> {
+    async execute(associationId: string, projectInfo: any, associationRepository: IAssociationRepository): Promise<void> {
         try {
-            Guard.AgainstNullOrUndefined(projectInfo.associationName, "The orginisation's name is required")
             Guard.AgainstNullOrUndefined(projectInfo.name, "The project name is required")
             Guard.AgainstNullOrUndefined(projectInfo.description, "The project description is required")
             
-            let association = await associationRepository.getAssociationByName(projectInfo.associationName)
+            let association = await associationRepository.getAssociationById(associationId)
             if (association == undefined) throw new NotFoundError("Association not found")
             if (!association.isVerified()) throw new NotVerifiedError("The association is not verified yet")
 
