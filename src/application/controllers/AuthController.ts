@@ -43,7 +43,6 @@ export class AuthController{
                 this._merchantHandler, this._userRepository)
             res.sendStatus(201);
         } catch(error) {
-            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -54,7 +53,6 @@ export class AuthController{
                  this._userRepository, this._greenRepRepository, this._associationRepository)
             res.status(200).json(token);
         } catch(error) {
-            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }

@@ -8,7 +8,7 @@ let greenRepackController: GreenRepackController = DIcontainer.resolve<GreenRepa
 
 const greenRepackRouter = Router();
 
-greenRepackRouter.post("/create", greenRepackController.createNewMember)
+greenRepackRouter.post("/create", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.createNewMember)
 greenRepackRouter.get("/info", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAuthorization, greenRepackController.getInfo)
 greenRepackRouter.post("/association/verify", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociation)
 greenRepackRouter.post("/association/project/verify", AuthorizationHandler.userAuth, AuthorizationHandler.greenRepackAdminAuthorization, greenRepackController.verifyAssociationProject)

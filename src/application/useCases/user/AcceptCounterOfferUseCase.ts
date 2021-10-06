@@ -40,7 +40,7 @@ export class AcceptCounterOfferUseCase implements IAcceptCounterOfferUseCase {
                 await productRepository.save(updatedProduct)
                 await warehouseRepository.updateStockProduct(updatedProduct, true)
 
-                await stripeHandler.emitPayment(product.priceSeller, merchant.stripeCustomerId)
+                await stripeHandler.emitPayment(product.priceSeller, merchant.stripeAccountId)
                 pushNotifHandler.sendNotification(updatedProduct)
             }
         } catch(error) {
