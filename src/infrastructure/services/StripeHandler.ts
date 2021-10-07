@@ -135,7 +135,7 @@ export class StripeHandler implements IStripeHandler {
             if (product == undefined) throw new NotFoundError("Product not found")
 
             if (metadata.reason == "achat") {
-                let amount = paymentIntent.amount
+                let amount = paymentIntent.amount / 100
                 let promoMultiplier = 1
 
                 let promo = await promoRepository.getActivePromo(currentDate)
@@ -144,9 +144,12 @@ export class StripeHandler implements IStripeHandler {
                 let userDTO = UserMap.toDTO(user)
                 let productDTO = ProductMap.toDTO(product)
 
-                userDTO.greenCoins.amount += ((amount % 10) * promoMultiplier)
+                let greenCoinsAmount = (Math.floor(amount / 10) * promoMultiplier)
+                let expireDate = new Date(currentDate.getFullYear() + 2 + "-01-01")
+                
+                userDTO.greenCoins.amount += greenCoinsAmount
                 if (userDTO.greenCoins.expireDate == undefined) {
-                    userDTO.greenCoins.expireDate = new Date(1, 1, currentDate.getFullYear() + 2)
+                    userDTO.greenCoins.expireDate = expireDate
                 }
 
                 let order: IUserOrders = {
