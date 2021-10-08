@@ -49,14 +49,12 @@ export const associationSchema = new Schema<IAssociationProps>({
     },
     siret: {
         type: String,
-        unique: true,
         minlength: 5,
         maxlength: 255,
         trim: true,
     },
     numRNA: {
         type: String,
-        unique: true,
         minlength: 5,
         maxlength: 255,
         trim: true,
