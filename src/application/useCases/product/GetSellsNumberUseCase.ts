@@ -7,13 +7,10 @@ export class GetSellsNumberUseCase implements IGetSellsNumberUseCase {
     async execute(category: string, productRepository: IProductRepository): Promise<{[token: string]: number}> {
         try {
             Guard.AgainstNullOrUndefined(category, "category required")
-            Guard.AgainstNullOrUndefined(brand, "brand required")
-            Guard.AgainstNullOrUndefined(model, "model required")
-            Guard.AgainstNullOrUndefined(year, "year required")
             
             let categoryEnum = category as EProductCategory
             
-            let productSold = await productRepository.getProductSellsNumber(categoryEnum, brand, model, year)
+            let productSold = await productRepository.getProductSellsNumber(categoryEnum)
             let numberSold = productSold.length
             let amountEuros = 0
             for(var product of productSold) {
