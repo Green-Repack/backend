@@ -27,7 +27,7 @@ export class GetProductBackUseCase implements IGetProductBackUseCase {
             let merchantDTO = UserMap.toDTO(merchant)
 
             if (productDTO.sellingStatus == EPurchasePromiseStatus.Declined) {
-                let secretKey = await await stripeHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", productId,
+                let secretKey = await stripeHandler.generatePaymentIntentDeliveryFee(merchantDTO, "Frais de récupération", productId,
                 deliveryHandler.getPriceFromWeight(product.weight))
                 intentKey = {client_secret: secretKey}
             }
