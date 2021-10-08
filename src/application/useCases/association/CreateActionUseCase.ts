@@ -14,11 +14,11 @@ export class CreateActionUseCase implements ICreateActionUseCase{
             
             let association = await associationRepository.getAssociationById(associationId)
             if (association == undefined) throw new NotFoundError("Association not found")
-            if (!association.isVerified()) throw new NotVerifiedError("The association is not verified yet")
+            if (!association.isVerified()) throw new NotVerifiedError("Association non vérifiée")
             
             let project = await associationRepository.getProjectByName(association.name, projectName)
-            if (project == undefined) throw new NotFoundError("The project is not find")
-            if (!project.verified) throw new NotVerifiedError("The project is not verified yet.")
+            if (project == undefined) throw new NotFoundError("The project not found")
+            if (!project.verified) throw new NotVerifiedError("Projet non vérifié")
 
             let action: IActionProjecAssociation = {
                 name: actionInfo.name,

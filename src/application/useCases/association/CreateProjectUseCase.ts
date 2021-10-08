@@ -15,7 +15,7 @@ export class CreateProjectUseCase implements ICreateProjectUseCase {
             
             let association = await associationRepository.getAssociationById(associationId)
             if (association == undefined) throw new NotFoundError("Association not found")
-            if (!association.isVerified()) throw new NotVerifiedError("The association is not verified yet")
+            if (!association.isVerified()) throw new NotVerifiedError("Association non vérifiée")
 
             let associationDTO = AssociationMap.toDTO(association)
             

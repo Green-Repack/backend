@@ -16,7 +16,7 @@ export class CreateAssociatonUseCase implements ICreateAssociationUseCase {
             Guard.AgainstNullOrUndefined(associationInfo.password, "The password is required.")
 
             let association = await associationRepository.getAssociationByName(String(associationInfo.name))
-            if (association != undefined) throw new AlreadyExistsError("The association already exists!")
+            if (association != undefined) throw new AlreadyExistsError("L'association existe déjà")
             
             associationInfo.projects = new Array<IProjectAssociation>()
             associationInfo.verified = false
