@@ -103,7 +103,7 @@ export class StripeHandler implements IStripeHandler {
         }
     }
 
-    async createStripeAccountLink(user: IUserDTO): Promise<void> {
+    async createStripeAccountLink(user: IUserDTO): Promise<string> {
         try {
             let accountLink = await StripeHandler.stripe.accountLinks.create({
                 account: user.stripeAccountId!,
@@ -111,6 +111,7 @@ export class StripeHandler implements IStripeHandler {
                 return_url: config.RETURN_URL,
                 type: 'account_onboarding'
             })
+            return accountLink.url
         } catch (error) {
             throw error
         }

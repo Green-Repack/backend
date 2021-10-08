@@ -39,9 +39,13 @@ export class AuthController{
 
     public async register(req: any, res: any) {
         try {
-            await AuthController._registerUseCase.execute(req.body, this._stripeHandler, this._passwordHandler, 
+            let url = await AuthController._registerUseCase.execute(req.body, this._stripeHandler, this._passwordHandler, 
                 this._merchantHandler, this._userRepository)
-            res.sendStatus(201);
+            if (url === "") {
+                res.sendStatus(201);
+            } else {
+                res.redirect(201, url)
+            }
         } catch(error) {
             res.status(400).json({ error: error.message });
         }

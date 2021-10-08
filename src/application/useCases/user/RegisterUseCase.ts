@@ -12,7 +12,7 @@ import { IStripeHandler } from "../../interfaces/services/IStripeHandler";
 
 export class RegisterUseCase  implements IRegisterUseCase {
     public async execute(userInfo: any, stripeHandler: IStripeHandler, passwordHandler: IPasswordHandler, merchantHandler: IMerchantHandler,
-         repository: IUserRepository): Promise<void> {
+         repository: IUserRepository): Promise<string> {
         try {
             Guard.AgainstNullOrUndefined(userInfo.firstName, "first name required")
             Guard.AgainstNullOrUndefined(userInfo.lastName, "last name required")
@@ -21,7 +21,8 @@ export class RegisterUseCase  implements IRegisterUseCase {
             Guard.AgainstNullOrUndefined(userInfo.address, "address required")
             Guard.AgainstNullOrUndefined(userInfo.password, "password required")
 
-            let merchant = false 
+            let merchant = false
+            let accountLinkUrl = "" 
             let sirenExists = await merchantHandler.verifyMerchantBySiren(userInfo.siren)
             let siretExists = await merchantHandler.verifyMerchantBySiret(userInfo.siret)
             if (sirenExists || siretExists) merchant = true
@@ -42,7 +43,7 @@ export class RegisterUseCase  implements IRegisterUseCase {
             if (userDTO.merchant) {
                 userDTO.productSold = new Array<IProductSold>()
                 userDTO.stripeAccountId = await stripeHandler.createStripeAccount(userDTO)
-                await stripeHandler.createStripeAccountLink(userDTO)
+                accountLinkUrl = await stripeHandler.createStripeAccountLink(userDTO)
             }
 
             userDTO.password = await passwordHandler.generatePasswordHash(userInfo.password)
@@ -53,6 +54,7 @@ export class RegisterUseCase  implements IRegisterUseCase {
             
             let newUser = UserMap.toDomain(userDTO)
             await repository.save(newUser)
+            return accountLinkUrl
         } catch(error) {
             throw error
         }

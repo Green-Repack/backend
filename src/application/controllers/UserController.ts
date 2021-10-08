@@ -69,7 +69,7 @@ export class UserController {
             res.status(400).json({ error: error.message });
         }
     }
-
+    
     public async updateUserInfo(req: any, res: any) {
         try {
             await this._updateUserInfoUseCase.execute(req.userId, req.body, this._userRepository)
