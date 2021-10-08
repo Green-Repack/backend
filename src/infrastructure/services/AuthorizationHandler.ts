@@ -30,6 +30,7 @@ export class AuthorizationHandler {
             
             next();
         } catch(error) {
+            console.log(error)
             res.status(401).json({ error: error.message });
         }
     }
@@ -41,6 +42,7 @@ export class AuthorizationHandler {
 
             next();
         } catch(error) {
+            console.log(error)
             res.status(403).json({ error: error.message });
         }
     }
@@ -52,6 +54,7 @@ export class AuthorizationHandler {
 
             next();
         } catch(error) {
+            console.log(error)
             res.status(403).json({ error: error.message });
         }
     }    
@@ -63,6 +66,7 @@ export class AuthorizationHandler {
 
             next();
         } catch(error) {
+            console.log(error)
             res.status(403).json({ error: error.message });
         }
     }
@@ -74,6 +78,7 @@ export class AuthorizationHandler {
 
             next();
         } catch(error) {
+            console.log(error)
             res.status(403).json({ error: error.message });
         }
     }

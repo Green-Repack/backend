@@ -66,6 +66,7 @@ export class UserController {
             let userInfo = await this._getUserInfoUseCase.execute(req.userId, this._userRepository)
             res.status(200).json(userInfo)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -75,6 +76,7 @@ export class UserController {
             await this._updateUserInfoUseCase.execute(req.userId, req.body, this._userRepository)
             res.sendStatus(200)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -86,6 +88,7 @@ export class UserController {
                 this._userRepository, this._productRepository)
             res.status(200).json(secretKey)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -95,6 +98,7 @@ export class UserController {
             await this._giveGreenCoinsUseCase.execute(req.body, req.userId, this._associationRepository, this._userRepository)
             res.sendStatus(200)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -105,6 +109,7 @@ export class UserController {
                 this._userRepository, this._productRepository, this._productPriceRepository)
             res.status(200).json(estimatePrice)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -116,6 +121,7 @@ export class UserController {
                 this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -126,6 +132,7 @@ export class UserController {
             await this._refuseEsitmationUseCase.execute(productId, this._userRepository, this._productRepository)
             res.sendStatus(200)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -137,6 +144,7 @@ export class UserController {
                 this._userRepository, this._productRepository, this._warehouseRepository)
             res.sendStatus(200)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -148,6 +156,7 @@ export class UserController {
                 this._userRepository, this._productRepository)
             res.status(200).json(secretKey)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -159,6 +168,7 @@ export class UserController {
                 this._userRepository, this._productRepository)
                 res.status(200).json(secretKey)
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }

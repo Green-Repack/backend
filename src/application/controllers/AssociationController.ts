@@ -51,6 +51,7 @@ export class AssociationController{
             await this._createActionUseCase.execute(req.userId, projectName, actionInfo, this._associationRepository)
             res.sendStatus(201);
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -60,6 +61,7 @@ export class AssociationController{
             let associationDTO = await this._getInfoUseCase.execute(req.userId, this._associationRepository)
             res.status(200).json(associationDTO);
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
@@ -69,6 +71,7 @@ export class AssociationController{
             let associationsDTO = await this._getAllAssocationsUseCase.execute(this._associationRepository)
             res.status(200).json(associationsDTO);
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }

@@ -45,6 +45,7 @@ export class WebhookController{
             }
             res.json({received: true})
         } catch(error) {
+            console.log(error)
             res.status(400).json({ error: error.message });
         }
     }
