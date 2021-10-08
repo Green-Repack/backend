@@ -114,6 +114,7 @@ export const userSchema = new Schema<IUserProps>({
         }
     }],
     stripeCustomerId: String,
+    stripeAccountId: String,
     token: String,
     siret: String,
     siren: String,
