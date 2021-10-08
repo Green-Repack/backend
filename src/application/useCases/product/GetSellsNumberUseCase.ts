@@ -4,7 +4,7 @@ import { IProductRepository } from "../../interfaces/repository/IProductReposito
 import { IGetSellsNumberUseCase } from "./IGetSellsNumberUseCase";
 
 export class GetSellsNumberUseCase implements IGetSellsNumberUseCase {
-    async execute(category: string, brand: string, model: string, year: number, productRepository: IProductRepository): Promise<{[token: string]: number}> {
+    async execute(category: string, productRepository: IProductRepository): Promise<{[token: string]: number}> {
         try {
             Guard.AgainstNullOrUndefined(category, "category required")
             Guard.AgainstNullOrUndefined(brand, "brand required")

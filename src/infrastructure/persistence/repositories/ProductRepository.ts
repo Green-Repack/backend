@@ -50,10 +50,10 @@ export class ProductRepository implements IProductRepository {
         else return undefined
     }
 
-    async getProductSellsNumber(category: EProductCategory, brand: string, model: string, year: number): Promise<Product[]> {
+    async getProductSellsNumber(category: EProductCategory): Promise<Product[]> {
         let result: Product[] = new Array<Product>()
         let productsSold = await ProductModel.find(
-            { category: category, brand: brand.toLowerCase(), model: model.toLowerCase(), year: year, sold: true})
+            { category: category, sold: true})
         for(var product of productsSold) {
             result.push(ProductMap.toDomain(product))
         }
